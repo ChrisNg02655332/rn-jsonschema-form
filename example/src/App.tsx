@@ -1,25 +1,29 @@
 import * as React from 'react'
 
-import { StyleSheet, View } from 'react-native'
-import RnFormBuilderViewManager from 'rn-form-builder'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
+// import RnFormBuilderViewManager from 'rn-form-builder'
+import { FormDynamic, Schema } from 'rn-form-builder'
+
+import jsonSchema from './shema.json'
+import widgets from './Widgets'
+
+const schema: Schema = jsonSchema
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <RnFormBuilderViewManager color="#32a852" style={styles.box} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <FormDynamic schema={schema} widgets={widgets} onSubmit={() => {}} />
+      </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  content: {
+    padding: 10,
   },
 })

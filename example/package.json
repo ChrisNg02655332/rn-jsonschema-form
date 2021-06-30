@@ -9,8 +9,10 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "formik": "^2.2.9",
     "react": "16.13.1",
-    "react-native": "0.63.4"
+    "react-native": "0.63.4",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

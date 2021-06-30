@@ -11,11 +11,23 @@ npm install rn-form-builder
 ## Usage
 
 ```js
-import RnFormBuilder from "rn-form-builder";
+import * as React from 'react'
+import { FormDynamic, Schema } from 'rn-form-builder'
 
-// ...
+import jsonSchema from './shema.json'
+import widgets from './Widgets'
 
-const result = await RnFormBuilder.multiply(3, 7);
+const schema: Schema = jsonSchema
+
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <FormDynamic schema={schema} widgets={widgets} onSubmit={() => {}} />
+      </View>
+    </SafeAreaView>
+  )
+}
 ```
 
 ## Contributing
