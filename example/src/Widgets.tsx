@@ -10,7 +10,7 @@ const TextFieldWidget = ({
   formik: FormikProps<any>
 }) => {
   return (
-    <View>
+    <View key={name}>
       <Text style={{ marginBottom: 5, fontWeight: 'bold' }}>
         This is custom widget
       </Text>

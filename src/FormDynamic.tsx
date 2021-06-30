@@ -44,7 +44,6 @@ const FormDynamic = ({ schema, widgets, onSubmit }: Props) => {
         view = (
           <TextField
             {...field}
-            key={key}
             error={!!formik.errors[key]}
             caption={formik.errors[key] as string}
             onChangeText={formik.handleChange(key)}
@@ -59,7 +58,11 @@ const FormDynamic = ({ schema, widgets, onSubmit }: Props) => {
         else console.warn(`The widget '${field.widget}' doesn't support.`)
       }
 
-      return <View style={{ marginBottom: 15 }}>{view}</View>
+      return (
+        <View key={key} style={{ marginBottom: 15 }}>
+          {view}
+        </View>
+      )
     })
   }
 

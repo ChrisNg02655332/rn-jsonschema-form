@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import { SafeAreaView, StyleSheet, View } from 'react-native'
-// import RnFormBuilderViewManager from 'rn-form-builder'
 import { FormDynamic, Schema } from 'rn-form-builder'
 
 import jsonSchema from './shema.json'
