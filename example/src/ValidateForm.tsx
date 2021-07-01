@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Text } from 'react-native'
 import { FormDynamic, Schema } from 'rn-form-builder'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import jsonSchema from './json/validation-form.json'
 
 const schema: Schema = jsonSchema
@@ -18,6 +19,7 @@ const ValidateForm = () => {
 
       <FormDynamic
         showErrors
+        wrapper={KeyboardAwareScrollView}
         containerStyle={{ padding: 10 }}
         schema={schema}
         onSubmit={(values) => setFormData(values)}

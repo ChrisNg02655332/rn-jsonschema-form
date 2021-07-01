@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
 import { FormDynamic, Schema } from 'rn-form-builder'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import jsonSchema from './json/basic.json'
 
@@ -18,6 +19,7 @@ const CustomButtonSubmit = () => {
       )}
 
       <FormDynamic
+        wrapper={KeyboardAwareScrollView}
         containerStyle={styles.content}
         schema={schema}
         hideSubmitButton

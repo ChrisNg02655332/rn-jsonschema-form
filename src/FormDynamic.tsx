@@ -1,17 +1,13 @@
-import React, {
-  forwardRef,
-  ReactNode,
-  useImperativeHandle,
-  useRef,
-} from 'react'
+import React, { forwardRef, ReactNode, useImperativeHandle } from 'react'
 import {
   View,
   ViewStyle,
   TouchableOpacity,
   Text,
   StyleSheet,
+  ScrollView,
 } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import { FormikHelpers, useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -29,6 +25,11 @@ type Props = {
   submitText?: string
   hideSubmitButton?: boolean
   onSubmit: (values: any, formikHelpers: FormikHelpers<any>) => void
+  /**
+   * @default ScrollView for web
+   * @description should use react-native-keyboard-aware-scroll-view for mobile
+   */
+  wrapper?: ReactNode
 }
 
 const CircleIcon = ({ color }: { color: string }) => (
@@ -45,10 +46,10 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
       submitText = 'Submit',
       hideSubmitButton = false,
       onSubmit,
+      wrapper,
     },
     ref
   ) => {
-    const scrollRef = useRef<FormikHelpers<any>>(null)
     const yepSchema = createYupSchema(schema.properties)
     const initialValues: any = {}
     Object.keys(schema.properties).forEach((k) => {
@@ -105,8 +106,10 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
       })
     }
 
+    const Container: any = wrapper || ScrollView
+
     return (
-      <KeyboardAwareScrollView ref={scrollRef as any}>
+      <Container>
         <View style={containerStyle}>
           <Title text={schema.title} />
           <Description text={schema.description} />
@@ -136,7 +139,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
             </TouchableOpacity>
           )}
         </View>
-      </KeyboardAwareScrollView>
+      </Container>
     )
   }
 )
