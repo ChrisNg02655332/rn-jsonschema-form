@@ -11,6 +11,15 @@
     "username": {
       "title": "Username",
       "type": "string"
+    },
+    "text_area": {
+      "title": "Text Area",
+      "type": "string",
+      "props": {
+        "numberOfLines": 10,
+        "multiline": true,
+        "inputStyle": { "height": 100 }
+      }
     }
   }
 }

@@ -81,7 +81,8 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
         if (field.type === 'string') {
           view = (
             <TextField
-              {...field}
+              title={field.title || field.props.title}
+              {...field.props}
               error={!!formik.errors[key]}
               caption={formik.errors[key] as string}
               onChangeText={formik.handleChange(key)}
