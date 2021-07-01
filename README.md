@@ -20,10 +20,14 @@ import widgets from './Widgets'
 const schema: Schema = jsonSchema
 
 export default function App() {
+  const onSubmit = (values, formHelper) => {
+    // **** Handle submit form ****
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <FormDynamic schema={schema} widgets={widgets} onSubmit={() => {}} />
+        <FormDynamic schema={schema} widgets={widgets} onSubmit={onSubmit} />
       </View>
     </SafeAreaView>
   )
