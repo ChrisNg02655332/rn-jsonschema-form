@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react'
 import { Text, TextInput, View } from 'react-native'
 import type { FormikProps } from 'formik'
@@ -19,6 +20,9 @@ const TextFieldWidget = ({
         value={formik.values[name]}
         onChangeText={formik.handleChange(name)}
       />
+      {!!formik.errors[name] && (
+        <Text style={{ color: 'red' }}>{formik.errors[name]}</Text>
+      )}
     </View>
   )
 }

@@ -30,9 +30,16 @@ const TextField = ({
   ...rest
 }: Props) => {
   return (
-    <View style={[styles.container, containerStyles]}>
-      {!!title && <Text style={[styles.label, labelStyle]}>{title}</Text>}
-      <TextInput style={[styles.input, inputStyle]} {...rest} />
+    <View style={containerStyles}>
+      {!!title && (
+        <Text style={[styles.label, error && styles.error, labelStyle]}>
+          {title}
+        </Text>
+      )}
+      <TextInput
+        style={[styles.input, error && styles.inputError, inputStyle]}
+        {...rest}
+      />
       {!!caption && (
         <Text style={[styles.caption, error && styles.error]}>{caption}</Text>
       )}
@@ -41,7 +48,6 @@ const TextField = ({
 }
 
 const styles = StyleSheet.create({
-  container: {},
   label: {
     marginBottom: 3,
   },
@@ -52,6 +58,9 @@ const styles = StyleSheet.create({
     borderColor: theme.border,
     paddingHorizontal: 7,
     height: 38,
+  },
+  inputError: {
+    borderColor: theme.danger,
   },
   caption: { marginTop: 5, fontSize: 13 },
   error: {

@@ -1,0 +1,18 @@
+{
+  "title": "Custom Widgets Form",
+  "description": "This form allows add custom widget",
+  "type": "object",
+  "properties": {
+    "email": {
+      "title": "Email",
+      "type": "string",
+      "defaultValue": "",
+      "validationType": "string",
+      "widget": "customTextFieldWidget"
+    },
+    "username": {
+      "title": "Username (Default Field)",
+      "type": "string"
+    }
+  }
+}

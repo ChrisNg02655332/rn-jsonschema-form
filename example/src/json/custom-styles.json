@@ -1,0 +1,22 @@
+{
+  "title": "Custom Widgets Form",
+  "description": "This form allows add custom widget",
+  "type": "object",
+  "properties": {
+    "customer-style": {
+      "title": "Custom Style",
+      "type": "string",
+      "containerStyles": {
+        "backgroundColor": "#E0F2FE",
+        "paddingVertical": 20,
+        "paddingHorizontal": 15
+      },
+      "labelStyle": {
+        "color": "#0284C7"
+      },
+      "inputStyle": {
+        "borderColor": "#38BDF8"
+      }
+    }
+  }
+}
