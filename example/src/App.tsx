@@ -14,12 +14,18 @@ import CustomStyles from './CustomStyles'
 import CustomWidgets from './CustomWidgets'
 import ArrayFields from './ArrayFields'
 import ValidateForm from './ValidateForm'
+import SelectControlGroups from './SelectControlGroups'
 
 const data = [
   {
     title: 'Basic Form',
     key: 'basic_form',
     view: BasicForm,
+  },
+  {
+    title: 'Select Control Group',
+    key: 'Group_form',
+    view: SelectControlGroups,
   },
   {
     title: 'Custom Submit Form',

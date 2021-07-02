@@ -61,10 +61,8 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
 
     useEffect(() => {
       const obj = bootstrap()
-      console.log(obj)
-
       setInitialValues(obj)
-    }, [schema])
+    }, [])
 
     const bootstrap = (args?: any, params: any = {}) => {
       const obj: any = params
@@ -100,9 +98,10 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
     }))
 
     const renderView = (properties?: any) => {
-      return Object.keys(properties || schema.properties).map((key: string) => {
+      const root = properties || schema.properties
+      return Object.keys(root).map((key: string) => {
         let view = null
-        const field = properties ? properties[key] : schema.properties[key]
+        const field = root[key]
 
         const fieldProps = {
           key,
@@ -111,7 +110,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
         }
 
         if (['string', 'number'].includes(field.type)) {
-          let keyboardType = 'default'
+          let keyboardType = field.props?.keyboardType || 'default'
           if (field.type === 'number') keyboardType = 'number-pad'
 
           view = (
@@ -132,17 +131,22 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           )
         }
 
-        /** @description default uiSchema of boolean type is checkbox */
-        if (
-          (field.type === 'boolean' && !field.uiSchema) ||
-          field.uiSchema?.type === 'checkbox'
-        ) {
+        if (field.type === 'boolean') {
           view = (
             <Checkbox
               {...field.props}
               title={field?.title || field.props?.title}
               value={formik.values[key]}
-              onPress={() => formik.setFieldValue(key, !formik.values[key])}
+              onPress={() => {
+                if (field.groupName) {
+                  const groups = Object.keys(root).filter(
+                    (k) => root[k]?.groupName === field.groupName
+                  )
+                  groups.forEach((k) => formik.setFieldValue(k, false))
+                }
+
+                formik.setFieldValue(key, !formik.values[key])
+              }}
             />
           )
         }
@@ -192,13 +196,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           {renderView()}
 
           {!hideSubmitButton && (
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => {
-                formik.handleSubmit()
-                // scrollRef.current?.scrollToPosition(0, 0)
-              }}
-            >
+            <TouchableOpacity style={styles.btn} onPress={formik.handleSubmit}>
               <Text style={styles.text}>{submitText}</Text>
             </TouchableOpacity>
           )}

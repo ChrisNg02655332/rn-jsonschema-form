@@ -23,13 +23,11 @@
     },
     "checkbox_field": {
       "title": "Term",
-      "type": "boolean",
-      "uiSchema": "checkbox"
+      "type": "boolean"
     },
     "checkbox_color_field": {
       "title": "Custom Color",
       "type": "boolean",
-      "uiSchema": "checkbox",
       "props": {
         "color": "red",
         "labelStyle": {
