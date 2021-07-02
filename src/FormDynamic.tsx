@@ -79,15 +79,24 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           formik,
         }
 
-        if (field.type === 'string') {
+        if (['string', 'number'].includes(field.type)) {
+          let keyboardType = 'default'
+          if (field.type === 'number') keyboardType = 'number-pad'
+
           view = (
             <TextField
               title={field.title || field.props.title}
               {...field.props}
-              error={!!formik.errors[key]}
-              caption={formik.errors[key] as string}
-              onChangeText={formik.handleChange(key)}
+              error={formik.touched[key] && !!formik.errors[key]}
+              keyboardType={keyboardType}
+              caption={formik.touched[key] && (formik.errors[key] as string)}
+              onChangeText={(val) => {
+                let value: string | number = val
+                if (field.type === 'number') value = Number(value)
+                formik.setFieldValue(key, value)
+              }}
               value={formik.values[key]}
+              onBlur={() => formik.setFieldTouched(key)}
             />
           )
         }
@@ -114,10 +123,10 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           <Title text={schema.title} />
           <Description text={schema.description} />
 
-          {showErrors && (
+          {showErrors && formik.dirty && (
             <View style={styles.errorContainer}>
               {Object.keys(formik.errors).map((k) => (
-                <View style={styles.errorContent}>
+                <View key={k} style={styles.errorContent}>
                   <CircleIcon color={theme.danger} />
                   <Text style={styles.errorText}>{formik.errors[k]}</Text>
                 </View>

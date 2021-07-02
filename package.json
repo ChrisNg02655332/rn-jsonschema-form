@@ -66,6 +66,7 @@
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-builder-bob": "^0.18.1",
+    "react-native-web": "^0.17.1",
     "release-it": "^14.2.2",
     "typescript": "^4.1.3",
     "yup": "^0.32.9"
@@ -74,7 +75,8 @@
     "formik": "*",
     "react": "*",
     "react-native": "*",
-    "yup": "*"
+    "yup": "*",
+    "react-native-web": "*"
   },
   "jest": {
     "preset": "react-native",
@@ -133,7 +135,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "src/utils"
   ],
   "prettier": {
     "quoteProps": "consistent",
@@ -156,6 +159,5 @@
         }
       ]
     ]
-  },
-  "dependencies": {}
+  }
 }

@@ -12,6 +12,7 @@
       "title": "Username",
       "type": "string"
     },
+
     "text_area": {
       "title": "Text Area",
       "type": "string",

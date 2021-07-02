@@ -1,5 +1,9 @@
 import * as yup from 'yup'
 
+yup.addMethod(yup.string, 'match', function (key, message) {
+  return this.oneOf([yup.ref(key), null], message)
+})
+
 export function createYupSchema(properties: any) {
   let schema: any = {}
   Object.keys(properties).forEach((key) => {

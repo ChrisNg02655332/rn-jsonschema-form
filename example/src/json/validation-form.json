@@ -23,14 +23,51 @@
         }
       ]
     },
-    "username": {
-      "title": "Username",
+    "password": {
+      "title": "Password",
       "type": "string",
+      "props": {
+        "secureTextEntry": true
+      },
       "validationType": "string",
       "rules": [
         {
           "type": "required",
           "params": ["This field is required"]
+        }
+      ]
+    },
+    "confirmPassword": {
+      "title": "Confirm Password",
+      "type": "string",
+      "props": {
+        "secureTextEntry": true
+      },
+      "validationType": "string",
+      "rules": [
+        {
+          "type": "required",
+          "params": ["This field is required"]
+        },
+        {
+          "type": "match",
+          "params": ["password", "The 'confirmPassword' dose not match"]
+        }
+      ]
+    },
+    "age": {
+      "title": "Number Field",
+      "type": "number",
+      "validationType": "number",
+      "rules": [
+        { "type": "typeError", "params": ["The 'age' field is not number"] },
+        {
+          "type": "min",
+          "params": [18, "The 'age' field mus be greater than or equal to 18"]
+        },
+        {
+          "type": "max",
+          "params": [50]
         }
       ]
     }
