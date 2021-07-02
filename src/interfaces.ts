@@ -14,17 +14,6 @@ type Properties = {
     properties?: Properties
     defaultValue?: string
     widget?: string
-    /**
-     * @description
-     * @example
-     * {
-     *   type?: 'checkbox' | 'group'
-     *   groupTitle?: string
-     *   groupName?: string
-     * }
-     *
-     */
-    uiSchema?: any
     /** @description check yup method */
     validationType?: string
     rules?: Array<{
