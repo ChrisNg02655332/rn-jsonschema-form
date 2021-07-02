@@ -1,4 +1,11 @@
-import React, { forwardRef, ReactNode, useImperativeHandle } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react'
 import {
   View,
   ViewStyle,
@@ -50,17 +57,41 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
     },
     ref
   ) => {
-    const yepSchema = createYupSchema(schema.properties)
-    const initialValues: any = {}
-    Object.keys(schema.properties).forEach((k) => {
-      initialValues[k] = schema.properties[k].defaultValue || ''
-    })
+    const [initialValues, setInitialValues] = useState<any>({})
 
+    useEffect(() => {
+      const obj = bootstrap()
+      console.log(obj)
+
+      setInitialValues(obj)
+    }, [schema])
+
+    const bootstrap = (args?: any, params: any = {}) => {
+      const obj: any = params
+      const properties = args || schema.properties
+      Object.keys(properties).forEach((k) => {
+        if (properties[k].type === 'array') {
+          bootstrap(properties[k].properties, obj)
+        }
+
+        if (properties[k].type === 'string')
+          obj[k] = properties[k].defaultValue || ''
+        if (properties[k].type === 'number')
+          obj[k] = properties[k].defaultValue || null
+        if (properties[k].type === 'boolean')
+          obj[k] = properties[k].defaultValue || false
+      })
+
+      return obj
+    }
+
+    const yepSchema = createYupSchema(schema.properties)
     const validationSchema = yup.object().shape(yepSchema)
 
     const formik = useFormik({
       initialValues,
       validationSchema,
+      enableReinitialize: true,
       onSubmit,
     })
 
@@ -68,10 +99,10 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
       ...formik,
     }))
 
-    const rendenView = () => {
-      return Object.keys(schema.properties).map((key: string) => {
+    const renderView = (properties?: any) => {
+      return Object.keys(properties || schema.properties).map((key: string) => {
         let view = null
-        const field = schema.properties[key]
+        const field = properties ? properties[key] : schema.properties[key]
 
         const fieldProps = {
           key,
@@ -86,7 +117,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           view = (
             <TextField
               {...field.props}
-              title={field.title || field.props.title}
+              title={field?.title || field.props?.title}
               error={formik.touched[key] && !!formik.errors[key]}
               keyboardType={keyboardType}
               caption={formik.touched[key] && (formik.errors[key] as string)}
@@ -101,14 +132,27 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           )
         }
 
-        if (field.type === 'boolean' && field.uiSchema === 'checkbox') {
+        /** @description default uiSchema of boolean type is checkbox */
+        if (
+          (field.type === 'boolean' && !field.uiSchema) ||
+          field.uiSchema?.type === 'checkbox'
+        ) {
           view = (
             <Checkbox
               {...field.props}
-              title={field.title || field.props.title}
+              title={field?.title || field.props?.title}
               value={formik.values[key]}
               onPress={() => formik.setFieldValue(key, !formik.values[key])}
             />
+          )
+        }
+
+        if (field.type === 'array') {
+          view = (
+            <View>
+              <Title text={field?.title} />
+              {renderView(field.properties)}
+            </View>
           )
         }
 
@@ -145,7 +189,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
             </View>
           )}
 
-          {rendenView()}
+          {renderView()}
 
           {!hideSubmitButton && (
             <TouchableOpacity

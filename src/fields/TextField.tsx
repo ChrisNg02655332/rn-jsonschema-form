@@ -49,7 +49,8 @@ const TextField = ({
 
 const styles = StyleSheet.create({
   label: {
-    marginBottom: 3,
+    fontSize: 15,
+    marginBottom: 5,
   },
   input: {
     borderWidth: 1,
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     borderColor: theme.border,
     paddingHorizontal: 7,
     height: 38,
+    fontSize: 17,
   },
   inputError: {
     borderColor: theme.danger,
