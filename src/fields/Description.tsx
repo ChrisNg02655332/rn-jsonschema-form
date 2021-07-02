@@ -13,7 +13,7 @@ const Description = ({ text, style }: Props) => {
 const styles = StyleSheet.create({
   text: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 15,
   },
 })
 

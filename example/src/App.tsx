@@ -12,6 +12,7 @@ import BasicForm from './BasicForm'
 import CustomButtonSubmit from './CustomButtonSubmit'
 import CustomStyles from './CustomStyles'
 import CustomWidgets from './CustomWidgets'
+import ArrayFields from './ArrayFields'
 import ValidateForm from './ValidateForm'
 
 const data = [
@@ -34,6 +35,11 @@ const data = [
     title: 'Custom Styles',
     key: 'custom_styles_form',
     view: CustomStyles,
+  },
+  {
+    title: 'Array Fields',
+    key: 'array_fields_form',
+    view: ArrayFields,
   },
   {
     title: 'Validate Form',
@@ -85,6 +91,7 @@ const styles = StyleSheet.create({
   },
   list: {
     maxHeight: 55,
+    minHeight: 55,
     marginHorizontal: 10,
     marginVertical: 15,
     paddingBottom: 15,

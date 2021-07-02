@@ -12,8 +12,9 @@ const Title = ({ text, style }: Props) => {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 17,
-    marginBottom: 5,
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 10,
   },
 })
 
