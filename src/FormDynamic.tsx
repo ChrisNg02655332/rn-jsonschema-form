@@ -11,7 +11,7 @@ import {
 import { FormikHelpers, useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { Description, TextField, Title } from './fields'
+import { Checkbox, Description, TextField, Title } from './fields'
 
 import type { Schema } from './interfaces'
 import { createYupSchema } from './utils'
@@ -85,8 +85,8 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
 
           view = (
             <TextField
-              title={field.title || field.props.title}
               {...field.props}
+              title={field.title || field.props.title}
               error={formik.touched[key] && !!formik.errors[key]}
               keyboardType={keyboardType}
               caption={formik.touched[key] && (formik.errors[key] as string)}
@@ -97,6 +97,17 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
               }}
               value={formik.values[key]}
               onBlur={() => formik.setFieldTouched(key)}
+            />
+          )
+        }
+
+        if (field.type === 'boolean' && field.uiSchema === 'checkbox') {
+          view = (
+            <Checkbox
+              {...field.props}
+              title={field.title || field.props.title}
+              value={formik.values[key]}
+              onPress={() => formik.setFieldValue(key, !formik.values[key])}
             />
           )
         }

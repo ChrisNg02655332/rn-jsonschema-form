@@ -12,7 +12,6 @@
       "title": "Username",
       "type": "string"
     },
-
     "text_area": {
       "title": "Text Area",
       "type": "string",
@@ -20,6 +19,22 @@
         "numberOfLines": 10,
         "multiline": true,
         "inputStyle": { "height": 100 }
+      }
+    },
+    "checkbox_field": {
+      "title": "Term",
+      "type": "boolean",
+      "uiSchema": "checkbox"
+    },
+    "checkbox_color_field": {
+      "title": "Custom Color",
+      "type": "boolean",
+      "uiSchema": "checkbox",
+      "props": {
+        "color": "red",
+        "labelStyle": {
+          "color": "red"
+        }
       }
     }
   }
