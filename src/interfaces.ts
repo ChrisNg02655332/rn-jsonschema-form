@@ -1,4 +1,4 @@
-type Properties = {
+export type Properties = {
   [key: string]: {
     title?: string
     /**
@@ -7,8 +7,10 @@ type Properties = {
      */
     type: string
     /**
-     * This is props of the components
-     * Can use default and any props related to react native components
+     * @description This is props of the components
+     * @link can use default and any props related to react native components
+     *
+     *  https://reactnative.dev/docs/components-and-apis
      */
     props?: any
     properties?: Properties
