@@ -245,7 +245,7 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - rn-form-builder (0.1.0):
+  - rn-form-builder (0.6.0):
     - React-Core
   - Yoga (1.14.0)
 
@@ -367,7 +367,7 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  rn-form-builder: e8f6dfd589b33333a0c420c66515e6330ae4a314
+  rn-form-builder: 03bd342a8d8cf58d02b661ac6c2cdc75679cca04
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
 PODFILE CHECKSUM: 6475faee06292e3cbd30e0c7ebc95ce0a11c87ad
