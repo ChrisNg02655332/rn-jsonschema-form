@@ -1,6 +1,6 @@
 {
   "name": "rn-form-builder",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "This library support generate form by json schema",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
