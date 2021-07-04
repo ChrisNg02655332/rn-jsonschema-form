@@ -18,7 +18,7 @@ import {
 import { FormikHelpers, useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { Checkbox, Description, TextField, Title } from './fields'
+import { Checkbox, Description, Select, TextField, Title } from './fields'
 
 import type { Schema } from './interfaces'
 import { createYupSchema } from './utils'
@@ -109,55 +109,73 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           formik,
         }
 
-        if (['string', 'number'].includes(field.type)) {
-          let keyboardType = field.props?.keyboardType || 'default'
-          if (field.type === 'number') keyboardType = 'number-pad'
+        if (field.uiSchema) {
+          if (field.uiSchema === 'select') {
+            console.log(formik.errors)
 
-          view = (
-            <TextField
-              {...field.props}
-              title={field?.title || field.props?.title}
-              error={formik.touched[key] && !!formik.errors[key]}
-              keyboardType={keyboardType}
-              caption={formik.touched[key] && (formik.errors[key] as string)}
-              onChangeText={(val) => {
-                let value: string | number = val
-                if (field.type === 'number') value = Number(value)
-                formik.setFieldValue(key, value)
-              }}
-              value={formik.values[key]}
-              onBlur={() => formik.setFieldTouched(key)}
-            />
-          )
-        }
+            view = (
+              <Select
+                {...field.props}
+                title={field?.title || field.props?.title}
+                options={field.options}
+                error={formik.touched[key] && !!formik.errors[key]}
+                caption={formik.touched[key] && (formik.errors[key] as string)}
+                value={formik.values[key]}
+                onChange={(value) => formik.setFieldValue(key, value)}
+              />
+            )
+          }
+        } else {
+          if (['string', 'number'].includes(field.type)) {
+            let keyboardType = field.props?.keyboardType || 'default'
+            if (field.type === 'number') keyboardType = 'number-pad'
 
-        if (field.type === 'boolean') {
-          view = (
-            <Checkbox
-              {...field.props}
-              title={field?.title || field.props?.title}
-              value={formik.values[key]}
-              onPress={() => {
-                if (field.groupName) {
-                  const groups = Object.keys(root).filter(
-                    (k) => root[k]?.groupName === field.groupName
-                  )
-                  groups.forEach((k) => formik.setFieldValue(k, false))
-                }
+            view = (
+              <TextField
+                {...field.props}
+                title={field?.title || field.props?.title}
+                keyboardType={keyboardType}
+                error={formik.touched[key] && !!formik.errors[key]}
+                caption={formik.touched[key] && (formik.errors[key] as string)}
+                onChangeText={(val) => {
+                  let value: string | number = val
+                  if (field.type === 'number') value = Number(value)
+                  formik.setFieldValue(key, value)
+                }}
+                value={formik.values[key]}
+                onBlur={() => formik.setFieldTouched(key)}
+              />
+            )
+          }
 
-                formik.setFieldValue(key, !formik.values[key])
-              }}
-            />
-          )
-        }
+          if (field.type === 'boolean') {
+            view = (
+              <Checkbox
+                {...field.props}
+                title={field?.title || field.props?.title}
+                value={formik.values[key]}
+                onPress={() => {
+                  if (field.groupName) {
+                    const groups = Object.keys(root).filter(
+                      (k) => root[k]?.groupName === field.groupName
+                    )
+                    groups.forEach((k) => formik.setFieldValue(k, false))
+                  }
 
-        if (field.type === 'array') {
-          view = (
-            <View>
-              <Title text={field?.title} />
-              {renderView(field.properties)}
-            </View>
-          )
+                  formik.setFieldValue(key, !formik.values[key])
+                }}
+              />
+            )
+          }
+
+          if (field.type === 'array') {
+            view = (
+              <View>
+                <Title text={field?.title} />
+                {renderView(field.properties)}
+              </View>
+            )
+          }
         }
 
         if (field.widget && widgets && Object.keys(widgets).length) {
