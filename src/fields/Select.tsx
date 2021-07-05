@@ -127,13 +127,15 @@ const Select = ({
       )}
 
       {Platform.OS === 'web' ? (
-        <View style={styles.webOptions}>
-          {options.map((option) => (
-            <TouchableOpacity key={option.value} onPress={onSelectItem}>
-              <Text style={styles.webOptionsItem}>{option.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        visible && (
+          <View style={styles.webOptions}>
+            {options.map((option) => (
+              <TouchableOpacity key={option.value} onPress={onSelectItem}>
+                <Text style={styles.webOptionsItem}>{option.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )
       ) : (
         <Modal transparent animationType="none" visible={visible}>
           <TouchableWithoutFeedback onPress={onBackdropPress}>
@@ -205,14 +207,12 @@ const styles = StyleSheet.create({
     color: theme.danger,
   },
   webOptions: {
-    position: 'absolute',
-    top: 45,
+    marginVertical: 10,
     backgroundColor: 'white',
-    left: 0,
-    right: 0,
     paddingVertical: 5,
     borderWidth: 1,
     borderRadius: 4,
+    borderColor: theme.border,
   },
   webOptionsItem: {
     fontSize: 14,
