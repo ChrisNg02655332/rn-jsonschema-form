@@ -94,11 +94,6 @@ const Select = ({
     })
   }
 
-  const onSelectItem = () => {
-    hide()
-    onChange(currentValue)
-  }
-
   const onBackdropPress = () => {}
 
   const valueItem = options.find((item) => item.value === value)
@@ -130,7 +125,14 @@ const Select = ({
         visible && (
           <View style={styles.webOptions}>
             {options.map((option) => (
-              <TouchableOpacity key={option.value} onPress={onSelectItem}>
+              <TouchableOpacity
+                key={option.value}
+                onPress={() => {
+                  setVisible(false)
+                  setCurrentValue(option.value)
+                  onChange(option.value)
+                }}
+              >
                 <Text style={styles.webOptionsItem}>{option.label}</Text>
               </TouchableOpacity>
             ))}
@@ -154,7 +156,13 @@ const Select = ({
               pointerEvents="box-none"
             >
               <View style={styles.wrap}>
-                <TouchableOpacity style={styles.doneBtn} onPress={onSelectItem}>
+                <TouchableOpacity
+                  style={styles.doneBtn}
+                  onPress={() => {
+                    hide()
+                    onChange(currentValue)
+                  }}
+                >
                   <Text style={styles.textDone}>Done</Text>
                 </TouchableOpacity>
                 <Picker

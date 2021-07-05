@@ -111,8 +111,6 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
 
         if (field.uiSchema) {
           if (field.uiSchema === 'select') {
-            console.log(formik.errors)
-
             view = (
               <Select
                 {...field.props}
