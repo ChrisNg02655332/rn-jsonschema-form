@@ -183,7 +183,10 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
         }
 
         return (
-          <View key={key} style={[styles.field, { zIndex: index }]}>
+          <View
+            key={key}
+            style={[styles.field, { zIndex: Object.keys(root).length - index }]}
+          >
             {view}
           </View>
         )
