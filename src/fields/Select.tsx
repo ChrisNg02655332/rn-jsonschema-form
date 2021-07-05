@@ -215,7 +215,10 @@ const styles = StyleSheet.create({
     color: theme.danger,
   },
   webOptions: {
-    marginVertical: 10,
+    position: 'absolute',
+    top: 65,
+    left: 0,
+    right: 0,
     backgroundColor: 'white',
     paddingVertical: 5,
     borderWidth: 1,

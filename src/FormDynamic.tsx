@@ -99,7 +99,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
 
     const renderView = (properties?: any) => {
       const root = properties || schema.properties
-      return Object.keys(root).map((key: string) => {
+      return Object.keys(root).map((key: string, index: number) => {
         let view = null
         const field = root[key]
 
@@ -183,7 +183,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
         }
 
         return (
-          <View key={key} style={styles.field}>
+          <View key={key} style={[styles.field, { zIndex: index }]}>
             {view}
           </View>
         )
@@ -233,6 +233,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 0,
   },
   text: {
     color: 'white',
