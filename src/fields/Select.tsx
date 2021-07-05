@@ -12,6 +12,7 @@ import {
   Animated,
   Dimensions,
   TextInput,
+  Platform,
 } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import { Picker } from '@react-native-picker/picker'
@@ -93,7 +94,14 @@ const Select = ({
     })
   }
 
+  const onSelectItem = () => {
+    hide()
+    onChange(currentValue)
+  }
+
   const onBackdropPress = () => {}
+
+  const valueItem = options.find((item) => item.value === value)
 
   return (
     <View style={containerStyles}>
@@ -102,59 +110,70 @@ const Select = ({
           {title}
         </Text>
       )}
-      <TouchableOpacity style={styles.inputField} onPress={() => show()}>
-        {/* <Text style={styles.inputText}>{value}</Text> */}
-        <TextInput
-          style={[styles.inputText, error && styles.inputError]}
-          value={value as string}
-          placeholder={placeholder}
-        />
-        <Feather name="chevron-down" size={18} />
+
+      <TouchableOpacity onPress={() => show()}>
+        <View pointerEvents="none" style={styles.inputField}>
+          <TextInput
+            style={[styles.inputText, error && styles.inputError]}
+            value={valueItem?.label}
+            placeholder={placeholder}
+          />
+          <Feather name="chevron-down" size={18} />
+        </View>
       </TouchableOpacity>
+
       {!!caption && (
         <Text style={[styles.caption, error && styles.error]}>{caption}</Text>
       )}
 
-      <Modal transparent animationType="none" visible={visible}>
-        <TouchableWithoutFeedback onPress={onBackdropPress}>
-          <Animated.View
-            style={[styles.backdrop, backdropAnimatedStyle, { width, height }]}
-          />
-        </TouchableWithoutFeedback>
+      {Platform.OS === 'web' ? (
+        <View style={styles.webOptions}>
+          {options.map((option) => (
+            <TouchableOpacity key={option.value} onPress={onSelectItem}>
+              <Text style={styles.webOptionsItem}>{option.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : (
+        <Modal transparent animationType="none" visible={visible}>
+          <TouchableWithoutFeedback onPress={onBackdropPress}>
+            <Animated.View
+              style={[
+                styles.backdrop,
+                backdropAnimatedStyle,
+                { width, height },
+              ]}
+            />
+          </TouchableWithoutFeedback>
 
-        {visible && (
-          <Animated.View
-            style={[styles.content, contentAnimatedStyle, contentStyle]}
-            pointerEvents="box-none"
-          >
-            <View style={styles.wrap}>
-              <TouchableOpacity
-                style={styles.doneBtn}
-                onPress={() => {
-                  hide()
-                  onChange(currentValue)
-                }}
-              >
-                <Text style={styles.textDone}>Done</Text>
-              </TouchableOpacity>
-              <Picker
-                mode="dialog"
-                onValueChange={(val: string | number) => setCurrentValue(val)}
-                selectedValue={currentValue}
-              >
-                <Picker.Item label={placeholder} value={undefined} />
-                {options.map((option) => (
-                  <Picker.Item
-                    key={option.value}
-                    label={option.label}
-                    value={option.value}
-                  />
-                ))}
-              </Picker>
-            </View>
-          </Animated.View>
-        )}
-      </Modal>
+          {visible && (
+            <Animated.View
+              style={[styles.content, contentAnimatedStyle, contentStyle]}
+              pointerEvents="box-none"
+            >
+              <View style={styles.wrap}>
+                <TouchableOpacity style={styles.doneBtn} onPress={onSelectItem}>
+                  <Text style={styles.textDone}>Done</Text>
+                </TouchableOpacity>
+                <Picker
+                  mode="dialog"
+                  onValueChange={(val: string | number) => setCurrentValue(val)}
+                  selectedValue={currentValue}
+                >
+                  <Picker.Item label={placeholder} value="" />
+                  {options.map((option) => (
+                    <Picker.Item
+                      key={option.value}
+                      label={option.label}
+                      value={option.value}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </Animated.View>
+          )}
+        </Modal>
+      )}
     </View>
   )
 }
@@ -184,6 +203,22 @@ const styles = StyleSheet.create({
   caption: { marginTop: 5, fontSize: 13 },
   error: {
     color: theme.danger,
+  },
+  webOptions: {
+    position: 'absolute',
+    top: 45,
+    backgroundColor: 'white',
+    left: 0,
+    right: 0,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  webOptionsItem: {
+    fontSize: 14,
+    fontWeight: '500',
+    paddingHorizontal: 10,
+    paddingVertical: 7,
   },
   backdrop: {
     position: 'absolute',
