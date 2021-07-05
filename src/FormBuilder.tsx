@@ -63,9 +63,6 @@ const FormBuilder = forwardRef<any, Props>(
   ) => {
     const [initialValues, setInitialValues] = useState<any>({})
 
-    const EditableComp: any =
-      Platform.OS === 'web' && editable ? editable : View
-
     useEffect(() => {
       const obj = bootstrap()
       setInitialValues(obj)
@@ -189,29 +186,22 @@ const FormBuilder = forwardRef<any, Props>(
           else console.warn(`The widget '${field.widget}' doesn't support.`)
         }
 
-        return Platform.OS === 'web' && !!editable ? (
-          EditableComp({
-            key,
-            children: (
-              <View
-                key={key}
-                style={[
-                  styles.field,
-                  { zIndex: Object.keys(root).length - index },
-                ]}
-              >
-                {view}
-              </View>
-            ),
-          })
-        ) : (
-          <View
-            key={key}
-            style={[styles.field, { zIndex: Object.keys(root).length - index }]}
-          >
-            {view}
-          </View>
-        )
+        return Platform.OS === 'web' && !!editable
+          ? (editable as any)({
+              key,
+              children: (
+                <View
+                  key={key}
+                  style={[
+                    styles.field,
+                    { zIndex: Object.keys(root).length - index },
+                  ]}
+                >
+                  {view}
+                </View>
+              ),
+            })
+          : null
       })
     }
 
