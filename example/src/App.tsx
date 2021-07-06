@@ -12,9 +12,10 @@ import BasicForm from './BasicForm'
 import CustomButtonSubmit from './CustomButtonSubmit'
 import CustomStyles from './CustomStyles'
 import CustomWidgets from './CustomWidgets'
-import ArrayFields from './ArrayFields'
+import GroupFields from './GroupFields'
 import ValidateForm from './ValidateForm'
 import SelectControlGroups from './SelectControlGroups'
+import RatingForm from './RatingForm'
 
 const data = [
   {
@@ -43,9 +44,14 @@ const data = [
     view: CustomStyles,
   },
   {
-    title: 'Array Fields',
+    title: 'Group Fields',
     key: 'array_fields_form',
-    view: ArrayFields,
+    view: GroupFields,
+  },
+  {
+    title: 'Rating Form',
+    key: 'rating_form',
+    view: RatingForm,
   },
   {
     title: 'Validate Form',

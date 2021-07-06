@@ -68,7 +68,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
       const obj: any = params
       const properties = args || schema.properties
       Object.keys(properties).forEach((k) => {
-        if (properties[k].type === 'array') {
+        if (properties[k].type === 'array' && properties[k].properties) {
           bootstrap(properties[k].properties, obj)
         }
 
@@ -107,6 +107,8 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           key,
           name: key,
           formik,
+          schema: field,
+          rootSchema: schema,
         }
 
         if (field.uiSchema) {
@@ -121,6 +123,14 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
                 value={formik.values[key]}
                 onChange={(value) => formik.setFieldValue(key, value)}
               />
+            )
+          }
+          if (field.uiSchema === 'group' && field.properties) {
+            view = (
+              <View>
+                <Title text={field?.title} />
+                {renderView(field.properties)}
+              </View>
             )
           }
         } else {
@@ -167,12 +177,7 @@ const FormDynamic = forwardRef<FormikHelpers<any>, Props>(
           }
 
           if (field.type === 'array') {
-            view = (
-              <View>
-                <Title text={field?.title} />
-                {renderView(field.properties)}
-              </View>
-            )
+            return null
           }
         }
 

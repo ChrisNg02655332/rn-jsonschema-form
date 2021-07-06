@@ -5,7 +5,7 @@
   "properties": {
     "group_1": {
       "title": "Group 1",
-      "type": "array",
+      "uiSchema": "group",
       "properties": {
         "field_1": {
           "type": "string"
@@ -23,7 +23,7 @@
     },
     "group_2": {
       "title": "Group 2",
-      "type": "array",
+      "uiSchema": "group",
       "properties": {
         "field_1_1": {
           "title": "Select Me 1",

@@ -111,66 +111,33 @@ const FormBuilder = forwardRef<any, Props>(
           key,
           name: key,
           formik,
+          schema: field,
+          rootSchema: schema,
         }
 
         if (field.uiSchema) {
           if (field.uiSchema === 'select') {
-            view = (
-              <Select
-                {...field.props}
-                title={field?.title || field.props?.title}
-                options={field.options}
-                error={formik.touched[key] && !!formik.errors[key]}
-                caption={formik.touched[key] && (formik.errors[key] as string)}
-                value={formik.values[key]}
-                onChange={(value) => formik.setFieldValue(key, value)}
-              />
-            )
+            view =
+              Platform.OS === 'web' && !!editable
+                ? (editable as any)({
+                    ...fieldProps,
+                    children: (
+                      <Select
+                        {...field.props}
+                        title={field?.title || field.props?.title}
+                        options={field.options}
+                        error={formik.touched[key] && !!formik.errors[key]}
+                        caption={
+                          formik.touched[key] && (formik.errors[key] as string)
+                        }
+                        value={formik.values[key]}
+                        onChange={(value) => formik.setFieldValue(key, value)}
+                      />
+                    ),
+                  })
+                : null
           }
-        } else {
-          if (['string', 'number'].includes(field.type)) {
-            let keyboardType = field.props?.keyboardType || 'default'
-            if (field.type === 'number') keyboardType = 'number-pad'
-
-            view = (
-              <TextField
-                {...field.props}
-                title={field?.title || field.props?.title}
-                keyboardType={keyboardType}
-                error={formik.touched[key] && !!formik.errors[key]}
-                caption={formik.touched[key] && (formik.errors[key] as string)}
-                onChangeText={(val) => {
-                  let value: string | number = val
-                  if (field.type === 'number') value = Number(value)
-                  formik.setFieldValue(key, value)
-                }}
-                value={formik.values[key]}
-                onBlur={() => formik.setFieldTouched(key)}
-              />
-            )
-          }
-
-          if (field.type === 'boolean') {
-            view = (
-              <Checkbox
-                {...field.props}
-                title={field?.title || field.props?.title}
-                value={formik.values[key]}
-                onPress={() => {
-                  if (field.groupName) {
-                    const groups = Object.keys(root).filter(
-                      (k) => root[k]?.groupName === field.groupName
-                    )
-                    groups.forEach((k) => formik.setFieldValue(k, false))
-                  }
-
-                  formik.setFieldValue(key, !formik.values[key])
-                }}
-              />
-            )
-          }
-
-          if (field.type === 'array') {
+          if (field.uiSchema === 'group' && field.properties) {
             view = (
               <View>
                 <Title text={field?.title} />
@@ -178,30 +145,91 @@ const FormBuilder = forwardRef<any, Props>(
               </View>
             )
           }
+        } else {
+          if (['string', 'number'].includes(field.type)) {
+            let keyboardType = field.props?.keyboardType || 'default'
+            if (field.type === 'number') keyboardType = 'number-pad'
+
+            view =
+              Platform.OS === 'web' && !!editable
+                ? (editable as any)({
+                    ...fieldProps,
+                    children: (
+                      <TextField
+                        {...field.props}
+                        title={field?.title || field.props?.title}
+                        keyboardType={keyboardType}
+                        error={formik.touched[key] && !!formik.errors[key]}
+                        caption={
+                          formik.touched[key] && (formik.errors[key] as string)
+                        }
+                        onChangeText={(val) => {
+                          let value: string | number = val
+                          if (field.type === 'number') value = Number(value)
+                          formik.setFieldValue(key, value)
+                        }}
+                        value={formik.values[key]}
+                        onBlur={() => formik.setFieldTouched(key)}
+                      />
+                    ),
+                  })
+                : null
+          }
+
+          if (field.type === 'boolean') {
+            view =
+              Platform.OS === 'web' && !!editable
+                ? (editable as any)({
+                    ...fieldProps,
+                    children: (
+                      <Checkbox
+                        {...field.props}
+                        title={field?.title || field.props?.title}
+                        value={formik.values[key]}
+                        onPress={() => {
+                          if (field.groupName) {
+                            const groups = Object.keys(root).filter(
+                              (k) => root[k]?.groupName === field.groupName
+                            )
+                            groups.forEach((k) =>
+                              formik.setFieldValue(k, false)
+                            )
+                          }
+
+                          formik.setFieldValue(key, !formik.values[key])
+                        }}
+                      />
+                    ),
+                  })
+                : null
+          }
+
+          if (field.type === 'array') {
+            return null
+          }
         }
 
         if (field.widget && widgets && Object.keys(widgets).length) {
           const Comp = (widgets as any)[field.widget]
-          if (Comp) view = <Comp {...fieldProps} />
+          if (Comp)
+            view =
+              Platform.OS === 'web' && !!editable
+                ? (editable as any)({
+                    ...fieldProps,
+                    children: <Comp {...fieldProps} />,
+                  })
+                : null
           else console.warn(`The widget '${field.widget}' doesn't support.`)
         }
 
-        return Platform.OS === 'web' && !!editable
-          ? (editable as any)({
-              key,
-              children: (
-                <View
-                  key={key}
-                  style={[
-                    styles.field,
-                    { zIndex: Object.keys(root).length - index },
-                  ]}
-                >
-                  {view}
-                </View>
-              ),
-            })
-          : null
+        return (
+          <View
+            key={key}
+            style={[styles.field, { zIndex: Object.keys(root).length - index }]}
+          >
+            {view}
+          </View>
+        )
       })
     }
 

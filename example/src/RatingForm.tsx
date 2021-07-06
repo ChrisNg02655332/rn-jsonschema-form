@@ -1,13 +1,14 @@
-import * as React from 'react'
+import React from 'react'
 import { Text } from 'react-native'
 import { FormDynamic, Schema } from 'rn-form-builder'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import jsonSchema from './json/basic.json'
+import widgets from './Widgets'
+import jsonSchema from './json/rating.json'
 
 const schema: Schema = jsonSchema
 
-const BasicForm = () => {
+const RatingForm = () => {
   const [formData, setFormData] = React.useState({})
 
   return (
@@ -21,11 +22,14 @@ const BasicForm = () => {
       <FormDynamic
         wrapper={KeyboardAwareScrollView}
         containerStyle={{ padding: 10 }}
+        widgets={widgets}
         schema={schema}
-        onSubmit={(values) => setFormData(values)}
+        onSubmit={(values) => {
+          setFormData(values)
+        }}
       />
     </>
   )
 }
 
-export default BasicForm
+export default RatingForm

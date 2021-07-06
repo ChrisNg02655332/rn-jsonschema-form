@@ -1,5 +1,5 @@
 const VECTOR_ICONS_FONTS_PATH = './node_modules/react-native-vector-icons/Fonts'
-const VECTOR_FONTS = ['Feather.ttf']
+const VECTOR_FONTS = ['Feather.ttf', 'FontAwesome.ttf']
 
 module.exports = {
   assets: [],

@@ -3,9 +3,9 @@ export type Properties = {
     title?: string
     /**
      * This prop supported
-     * @enum "string" | "number" | "boolean"
+     * @enum "string" | "number" | "boolean" | undefined
      */
-    type: string
+    type?: string
     /**
      * @description This is props of the components
      * @link can use default and any props related to react native components
