@@ -46,7 +46,7 @@ const CircleIcon = ({ color }: { color: string }) => (
   <View style={[styles.circleIcon, { backgroundColor: color }]} />
 )
 
-const FormBuilder = forwardRef<any, Props>(
+const FormBuilder = forwardRef<FormikHelpers<any>, Props>(
   (
     {
       schema,
@@ -57,7 +57,7 @@ const FormBuilder = forwardRef<any, Props>(
       hideSubmitButton = false,
       onSubmit,
       wrapper,
-      editable,
+      editable = false,
     },
     ref
   ) => {
@@ -72,7 +72,7 @@ const FormBuilder = forwardRef<any, Props>(
       const obj: any = params
       const properties = args || schema.properties
       Object.keys(properties).forEach((k) => {
-        if (properties[k].type === 'array') {
+        if (properties[k].type === 'array' && properties[k].properties) {
           bootstrap(properties[k].properties, obj)
         }
 
@@ -214,7 +214,7 @@ const FormBuilder = forwardRef<any, Props>(
 
     return (
       <Container>
-        <View ref={ref} style={containerStyle}>
+        <View style={containerStyle}>
           <Title text={schema.title} />
           <Description text={schema.description} />
 
