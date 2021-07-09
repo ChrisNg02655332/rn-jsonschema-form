@@ -48,7 +48,12 @@
   },
   "dependencies": {
     "@react-native-picker/picker": "^1.16.3",
+    "core-js-pure": "^3.15.2",
     "formik": "^2.2.9",
+    "json-schema-merge-allof": "^0.8.1",
+    "jsonpointer": "^4.1.0",
+    "react-is": "^17.0.2",
+    "react-native-elements": "^3.4.2",
     "react-native-vector-icons": "^8.1.0",
     "yup": "^0.32.9"
   },
@@ -57,7 +62,10 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^2.0.0",
     "@types/jest": "^26.0.0",
+    "@types/json-schema-merge-allof": "^0.6.0",
+    "@types/jsonpointer": "^4.0.0",
     "@types/react": "^16.9.19",
+    "@types/react-is": "^17.0.1",
     "@types/react-native": "0.62.13",
     "@types/react-native-vector-icons": "^6.4.7",
     "@types/yup": "^0.29.11",
@@ -131,7 +139,8 @@
           "useTabs": false,
           "semi": false
         }
-      ]
+      ],
+      "react-hooks/exhaustive-deps": 0
     }
   },
   "eslintIgnore": [

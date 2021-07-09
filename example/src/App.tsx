@@ -8,56 +8,56 @@ import {
   View,
 } from 'react-native'
 
-import BasicForm from './BasicForm'
-import CustomButtonSubmit from './CustomButtonSubmit'
-import CustomStyles from './CustomStyles'
-import CustomWidgets from './CustomWidgets'
-import GroupFields from './GroupFields'
-import ValidateForm from './ValidateForm'
-import SelectControlGroups from './SelectControlGroups'
-import RatingForm from './RatingForm'
+import SimpleForm from './SimpleForm'
+// import CustomButtonSubmit from './CustomButtonSubmit'
+// import CustomStyles from './CustomStyles'
+// import CustomWidgets from './CustomWidgets'
+// import GroupFields from './GroupFields'
+// import ValidateForm from './ValidateForm'
+// import SelectControlGroups from './SelectControlGroups'
+// import RatingForm from './RatingForm'
 
 const data = [
   {
-    title: 'Basic Form',
-    key: 'basic_form',
-    view: BasicForm,
+    title: 'Simple Form',
+    key: 'simple_form',
+    view: SimpleForm,
   },
-  {
-    title: 'Select Control Group',
-    key: 'Group_form',
-    view: SelectControlGroups,
-  },
-  {
-    title: 'Custom Submit Form',
-    key: 'custom_submit_form',
-    view: CustomButtonSubmit,
-  },
-  {
-    title: 'Custom Widgets',
-    key: 'custom_widgets_form',
-    view: CustomWidgets,
-  },
-  {
-    title: 'Custom Styles',
-    key: 'custom_styles_form',
-    view: CustomStyles,
-  },
-  {
-    title: 'Group Fields',
-    key: 'array_fields_form',
-    view: GroupFields,
-  },
-  {
-    title: 'Rating Form',
-    key: 'rating_form',
-    view: RatingForm,
-  },
-  {
-    title: 'Validate Form',
-    key: 'validate_form',
-    view: ValidateForm,
-  },
+  // {
+  //   title: 'Select Control Group',
+  //   key: 'Group_form',
+  //   view: SelectControlGroups,
+  // },
+  // {
+  //   title: 'Custom Submit Form',
+  //   key: 'custom_submit_form',
+  //   view: CustomButtonSubmit,
+  // },
+  // {
+  //   title: 'Custom Widgets',
+  //   key: 'custom_widgets_form',
+  //   view: CustomWidgets,
+  // },
+  // {
+  //   title: 'Custom Styles',
+  //   key: 'custom_styles_form',
+  //   view: CustomStyles,
+  // },
+  // {
+  //   title: 'Group Fields',
+  //   key: 'array_fields_form',
+  //   view: GroupFields,
+  // },
+  // {
+  //   title: 'Rating Form',
+  //   key: 'rating_form',
+  //   view: RatingForm,
+  // },
+  // {
+  //   title: 'Validate Form',
+  //   key: 'validate_form',
+  //   view: ValidateForm,
+  // },
 ]
 
 export default function App() {
