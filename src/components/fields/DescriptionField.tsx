@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
+import globalStyles from '../globalStyles'
 
 type Props = {
   id: string
@@ -11,10 +12,18 @@ const DescriptionField = ({ id, description }: Props) => {
     return null
   }
   if (typeof description === 'string') {
-    return <Text key={id}>{description}</Text>
+    return (
+      <Text style={[globalStyles.text, styles.text]} key={id}>
+        {description}
+      </Text>
+    )
   } else {
     return <View key={id}>{description}</View>
   }
 }
+
+const styles = StyleSheet.create({
+  text: { marginBottom: 10 },
+})
 
 export default DescriptionField

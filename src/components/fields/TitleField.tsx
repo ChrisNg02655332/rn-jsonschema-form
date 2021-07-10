@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import globalStyles from '../globalStyles'
+import theme from '../theme'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 
@@ -12,13 +13,27 @@ type Props = {
 
 function TitleField({ id, title, required = false }: Props) {
   return (
-    <View key={id}>
-      <Text>{title}</Text>
+    <View key={id} style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
       {required && (
         <Text style={globalStyles.required}>{REQUIRED_FIELD_SYMBOL}</Text>
       )}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 20,
+    paddingBottom: 10,
+    borderColor: theme.border,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '600',
+  },
+})
 
 export default TitleField
