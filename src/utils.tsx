@@ -43,25 +43,25 @@ const widgetMap: any = {
   },
   number: {
     text: 'TextWidget',
-    select: 'SelectWidget',
-    updown: 'UpDownWidget',
-    range: 'RangeWidget',
-    radio: 'RadioWidget',
-    hidden: 'HiddenWidget',
+    // select: 'SelectWidget',
+    // updown: 'UpDownWidget',
+    // range: 'RangeWidget',
+    // radio: 'RadioWidget',
+    // hidden: 'HiddenWidget',
   },
   integer: {
     text: 'TextWidget',
-    select: 'SelectWidget',
-    updown: 'UpDownWidget',
-    range: 'RangeWidget',
-    radio: 'RadioWidget',
-    hidden: 'HiddenWidget',
+    // select: 'SelectWidget',
+    // updown: 'UpDownWidget',
+    // range: 'RangeWidget',
+    // radio: 'RadioWidget',
+    // hidden: 'HiddenWidget',
   },
   array: {
     select: 'SelectWidget',
-    checkboxes: 'CheckboxesWidget',
-    files: 'FileWidget',
-    hidden: 'HiddenWidget',
+    // checkboxes: 'CheckboxesWidget',
+    // files: 'FileWidget',
+    // hidden: 'HiddenWidget',
   },
 }
 
@@ -142,6 +142,13 @@ export const isFixedItems = (schema: any) => {
     schema.items.length > 0 &&
     schema.items.every((item: any) => isObject(item))
   )
+}
+
+export function allowAdditionalItems(schema: any) {
+  if (schema.additionalItems === true) {
+    console.warn('additionalItems=true is currently not supported')
+  }
+  return isObject(schema.additionalItems)
 }
 
 export const orderProperties = (properties: any, order: any) => {
