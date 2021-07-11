@@ -24,6 +24,7 @@ const StringField = ({
   onFocus,
   registry = getDefaultRegistry(),
   rawErrors,
+  ...rest
 }: any) => {
   const { title, format } = schema
   const { widgets, formContext } = registry
@@ -58,6 +59,7 @@ const StringField = ({
       registry={registry}
       placeholder={placeholder}
       rawErrors={rawErrors}
+      {...rest}
     />
   )
 }

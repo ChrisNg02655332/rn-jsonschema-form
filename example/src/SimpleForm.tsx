@@ -46,6 +46,16 @@ const schema = {
         // },
       },
     },
+    integer: {
+      type: 'object',
+      title: 'Integer field',
+      properties: {
+        default: {
+          type: 'integer',
+          title: 'Age',
+        },
+      },
+    },
     // string: {
     //   type: 'object',
     //   title: 'String field',

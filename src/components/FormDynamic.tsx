@@ -10,6 +10,7 @@ import _pick from 'lodash/pick'
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 
+import DefaultErrorList from './ErrorList'
 import { useStateWithCallbackLazy } from '../libs/hooks'
 
 import theme from '../components/theme'
@@ -48,6 +49,9 @@ type Props = {
   idPrefix?: string
   disabled?: boolean
   omitExtraData?: boolean
+  noValidate?: boolean
+  showErrorList?: boolean
+  ErrorList?: React.FC<any>
   onSubmit: (values: any, event: any) => void
   /**
    * @default ScrollView for web
@@ -55,9 +59,11 @@ type Props = {
    */
   wrapper?: React.ReactNode
   containerStyle?: ViewStyle
+  onError?: (errors: any) => void
 }
 
 const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
+  const {} = props
   const [state, setState] = useStateWithCallbackLazy({})
 
   React.useEffect(() => {
@@ -97,6 +103,24 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
       additionalMetaSchemas,
       customFormats
     )
+  }
+
+  const renderErrors = () => {
+    const { errors = [], errorSchema, schema, uiSchema } = state
+    const { ErrorList = DefaultErrorList, showErrorList, formContext } = props
+
+    if (errors.length && showErrorList !== false) {
+      return (
+        <ErrorList
+          errors={errors}
+          errorSchema={errorSchema}
+          schema={schema}
+          uiSchema={uiSchema}
+          formContext={formContext}
+        />
+      )
+    }
+    return null
   }
 
   const getStateFromProps = (_props: Props, inputFormData: any) => {
@@ -271,7 +295,7 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
     event.persist()
     let newFormData = state.formData
 
-    if (props.omitExtraData === true) {
+    if (props.omitExtraData) {
       const retrievedSchema = retrieveSchema(
         state.schema,
         state.schema,
@@ -289,48 +313,47 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
       newFormData = getUsedFormData(newFormData, fieldNames)
     }
 
-    // if (!this.props.noValidate) {
-    //   let schemaValidation = this.validate(newFormData)
-    //   let errors = schemaValidation.errors
-    //   let errorSchema = schemaValidation.errorSchema
-    //   const schemaValidationErrors = errors
-    //   const schemaValidationErrorSchema = errorSchema
-    //   if (Object.keys(errors).length > 0) {
-    //     if (this.props.extraErrors) {
-    //       errorSchema = mergeObjects(
-    //         errorSchema,
-    //         this.props.extraErrors,
-    //         !!'concat arrays'
-    //       )
-    //       errors = toErrorList(errorSchema)
-    //     }
-    //     this.setState(
-    //       {
-    //         errors,
-    //         errorSchema,
-    //         schemaValidationErrors,
-    //         schemaValidationErrorSchema,
-    //       },
-    //       () => {
-    //         if (this.props.onError) {
-    //           this.props.onError(errors)
-    //         } else {
-    //           console.error('Form validation failed', errors)
-    //         }
-    //       }
-    //     )
-    //     return
-    //   }
-    // }
+    if (!props.noValidate) {
+      let schemaValidation = validate(newFormData)
+      let errors = schemaValidation.errors
+      let errorSchema = schemaValidation.errorSchema
+      const schemaValidationErrors = errors
+      const schemaValidationErrorSchema = errorSchema
+      if (Object.keys(errors).length > 0) {
+        if (props.extraErrors) {
+          errorSchema = mergeObjects(
+            errorSchema,
+            props.extraErrors,
+            !!'concat arrays'
+          )
+          errors = toErrorList(errorSchema)
+        }
 
-    let errorSchema
-    let errors
+        setState(
+          {
+            ...state,
+            errors,
+            errorSchema,
+            schemaValidationErrors,
+            schemaValidationErrorSchema,
+          },
+          () => {
+            if (props.onError) {
+              props.onError(errors)
+            } else {
+              console.error('Form validation failed', errors)
+            }
+          }
+        )
+        return
+      }
+    }
+
+    let errorSchema = {}
+    let errors = []
     if (props.extraErrors) {
       errorSchema = props.extraErrors
       errors = toErrorList(errorSchema)
-    } else {
-      errorSchema = {}
-      errors = []
     }
 
     setState(
@@ -353,6 +376,7 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
 
   return (
     <Container>
+      {renderErrors()}
       <View style={props.containerStyle}>
         <_SchemaField
           schema={state.schema}
