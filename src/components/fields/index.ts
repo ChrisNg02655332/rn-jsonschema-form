@@ -2,7 +2,7 @@
 import BooleanField from './BooleanField'
 import DescriptionField from './DescriptionField'
 // import MultiSchemaField from "./MultiSchemaField";
-// import NumberField from "./NumberField";
+import NumberField from './NumberField'
 import ObjectField from './ObjectField'
 import SchemaField from './SchemaField'
 import StringField from './StringField'
@@ -15,7 +15,7 @@ export default {
   // ArrayField,
   BooleanField,
   DescriptionField,
-  //   NumberField,
+  NumberField,
   ObjectField,
   //   OneOfField: MultiSchemaField,
   SchemaField,

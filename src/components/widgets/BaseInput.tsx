@@ -15,7 +15,13 @@ type Props = TextInputProps & {
   onChange: (value: string) => void
 }
 
-const BaseInput = ({ options, schema, onChange, ...rest }: Props) => {
+const BaseInput = ({
+  options,
+  schema,
+  onChange,
+  rawErrors = [],
+  ...rest
+}: Props) => {
   let type = rest.type
   if (options.inputType) {
     type = options.inputType
@@ -42,8 +48,7 @@ const BaseInput = ({ options, schema, onChange, ...rest }: Props) => {
 
   return (
     <TextInput
-      keyboardType={type === 'number' ? 'number-pad' : 'default'}
-      style={[styles.input, rest.style]}
+      style={[styles.input, rest.style, rawErrors.length > 0 && styles.error]}
       onChangeText={onChangeText}
       {...rest}
     />
@@ -60,6 +65,9 @@ const styles = StyleSheet.create({
     height: 38,
     fontSize: 17,
     marginBottom: 10,
+  },
+  error: {
+    borderColor: theme.danger,
   },
 })
 

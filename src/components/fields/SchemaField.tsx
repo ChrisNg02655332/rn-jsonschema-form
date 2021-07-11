@@ -14,6 +14,7 @@ import {
 } from '../../utils'
 
 import globalStyles from '../globalStyles'
+import theme from '../theme'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
@@ -63,20 +64,52 @@ const getFieldComponent = (
       }
 }
 
-const Label = ({ label, required, id }: any) => {
+const Label = ({ label, required, id, ...props }: any) => {
   if (!label) {
     return null
   }
+
   return (
-    <Text style={globalStyles.label} key={id}>
+    <Text style={[globalStyles.label, props.style]} key={id}>
       {label}
-      {required && <Text>{REQUIRED_FIELD_SYMBOL}</Text>}
+      {required && <Text style={props.style}>{REQUIRED_FIELD_SYMBOL}</Text>}
     </Text>
   )
 }
 
 const LabelInput = ({ id, label, onChange }: any) => {
   return <TextInput key={id} defaultValue={label} onChangeText={onChange} />
+}
+
+const Help = (props: any) => {
+  const { id, help } = props
+  if (!help) {
+    return null
+  }
+  if (typeof help === 'string') {
+    return <Text key={id}>{help}</Text>
+  }
+  return <View key={id}>{help}</View>
+}
+
+const ErrorList = ({ errors = [] }: any) => {
+  if (errors.length === 0) {
+    return null
+  }
+
+  return (
+    <View style={{ marginBottom: 15 }}>
+      {errors
+        .filter((elem: any) => !!elem)
+        .map((error: string, index: number) => {
+          return (
+            <Text key={index} style={{ color: theme.danger }}>
+              * {error}
+            </Text>
+          )
+        })}
+    </View>
+  )
 }
 
 const WrapIfAdditional = (props: any) => {
@@ -103,11 +136,11 @@ const WrapIfAdditional = (props: any) => {
       <View>
         <View>
           <View>
-            <Label label={keyLabel} required={required} id={`${id}-key`} />
+            <Label label={keyLabel} required={required} key={`${id}-key`} />
             <LabelInput
               label={label}
               required={required}
-              id={`${id}-key`}
+              key={`${id}-key`}
               onChange={onKeyChange}
             />
           </View>
@@ -134,7 +167,7 @@ const DefaultTemplate = (props: any) => {
     id,
     label,
     children,
-    errors,
+    errors = [],
     help,
     description,
     hidden,
@@ -148,7 +181,9 @@ const DefaultTemplate = (props: any) => {
 
   return (
     <WrapIfAdditional {...props}>
-      {displayLabel && <Label label={label} required={required} id={id} />}
+      {displayLabel && (
+        <Label label={label} style={props.style} required={required} key={id} />
+      )}
       {displayLabel && description ? description : null}
       {children}
       {errors}
@@ -208,7 +243,7 @@ const SchemaField = (props: any) => {
       {...props}
       idSchema={idSchema}
       schema={schema}
-      uiSchema={{ ...uiSchema, classNames: undefined }}
+      uiSchema={{ ...uiSchema }}
       disabled={disabled}
       readonly={readonly}
       autofocus={autofocus}
@@ -233,28 +268,25 @@ const SchemaField = (props: any) => {
   const errors = __errors
   const help = uiSchema['ui:help']
   const hidden = uiSchema['ui:widget'] === 'hidden'
-  // const classNames = [
-  //   'form-group',
-  //   'field',
-  //   `field-${schema.type}`,
-  //   errors && errors.length > 0 ? 'field-error has-error has-danger' : '',
-  //   uiSchema.classNames,
-  // ]
-  //   .join(' ')
-  //   .trim()
+
+  const style = [
+    uiSchema.style || {},
+    errors && errors.length > 0 ? { color: theme.danger } : {},
+  ]
 
   const fieldProps = {
     description: (
       <DescriptionField
-        id={id + '__description'}
+        key={id + '__description'}
         description={description}
         formContext={formContext}
       />
     ),
     rawDescription: description,
-    // help: <Help id={id + '__help'} help={help} />,
+    help: <Help key={id + '__help'} help={help} />,
     rawHelp: typeof help === 'string' ? help : undefined,
-    // errors: <ErrorList errors={errors} />,
+    errors: <ErrorList errors={errors} />,
+    style,
     rawErrors: errors,
     id,
     label,
@@ -266,7 +298,6 @@ const SchemaField = (props: any) => {
     disabled,
     readonly,
     displayLabel,
-    // classNames,
     formContext,
     formData,
     fields,
