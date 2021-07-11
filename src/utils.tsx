@@ -22,14 +22,14 @@ const widgetMap: any = {
   },
   string: {
     text: 'TextWidget',
+    email: 'EmailWidget',
+    uri: 'URLWidget',
+    radio: 'RadioWidget',
     // 'password': 'PasswordWidget',
-    // 'email': 'EmailWidget',
     // 'hostname': 'TextWidget',
     // 'ipv4': 'TextWidget',
     // 'ipv6': 'TextWidget',
-    // 'uri': 'URLWidget',
     // 'data-url': 'FileWidget',
-    // 'radio': 'RadioWidget',
     // 'select': 'SelectWidget',
     // 'textarea': 'TextareaWidget',
     // 'hidden': 'HiddenWidget',
@@ -57,12 +57,12 @@ const widgetMap: any = {
     // radio: 'RadioWidget',
     // hidden: 'HiddenWidget',
   },
-  // array: {
-  // select: 'SelectWidget',
-  // checkboxes: 'CheckboxesWidget',
-  // files: 'FileWidget',
-  // hidden: 'HiddenWidget',
-  // },
+  array: {
+    select: 'SelectWidget',
+    checkboxes: 'CheckboxesWidget',
+    // files: 'FileWidget',
+    // hidden: 'HiddenWidget',
+  },
 }
 
 export const getDefaultRegistry = (): any => {

@@ -1,4 +1,4 @@
-// import ArrayField from './ArrayField'
+import ArrayField from './ArrayField'
 import BooleanField from './BooleanField'
 import DescriptionField from './DescriptionField'
 // import MultiSchemaField from "./MultiSchemaField";
@@ -12,7 +12,7 @@ import UnsupportedField from './UnsupportedField'
 
 export default {
   //   AnyOfField: MultiSchemaField,
-  // ArrayField,
+  ArrayField,
   BooleanField,
   DescriptionField,
   NumberField,
