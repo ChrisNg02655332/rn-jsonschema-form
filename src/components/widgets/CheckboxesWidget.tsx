@@ -9,47 +9,42 @@ const CheckboxesWidget = (props: any) => {
   const { enumOptions, enumDisabled, inline } = options
 
   return (
-    <View key={id}>
+    <View key={id} style={[styles.container, inline && styles.inline]}>
       {enumOptions.map((option: any, index: number) => {
         const itemDisabled =
           enumDisabled && enumDisabled.indexOf(option.value) !== -1
         const isDisabled = disabled || itemDisabled || readonly
         const checkbox = (
-          <View>
-            <TouchableOpacity
-              key={id}
-              disabled={isDisabled}
-              onPress={() => {
-                // const all = enumOptions.map((item: any) => item.value)
-                const values: Array<string> = props.value || []
-                const exist = values.indexOf(option.value)
-                if (exist !== -1) values.splice(exist, 1)
-                else values.push(option.value)
-                onChange(values)
-              }}
-            >
-              {console.log(props.value)}
-              <View style={styles.content}>
-                <Feather
-                  style={styles.icon}
-                  name={
-                    props.value?.includes(option.value)
-                      ? 'check-square'
-                      : 'square'
-                  }
-                  size={20}
-                  color={disabled ? theme.border : theme.primary}
-                />
-                <Text style={globalStyles.text}>{option.label}</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            key={id}
+            disabled={isDisabled}
+            onPress={() => {
+              // const all = enumOptions.map((item: any) => item.value)
+              const values: Array<string> = props.value || []
+              const exist = values.indexOf(option.value)
+              if (exist !== -1) values.splice(exist, 1)
+              else values.push(option.value)
+              onChange(values)
+            }}
+          >
+            <View style={styles.content}>
+              <Feather
+                style={styles.icon}
+                name={
+                  props.value?.includes(option.value)
+                    ? 'check-square'
+                    : 'square'
+                }
+                size={20}
+                color={disabled ? theme.border : theme.primary}
+              />
+              <Text style={globalStyles.text}>{option.label}</Text>
+            </View>
+          </TouchableOpacity>
         )
-        return inline ? (
-          <Text key={index}>{checkbox}</Text>
-        ) : (
-          <View key={index}>
-            <Text>{checkbox}</Text>
+        return (
+          <View style={styles.wrap} key={index}>
+            {checkbox}
           </View>
         )
       })}
@@ -58,13 +53,17 @@ const CheckboxesWidget = (props: any) => {
 }
 
 const styles = StyleSheet.create({
+  container: { marginVertical: 15 },
+  wrap: { marginRight: 15, marginBottom: 7 },
   content: {
     flexDirection: 'row',
     marginBottom: 15,
     alignItems: 'center',
   },
-  icon: {
-    marginRight: 7,
+  icon: { marginRight: 7 },
+  inline: {
+    flex: 1,
+    flexDirection: 'row',
   },
 })
 

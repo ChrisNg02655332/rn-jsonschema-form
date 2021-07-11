@@ -162,7 +162,7 @@ const ArrayField = (props: any) => {
     schema,
     formData,
     uiSchema,
-    errorSchema,
+
     idSchema,
     name,
     required,
@@ -176,6 +176,7 @@ const ArrayField = (props: any) => {
     rawErrors,
     label,
     placeholder,
+    onChange,
   } = props
   const { ArrayFieldTemplate, fields, formContext, rootSchema, widgets } =
     registry
@@ -200,7 +201,6 @@ const ArrayField = (props: any) => {
 
   const onChangeForIndex = (index: number) => {
     return (value: any, errorSchema: any) => {
-      const { formData, onChange } = props
       const newFormData = formData.map((item: any, i: number) => {
         // We need to treat undefined items as nulls to have validation.
         // See https://github.com/tdegrunt/jsonschema/issues/206
@@ -320,14 +320,15 @@ const ArrayField = (props: any) => {
   const renderNormalArray = () => {
     const title = schema.title === undefined ? name : schema.title
     const { TitleField, DescriptionField } = fields
-    // const itemsSchema = retrieveSchema(schema.items, rootSchema)
-    const formData = keyedToPlainFormData(state.keyedFormData)
+    const _formData = keyedToPlainFormData(state.keyedFormData)
     const arrayProps = {
-      canAdd: canAddItem(formData),
+      canAdd: canAddItem(_formData),
       items: state.keyedFormData.map((keyedItem, index) => {
         const { key, item } = keyedItem
         const itemSchema = retrieveSchema(schema.items, rootSchema, item)
-        const itemErrorSchema = errorSchema ? errorSchema[index] : undefined
+        const itemErrorSchema = props.errorSchema
+          ? props.errorSchema[index]
+          : undefined
         const itemIdPrefix = idSchema.$id + '_' + index
         const itemIdSchema = toIdSchema(
           itemSchema,
@@ -340,7 +341,7 @@ const ArrayField = (props: any) => {
           key,
           index,
           canMoveUp: index > 0,
-          canMoveDown: index < formData.length - 1,
+          canMoveDown: index < _formData.length - 1,
           itemSchema: itemSchema,
           itemIdSchema,
           itemErrorSchema,
@@ -351,7 +352,6 @@ const ArrayField = (props: any) => {
           onFocus,
         })
       }),
-      //   className: `field field-array field-array-of-${itemsSchema.type}`,
       DescriptionField,
       disabled,
       idSchema,
@@ -363,7 +363,7 @@ const ArrayField = (props: any) => {
       title,
       TitleField,
       formContext,
-      formData,
+      formData: _formData,
       rawErrors,
       registry,
     }
