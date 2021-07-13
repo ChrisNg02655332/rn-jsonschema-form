@@ -114,7 +114,7 @@ const ErrorList = ({ errors = [] }: any) => {
 
 const WrapIfAdditional = (props: any) => {
   const {
-    id,
+    nativeID,
     // disabled,
     style,
     label,
@@ -128,19 +128,27 @@ const WrapIfAdditional = (props: any) => {
   const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG)
 
   if (!additional) {
-    return <View style={style}>{props.children}</View>
+    return (
+      <View nativeID={nativeID} key={nativeID} style={style}>
+        {props.children}
+      </View>
+    )
   }
 
   return (
-    <View style={style}>
+    <View style={style} nativeID={nativeID} key={nativeID}>
       <View>
         <View>
           <View>
-            <Label label={keyLabel} required={required} key={`${id}-key`} />
+            <Label
+              label={keyLabel}
+              required={required}
+              key={`${nativeID}-key`}
+            />
             <LabelInput
               label={label}
               required={required}
-              key={`${id}-key`}
+              key={`${nativeID}-key`}
               onChange={onKeyChange}
             />
           </View>
@@ -205,6 +213,7 @@ const SchemaField = (props: any) => {
     required,
     registry = getDefaultRegistry(),
     wasPropertyKeyModified = false,
+    editable,
   } = props
 
   const { rootSchema, fields, formContext } = registry
@@ -218,6 +227,7 @@ const SchemaField = (props: any) => {
     toIdSchema(schema, null, rootSchema, formData, idPrefix),
     idSchema
   )
+
   const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields)
   const { DescriptionField } = fields
   const disabled = Boolean(props.disabled || uiSchema['ui:disabled'])
@@ -237,7 +247,6 @@ const SchemaField = (props: any) => {
 
   const { __errors, ...fieldErrorSchema } = errorSchema
 
-  // See #439: uiSchema: Don't pass consumed class names to child components
   const field = (
     <FieldComponent
       {...props}
@@ -288,7 +297,7 @@ const SchemaField = (props: any) => {
     errors: <ErrorList errors={errors} />,
     style,
     rawErrors: errors,
-    id,
+    nativeID: id,
     label,
     hidden,
     onChange,
@@ -304,6 +313,7 @@ const SchemaField = (props: any) => {
     schema,
     uiSchema,
     registry,
+    editable,
   }
 
   const _AnyOfField = registry.fields.AnyOfField
@@ -311,54 +321,52 @@ const SchemaField = (props: any) => {
 
   return (
     <FieldTemplate {...fieldProps}>
-      <React.Fragment>
-        {field}
+      {field}
 
-        {/*
+      {/*
         If the schema `anyOf` or 'oneOf' can be rendered as a select control, don't
         render the selection and let `StringField` component handle
         rendering
       */}
-        {schema.anyOf && !isSelect(schema) && (
-          <_AnyOfField
-            disabled={disabled}
-            errorSchema={errorSchema}
-            formData={formData}
-            idPrefix={idPrefix}
-            idSchema={idSchema}
-            onBlur={props.onBlur}
-            onChange={props.onChange}
-            onFocus={props.onFocus}
-            options={schema.anyOf.map((item: any) =>
-              retrieveSchema(item, rootSchema, formData)
-            )}
-            baseType={schema.type}
-            registry={registry}
-            schema={schema}
-            uiSchema={uiSchema}
-          />
-        )}
+      {schema.anyOf && !isSelect(schema) && (
+        <_AnyOfField
+          disabled={disabled}
+          errorSchema={errorSchema}
+          formData={formData}
+          idPrefix={idPrefix}
+          idSchema={idSchema}
+          onBlur={props.onBlur}
+          onChange={props.onChange}
+          onFocus={props.onFocus}
+          options={schema.anyOf.map((item: any) =>
+            retrieveSchema(item, rootSchema, formData)
+          )}
+          baseType={schema.type}
+          registry={registry}
+          schema={schema}
+          uiSchema={uiSchema}
+        />
+      )}
 
-        {schema.oneOf && !isSelect(schema) && (
-          <_OneOfField
-            disabled={disabled}
-            errorSchema={errorSchema}
-            formData={formData}
-            idPrefix={idPrefix}
-            idSchema={idSchema}
-            onBlur={props.onBlur}
-            onChange={props.onChange}
-            onFocus={props.onFocus}
-            options={schema.oneOf.map((item: any) =>
-              retrieveSchema(item, rootSchema, formData)
-            )}
-            baseType={schema.type}
-            registry={registry}
-            schema={schema}
-            uiSchema={uiSchema}
-          />
-        )}
-      </React.Fragment>
+      {schema.oneOf && !isSelect(schema) && (
+        <_OneOfField
+          disabled={disabled}
+          errorSchema={errorSchema}
+          formData={formData}
+          idPrefix={idPrefix}
+          idSchema={idSchema}
+          onBlur={props.onBlur}
+          onChange={props.onChange}
+          onFocus={props.onFocus}
+          options={schema.oneOf.map((item: any) =>
+            retrieveSchema(item, rootSchema, formData)
+          )}
+          baseType={schema.type}
+          registry={registry}
+          schema={schema}
+          uiSchema={uiSchema}
+        />
+      )}
     </FieldTemplate>
   )
 }

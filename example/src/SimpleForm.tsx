@@ -21,6 +21,9 @@ const schema = {
   },
   type: 'object',
   properties: {
+    text: {
+      type: 'string',
+    },
     listOfStrings: {
       type: 'array',
       title: 'A list of strings',

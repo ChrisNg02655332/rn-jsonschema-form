@@ -12,14 +12,14 @@ type Props = {
 }
 
 function TitleField({ id, title, required = false }: Props) {
-  return (
-    <View key={id} style={styles.container}>
+  return title ? (
+    <View key={id} nativeID={id} style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       {required && (
         <Text style={globalStyles.required}>{REQUIRED_FIELD_SYMBOL}</Text>
       )}
     </View>
-  )
+  ) : null
 }
 
 const styles = StyleSheet.create({

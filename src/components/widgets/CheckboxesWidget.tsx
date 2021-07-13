@@ -29,7 +29,6 @@ const CheckboxesWidget = (props: any) => {
           >
             <View style={styles.content}>
               <Feather
-                style={styles.icon}
                 name={
                   props.value?.includes(option.value)
                     ? 'check-square'
@@ -38,7 +37,9 @@ const CheckboxesWidget = (props: any) => {
                 size={20}
                 color={disabled ? theme.border : theme.primary}
               />
-              <Text style={globalStyles.text}>{option.label}</Text>
+              <Text style={[globalStyles.text, styles.text]}>
+                {option.label}
+              </Text>
             </View>
           </TouchableOpacity>
         )
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     alignItems: 'center',
   },
-  icon: { marginRight: 7 },
+  text: { marginLeft: 7 },
   inline: {
     flex: 1,
     flexDirection: 'row',

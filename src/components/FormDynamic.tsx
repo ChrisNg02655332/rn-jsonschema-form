@@ -60,16 +60,16 @@ type Props = {
   wrapper?: React.ReactNode
   containerStyle?: ViewStyle
   onError?: (errors: any) => void
+  editable?: React.ReactNode
 }
 
 const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
-  const {} = props
   const [state, setState] = useStateWithCallbackLazy({})
 
   React.useEffect(() => {
     const _state = getStateFromProps(props, props.formData)
     setState(_state)
-  }, [])
+  }, [props.schema, props.formData])
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to
@@ -275,8 +275,6 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
       }
     }
 
-    console.log(_state)
-
     setState({ ...state, ..._state })
   }
 
@@ -389,6 +387,7 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
           onChange={onChange}
           registry={registry}
           disabled={props.disabled}
+          editable={props.editable}
         />
         {children ? (
           children

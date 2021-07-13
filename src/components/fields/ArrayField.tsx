@@ -162,7 +162,6 @@ const ArrayField = (props: any) => {
     schema,
     formData,
     uiSchema,
-
     idSchema,
     name,
     required,
@@ -270,7 +269,6 @@ const ArrayField = (props: any) => {
           rawErrors={rawErrors}
         />
       ),
-      className: 'array-item',
       disabled,
       //   hasToolbar: has.toolbar,
       hasMoveUp: has.moveUp,
@@ -296,7 +294,7 @@ const ArrayField = (props: any) => {
     const Widget = getWidget(schema, widget, widgets)
     return (
       <Widget
-        id={idSchema && idSchema.$id}
+        key={idSchema && idSchema.$id}
         multiple
         onChange={onSelectChange}
         onBlur={onBlur}

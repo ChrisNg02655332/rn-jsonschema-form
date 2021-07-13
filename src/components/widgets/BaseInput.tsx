@@ -22,6 +22,8 @@ const BaseInput = ({
   rawErrors = [],
   ...rest
 }: Props) => {
+  console.log(rest.editable)
+
   let type = rest.type
   if (options.inputType) {
     type = options.inputType

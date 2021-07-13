@@ -13,7 +13,7 @@ const DescriptionField = ({ id, description }: Props) => {
   }
   if (typeof description === 'string') {
     return (
-      <Text style={[globalStyles.text, styles.text]} key={id}>
+      <Text nativeID={id} style={[globalStyles.text, styles.text]} key={id}>
         {description}
       </Text>
     )
