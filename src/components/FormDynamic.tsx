@@ -30,6 +30,7 @@ import {
 
 import validateFormData, { toErrorList } from '../validate'
 import type { ViewStyle } from 'react-native'
+import type { FormRef } from '../types'
 
 type Props = {
   fields?: any
@@ -49,6 +50,7 @@ type Props = {
   idPrefix?: string
   disabled?: boolean
   omitExtraData?: boolean
+  liveValidate?: boolean
   noValidate?: boolean
   showErrorList?: boolean
   ErrorList?: React.FC<any>
@@ -63,13 +65,13 @@ type Props = {
   editable?: React.ReactNode
 }
 
-const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
+const FormDynamic = React.forwardRef<FormRef, Props>((props, ref) => {
   const [state, setState] = useStateWithCallbackLazy({})
 
   React.useEffect(() => {
     const _state = getStateFromProps(props, props.formData)
     setState(_state)
-  }, [props.schema, props.formData])
+  }, [])
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to
@@ -128,10 +130,10 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
     const uiSchema =
       'uiSchema' in _props ? _props.uiSchema || {} : props.uiSchema || {}
     const edit = typeof inputFormData !== 'undefined'
-    // const liveValidate =
-    //   "liveValidate" in props ? props.liveValidate : this.props.liveValidate;
-    // const mustValidate = edit && !props.noValidate && liveValidate;
-    const mustValidate = false
+    const liveValidate =
+      'liveValidate' in _props ? _props.liveValidate : props.liveValidate
+    const mustValidate = edit && !props.noValidate && liveValidate
+
     const rootSchema = schema
     const formData = getDefaultFormState(schema, inputFormData, rootSchema)
     const retrievedSchema = retrieveSchema(schema, rootSchema, formData)
@@ -279,10 +281,10 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
   }
 
   const onSubmit = (event: any) => {
-    event.preventDefault()
+    event?.preventDefault()
 
     // TODO: Need to double check here
-    // if (event.target !== event.currentTarget) {
+    // if (event?.target !== event?.currentTarget) {
     //   return
     // }
 
@@ -290,7 +292,7 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
      * @description:
      * event.persist() should be called when using React synthetic events inside an asynchronous callback function
      */
-    event.persist()
+    event?.persist()
     let newFormData = state.formData
 
     if (props.omitExtraData) {
@@ -367,6 +369,8 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
     )
   }
 
+  React.useImperativeHandle(ref, () => ({ handleSubmit: onSubmit }))
+
   const registry = getRegistry()
   const _SchemaField = registry.fields.SchemaField
 
@@ -389,9 +393,7 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
           disabled={props.disabled}
           editable={props.editable}
         />
-        {children ? (
-          children
-        ) : (
+        {props.children || (
           <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
@@ -399,7 +401,7 @@ const FormDynamic: React.FC<Props> = ({ children, ...props }) => {
       </View>
     </Container>
   )
-}
+})
 
 const styles = StyleSheet.create({
   submitButton: {

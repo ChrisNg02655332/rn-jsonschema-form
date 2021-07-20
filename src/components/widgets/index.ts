@@ -12,7 +12,7 @@ import EmailWidget from './EmailWidget'
 import PasswordWidget from './PasswordWidget'
 
 // import RangeWidget from "./RangeWidget";
-// import SelectWidget from "./SelectWidget";
+import SelectWidget from './SelectWidget'
 // import TextareaWidget from "./TextareaWidget";
 import TextWidget from './TextWidget'
 import URLWidget from './URLWidget'
@@ -25,6 +25,7 @@ export default {
   CheckboxesWidget,
   EmailWidget,
   PasswordWidget,
+  SelectWidget,
   TextWidget,
   URLWidget,
   RadioWidget,

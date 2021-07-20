@@ -17,8 +17,8 @@ const widgetMap: any = {
   boolean: {
     checkbox: 'CheckboxWidget',
     radio: 'RadioWidget',
-    // select: 'SelectWidget',
-    hidden: 'HiddenWidget',
+    select: 'SelectWidget',
+    // hidden: 'HiddenWidget',
   },
   string: {
     text: 'TextWidget',
@@ -30,7 +30,7 @@ const widgetMap: any = {
     // 'ipv4': 'TextWidget',
     // 'ipv6': 'TextWidget',
     // 'data-url': 'FileWidget',
-    // 'select': 'SelectWidget',
+    select: 'SelectWidget',
     // 'textarea': 'TextareaWidget',
     // 'hidden': 'HiddenWidget',
     // 'date': 'DateWidget',
@@ -43,7 +43,7 @@ const widgetMap: any = {
   },
   number: {
     text: 'TextWidget',
-    // select: 'SelectWidget',
+    select: 'SelectWidget',
     // updown: 'UpDownWidget',
     // range: 'RangeWidget',
     radio: 'RadioWidget',
@@ -51,7 +51,7 @@ const widgetMap: any = {
   },
   integer: {
     text: 'TextWidget',
-    // select: 'SelectWidget',
+    select: 'SelectWidget',
     // updown: 'UpDownWidget',
     // range: 'RangeWidget',
     radio: 'RadioWidget',
