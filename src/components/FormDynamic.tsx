@@ -65,7 +65,10 @@ type Props = {
   editable?: React.ReactNode
 }
 
-const FormDynamic = React.forwardRef<FormRef, Props>((props, ref) => {
+/** TODO: Need to check with Props
+ *  children is not assignable to type 'IntrinsicAttributes & Props & RefAttributes<FormRef>'
+ */
+const FormDynamic = React.forwardRef<FormRef, any>((props, ref) => {
   const [state, setState] = useStateWithCallbackLazy({})
 
   React.useEffect(() => {

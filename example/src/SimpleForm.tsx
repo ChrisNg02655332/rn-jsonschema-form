@@ -73,7 +73,7 @@ const BasicForm = () => {
         containerStyle={{ padding: 10 }}
         schema={schema}
         uiSchema={uiSchema}
-        onSubmit={(values) => setFormData(values)}
+        onSubmit={(values: any) => setFormData(values)}
       />
     </>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
 
 import {
   ADDITIONAL_PROPERTY_FLAG,
@@ -98,7 +98,7 @@ const ErrorList = ({ errors = [] }: any) => {
   }
 
   return (
-    <View style={{ marginBottom: 15 }}>
+    <View style={errorListStyles.container}>
       {errors
         .filter((elem: any) => !!elem)
         .map((error: string, index: number) => {
@@ -111,6 +111,10 @@ const ErrorList = ({ errors = [] }: any) => {
     </View>
   )
 }
+
+const errorListStyles = StyleSheet.create({
+  container: { marginBottom: 15 },
+})
 
 const WrapIfAdditional = (props: any) => {
   const {
