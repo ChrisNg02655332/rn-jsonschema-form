@@ -11,7 +11,7 @@ import {
 const DefaultObjectFieldTemplate = (props: any) => {
   const { TitleField, DescriptionField } = props
   return (
-    <View key={props.idSchema.$id}>
+    <View key={props.idSchema.$id} nativeID={props.idSchema.$id}>
       {(props.uiSchema['ui:title'] || props.title) && (
         <TitleField
           id={`${props.idSchema.$id}__title`}
@@ -29,7 +29,11 @@ const DefaultObjectFieldTemplate = (props: any) => {
         />
       )}
 
-      {props.properties.map((prop: any) => prop.content)}
+      {props.properties.map((prop: any, idx: number) => (
+        <View key={idx} style={{ zIndex: props.properties.length - 1 }}>
+          {prop.content}
+        </View>
+      ))}
 
       {/* {canExpand(props.schema, props.uiSchema, props.formData) && (
         <AddButton

@@ -54,6 +54,7 @@
     "react-is": "^17.0.2",
     "react-native-elements": "^3.4.2",
     "react-native-vector-icons": "^8.1.0",
+    "tailwind-rn": "^3.0.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {

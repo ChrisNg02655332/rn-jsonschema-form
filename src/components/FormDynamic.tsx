@@ -63,18 +63,28 @@ type Props = {
   containerStyle?: ViewStyle
   onError?: (errors: any) => void
   editable?: React.ReactNode
+  hideSubmitButton?: boolean
+  enableReinitialize?: boolean
+  children?: React.ReactNode
 }
 
 /** TODO: Need to check with Props
  *  children is not assignable to type 'IntrinsicAttributes & Props & RefAttributes<FormRef>'
  */
-const FormDynamic = React.forwardRef<FormRef, any>((props, ref) => {
+const FormDynamic = React.forwardRef<FormRef, Props>((props, ref) => {
   const [state, setState] = useStateWithCallbackLazy({})
+
+  React.useEffect(() => {
+    if (props.enableReinitialize) {
+      const _state = getStateFromProps(props, props.formData)
+      setState(_state)
+    }
+  }, [props.schema])
 
   React.useEffect(() => {
     const _state = getStateFromProps(props, props.formData)
     setState(_state)
-  }, [])
+  }, [props.schema])
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to
@@ -396,9 +406,13 @@ const FormDynamic = React.forwardRef<FormRef, any>((props, ref) => {
           disabled={props.disabled}
           editable={props.editable}
         />
-        {props.children || (
+        {props.hideSubmitButton ? (
+          props.children
+        ) : (
           <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
-            <Text style={styles.submitText}>Submit</Text>
+            <View nativeID="__rnjsf__submit">
+              <Text style={styles.submitText}>Submit</Text>
+            </View>
           </TouchableOpacity>
         )}
       </View>

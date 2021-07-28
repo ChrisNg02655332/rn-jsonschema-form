@@ -1,6 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
+import tw from 'tailwind-rn'
 import globalStyles from '../globalStyles'
 import theme from '../theme'
 
@@ -31,7 +32,7 @@ const CheckboxWidget = (props: any) => {
       >
         <View style={styles.content}>
           <Feather
-            style={styles.icon}
+            style={tw(`mr-2`)}
             name={value ? 'check-square' : 'square'}
             size={20}
             color={disabled ? theme.border : theme.primary}
@@ -48,9 +49,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 15,
     alignItems: 'center',
-  },
-  icon: {
-    marginRight: 7,
   },
 })
 
