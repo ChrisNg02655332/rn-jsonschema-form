@@ -39,7 +39,7 @@ const widgetMap: any = {
     // 'alt-date': 'AltDateWidget',
     // 'alt-datetime': 'AltDateTimeWidget',
     // 'color': 'ColorWidget',
-    // 'file': 'FileWidget',
+    // file: 'FileWidget',
   },
   number: {
     text: 'TextWidget',
@@ -99,6 +99,16 @@ export const getUiOptions = (uiSchema: any) => {
     }, {})
 }
 
+export const isFilesArray = (schema: any, uiSchema: any, rootSchema = {}) => {
+  if (uiSchema['ui:widget'] === 'files') {
+    return true
+  } else if (schema.items) {
+    const itemsSchema = retrieveSchema(schema.items, rootSchema)
+    return itemsSchema.type === 'string' && itemsSchema.format === 'data-url'
+  }
+  return false
+}
+
 export const getDisplayLabel = (
   schema: any,
   uiSchema: any,
@@ -107,11 +117,9 @@ export const getDisplayLabel = (
   const uiOptions: any = getUiOptions(uiSchema)
   let { label: displayLabel = true } = uiOptions
   if (schema.type === 'array') {
-    // TODO: Check on it
-    // displayLabel =
-    //   isMultiSelect(schema, rootSchema) ||
-    //   isFilesArray(schema, uiSchema, rootSchema)
-    displayLabel = isMultiSelect(schema, rootSchema)
+    displayLabel =
+      isMultiSelect(schema, rootSchema) ||
+      isFilesArray(schema, uiSchema, rootSchema)
   }
   if (schema.type === 'object') {
     displayLabel = false

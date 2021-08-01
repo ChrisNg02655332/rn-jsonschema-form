@@ -79,12 +79,12 @@ const FormDynamic = React.forwardRef<FormRef, Props>((props, ref) => {
       const _state = getStateFromProps(props, props.formData)
       setState(_state)
     }
-  }, [props.schema])
+  }, [props.schema, props.uiSchema])
 
   React.useEffect(() => {
     const _state = getStateFromProps(props, props.formData)
     setState(_state)
-  }, [props.schema])
+  }, [])
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to

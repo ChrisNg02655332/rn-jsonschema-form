@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, Platform } from 'react-native'
+import { View, Platform } from 'react-native'
 
-import { Picker } from '@react-native-picker/picker'
-import theme from '../theme'
+// import { Picker } from '@react-native-picker/picker'
+// import theme from '../theme'
 
 import { asNumber, guessType } from '../../utils'
 
@@ -59,29 +59,35 @@ const SelectWidget = (props: any) => {
     schema,
     id,
     options,
-    // required,
+    value,
+    required,
     multiple,
     autofocus,
     onChange,
     onBlur,
     onFocus,
     placeholder,
+    disabled,
+    readonly,
   } = props
 
-  //   const { enumOptions, enumDisabled } = options
-  const { enumOptions } = options
+  const { enumOptions, enumDisabled } = options
   const emptyValue = multiple ? [] : ''
 
   return (
     <View nativeID={id}>
       {Platform.OS === 'web' ? (
-        <Picker
-          focusable={autofocus}
-          mode="dialog"
-          style={styles.container}
+        <select
+          id={id}
+          multiple={multiple}
+          className="form-control"
+          value={typeof value === 'undefined' ? emptyValue : value}
+          required={required}
+          disabled={disabled || readonly}
+          autoFocus={autofocus}
           onBlur={
             onBlur &&
-            ((event: any) => {
+            ((event) => {
               const newValue = getValue(event, multiple)
               onBlur(id, processValue(schema, newValue))
             })
@@ -93,38 +99,40 @@ const SelectWidget = (props: any) => {
               onFocus(id, processValue(schema, newValue))
             })
           }
-          onValueChange={(val: string | number) => {
-            onChange(val)
+          onChange={(event) => {
+            const newValue = getValue(event, multiple)
+            onChange(processValue(schema, newValue))
           }}
-          selectedValue={
-            typeof props.value === 'undefined' || props.value === null
-              ? emptyValue
-              : props.value
-          }
         >
-          <Picker.Item label={placeholder} value="" />
-          {enumOptions.map(({ value, label }: Option) => {
-            //   const disabled =
-            //     enumDisabled && enumDisabled.indexOf(value) !== -1
-            return <Picker.Item key={value} label={label} value={value} />
+          {!multiple && schema.default === undefined && (
+            <option value="">{placeholder}</option>
+          )}
+          {enumOptions.map((option: Option, i: number) => {
+            const _disabled =
+              enumDisabled && enumDisabled.indexOf(option.value) !== -1
+            return (
+              <option key={i} value={option.value} disabled={_disabled}>
+                {option.label}
+              </option>
+            )
           })}
-        </Picker>
+        </select>
       ) : null}
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 4,
-    borderColor: theme.border,
-    paddingHorizontal: 7,
-    height: 38,
-    fontSize: 17,
-    marginBottom: 10,
-  },
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     borderWidth: 1,
+//     borderStyle: 'solid',
+//     borderRadius: 4,
+//     borderColor: theme.border,
+//     paddingHorizontal: 7,
+//     height: 38,
+//     fontSize: 17,
+//     marginBottom: 10,
+//   },
+// })
 
 export default SelectWidget

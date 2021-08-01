@@ -10,6 +10,7 @@ import {
   optionsList,
   retrieveSchema,
   toIdSchema,
+  isFilesArray,
 } from '../../utils'
 
 type ArrayFieldTitleProps = {
@@ -315,6 +316,31 @@ const ArrayField = (props: any) => {
     )
   }
 
+  const renderFiles = () => {
+    const title = schema.title || name
+    const items = props.formData
+    const { widget = 'files', ...options } = getUiOptions(uiSchema) as any
+    const Widget = getWidget(schema, widget, widgets)
+    return (
+      <Widget
+        options={options}
+        id={idSchema && idSchema.$id}
+        multiple
+        onChange={onSelectChange}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        schema={schema}
+        title={title}
+        value={items}
+        disabled={disabled}
+        readonly={readonly}
+        formContext={formContext}
+        autofocus={autofocus}
+        rawErrors={rawErrors}
+      />
+    )
+  }
+
   const renderNormalArray = () => {
     const title = schema.title === undefined ? name : schema.title
     const { TitleField, DescriptionField } = fields
@@ -388,6 +414,10 @@ const ArrayField = (props: any) => {
 
   if (isMultiSelect(schema, rootSchema)) {
     return renderMultiSelect()
+  }
+
+  if (isFilesArray(schema, uiSchema, rootSchema)) {
+    return renderFiles()
   }
 
   return renderNormalArray()
