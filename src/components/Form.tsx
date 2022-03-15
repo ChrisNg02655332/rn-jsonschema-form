@@ -40,9 +40,9 @@ const Form = React.forwardRef<any, Props>((props, ref) => {
     }
   }
 
-  const onSubmit = (formData: any) => {
-    props.onSubmit && props.onSubmit(formData)
-  }
+  // const onSubmit = (formData: any) => {
+  //   props.onSubmit && props.onSubmit(formData)
+  // }
 
   const methods = useForm({
     defaultValues: props.formData,
@@ -63,7 +63,7 @@ const Form = React.forwardRef<any, Props>((props, ref) => {
         platform={props.platform || 'web'}
       />
 
-      {props.platform === 'web' ? <button onClick={methods.handleSubmit(onSubmit)}>Submit</button> : props.children}
+      {/* {props.platform === 'web' ? <button onClick={methods.handleSubmit(onSubmit)}>Submit</button> : props.children} */}
     </>
   )
 })
