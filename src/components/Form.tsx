@@ -2,7 +2,7 @@ import React from 'react'
 import { Mode, useForm } from 'react-hook-form'
 import { JSONSchema7 } from 'jsonschema7'
 
-import { useStateWithCallbackLazy } from '../libs/hooks'
+// import { useStateWithCallbackLazy } from '../libs/hooks'
 import { getDefaultRegistry } from '../utils'
 import { Platform } from '../types'
 
@@ -19,10 +19,10 @@ type Props = {
 }
 
 const Form = React.forwardRef<any, Props>((props, ref) => {
-  const [state] = useStateWithCallbackLazy({
-    schema: props.schema,
-    uiSchema: props.uiSchema || {},
-  })
+  // const [state] = useStateWithCallbackLazy({
+  //   schema: props.schema,
+  //   uiSchema: props.uiSchema || {},
+  // })
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to
@@ -57,8 +57,8 @@ const Form = React.forwardRef<any, Props>((props, ref) => {
   return (
     <>
       <SchemaField
-        schema={state.schema}
-        uiSchema={state.uiSchema}
+        schema={props.schema}
+        uiSchema={props.uiSchema}
         methods={methods}
         platform={props.platform || 'web'}
       />
