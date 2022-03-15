@@ -1,6 +1,6 @@
 {
   "name": "rn-form-builder",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
