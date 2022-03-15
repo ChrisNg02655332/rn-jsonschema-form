@@ -1,29 +1,22 @@
 import React, { ReactElement } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import globalStyles from '../globalStyles'
+import { Platform } from '../../types'
 
 type Props = {
   id: string
   description?: string | ReactElement
+  platform?: Platform
 }
 
-const DescriptionField = ({ id, description }: Props) => {
+const DescriptionField = ({ id, description, platform = 'web' }: Props) => {
   if (description === undefined) {
     return null
   }
+
   if (typeof description === 'string') {
-    return (
-      <Text nativeID={id} style={[globalStyles.text, styles.text]} key={id}>
-        {description}
-      </Text>
-    )
+    return platform === 'web' ? <p key={id}>{description}</p> : null
   } else {
-    return <View key={id}>{description}</View>
+    return platform === 'web' ? <div key={id}>{description}</div> : null
   }
 }
-
-const styles = StyleSheet.create({
-  text: { marginBottom: 10 },
-})
 
 export default DescriptionField

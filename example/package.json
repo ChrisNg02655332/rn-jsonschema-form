@@ -1,31 +1,23 @@
 {
-  "name": "rn-form-builder-example",
-  "description": "Example app for rn-form-builder",
-  "version": "0.0.1",
+  "name": "example",
   "private": true,
+  "version": "0.0.0",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "formik": "^2.2.9",
-    "react": "16.13.1",
-    "react-native": "0.63.4",
-    "react-native-keyboard-aware-scroll-view": "^0.9.4",
-    "react-native-vector-icons": "^8.1.0",
-    "yup": "^0.32.9"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rn-form-builder": "link:../"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/runtime": "^7.12.5",
-    "@react-native-picker/picker": "^1.16.3",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "metro-react-native-babel-preset": "^0.64.0"
-  },
-  "eslintConfig": {
-    "rules": {
-      "react-native/no-inline-styles": "off"
-    }
+    "@types/node": "^17.0.21",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@vitejs/plugin-react": "^1.0.7",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0"
   }
 }

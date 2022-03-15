@@ -1,129 +1,23 @@
-import * as React from 'react'
-import {
-  SafeAreaView,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  View,
-} from 'react-native'
+import React from 'react'
+import { Form } from '../../src/components'
+// import { Form } from 'rn-form-builder'
 
-import SimpleForm from './SimpleForm'
-// import CustomButtonSubmit from './CustomButtonSubmit'
-// import CustomStyles from './CustomStyles'
-// import CustomWidgets from './CustomWidgets'
-// import GroupFields from './GroupFields'
-// import ValidateForm from './ValidateForm'
-// import SelectControlGroups from './SelectControlGroups'
-// import RatingForm from './RatingForm'
-
-const data = [
-  {
-    title: 'Simple Form',
-    key: 'simple_form',
-    view: SimpleForm,
+const schema: any = {
+  type: 'object',
+  title: '13',
+  required: ['firstName', 'lastName'],
+  properties: {
+    firstName: {
+      type: 'string',
+    },
+    lastName: {
+      type: 'string',
+    },
   },
-  // {
-  //   title: 'Select Control Group',
-  //   key: 'Group_form',
-  //   view: SelectControlGroups,
-  // },
-  // {
-  //   title: 'Custom Submit Form',
-  //   key: 'custom_submit_form',
-  //   view: CustomButtonSubmit,
-  // },
-  // {
-  //   title: 'Custom Widgets',
-  //   key: 'custom_widgets_form',
-  //   view: CustomWidgets,
-  // },
-  // {
-  //   title: 'Custom Styles',
-  //   key: 'custom_styles_form',
-  //   view: CustomStyles,
-  // },
-  // {
-  //   title: 'Group Fields',
-  //   key: 'array_fields_form',
-  //   view: GroupFields,
-  // },
-  // {
-  //   title: 'Rating Form',
-  //   key: 'rating_form',
-  //   view: RatingForm,
-  // },
-  // {
-  //   title: 'Validate Form',
-  //   key: 'validate_form',
-  //   view: ValidateForm,
-  // },
-]
-
-export default function App() {
-  const [currentView, setCurrentView] = React.useState(0)
-  const Form = data[currentView].view
-
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Text style={styles.title}>React Native Form Builder</Text>
-      <FlatList
-        horizontal
-        style={styles.list}
-        data={data}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            style={[styles.btn, index === currentView && styles.activeBtn]}
-            onPress={() => setCurrentView(index)}
-          >
-            <Text
-              style={[styles.text, index === currentView && styles.activeText]}
-            >
-              {item.title}
-            </Text>
-          </TouchableOpacity>
-        )}
-        ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
-        keyExtractor={(item) => item.key}
-      />
-
-      <Form />
-    </SafeAreaView>
-  )
 }
 
-const styles = StyleSheet.create({
-  title: {
-    marginTop: 20,
-    marginBottom: 30,
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#0284C7',
-  },
-  list: {
-    maxHeight: 55,
-    minHeight: 55,
-    marginHorizontal: 10,
-    marginVertical: 15,
-    paddingBottom: 15,
-  },
-  btn: {
-    paddingVertical: 3,
-    paddingHorizontal: 10,
-    backgroundColor: '#D1D5DB',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-  },
-  text: {
-    fontWeight: '600',
-  },
-  activeBtn: {
-    backgroundColor: '#60A5FA',
-  },
-  activeText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-})
+const App = () => {
+  return <Form schema={schema} uiSchema={{}} />
+}
+
+export default App

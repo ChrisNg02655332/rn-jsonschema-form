@@ -1,20 +1,8 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { FieldValues, UseFormReturn } from 'react-hook-form'
 
-import {
-  ADDITIONAL_PROPERTY_FLAG,
-  isSelect,
-  retrieveSchema,
-  toIdSchema,
-  getDefaultRegistry,
-  mergeObjects,
-  // deepEquals,
-  getSchemaType,
-  getDisplayLabel,
-} from '../../utils'
-
-import globalStyles from '../globalStyles'
-import theme from '../theme'
+import { Methods, Platform } from '../../types'
+import { getDefaultRegistry, getDisplayLabel, getSchemaType, retrieveSchema } from '../../utils'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
@@ -27,12 +15,7 @@ const COMPONENT_TYPES: any = {
   null: 'NullField',
 }
 
-const getFieldComponent = (
-  schema: any,
-  uiSchema: any,
-  idSchema: any,
-  fields: any
-) => {
+const getFieldComponent = (schema: any, uiSchema: any, fields: any) => {
   const field = uiSchema['ui:field']
   if (typeof field === 'function') {
     return field
@@ -54,325 +37,129 @@ const getFieldComponent = (
     : () => {
         const { UnsupportedField } = fields
 
-        return (
-          <UnsupportedField
-            schema={schema}
-            idSchema={idSchema}
-            reason={`Unknown field type ${schema.type}`}
-          />
-        )
+        return <UnsupportedField schema={schema} reason={`Unknown field type ${schema.type}`} />
       }
 }
 
-const Label = ({ label, required, id, ...props }: any) => {
-  if (!label) {
-    return null
-  }
+// NOTE: only use for web
+const Label = ({ label, required }: { label: string; required: boolean }) => {
+  if (!label) return null
 
   return (
-    <Text style={[globalStyles.label, props.style]} key={id}>
+    <label>
       {label}
-      {required && <Text style={props.style}>{REQUIRED_FIELD_SYMBOL}</Text>}
-    </Text>
+      {required && <span>{REQUIRED_FIELD_SYMBOL}</span>}
+    </label>
   )
 }
 
-const LabelInput = ({ id, label, onChange }: any) => {
-  return <TextInput key={id} defaultValue={label} onChangeText={onChange} />
-}
-
-const Help = (props: any) => {
-  const { id, help } = props
+// NOTE: only use for web
+const Help = ({ help }: { help: string | any }) => {
   if (!help) {
     return null
   }
   if (typeof help === 'string') {
-    return <Text key={id}>{help}</Text>
+    return <p>{help}</p>
   }
-  return <View key={id}>{help}</View>
-}
-
-const ErrorList = ({ errors = [] }: any) => {
-  if (errors.length === 0) {
-    return null
-  }
-
-  return (
-    <View style={errorListStyles.container}>
-      {errors
-        .filter((elem: any) => !!elem)
-        .map((error: string, index: number) => {
-          return (
-            <Text key={index} style={{ color: theme.danger }}>
-              * {error}
-            </Text>
-          )
-        })}
-    </View>
-  )
-}
-
-const errorListStyles = StyleSheet.create({
-  container: { marginBottom: 15 },
-})
-
-const WrapIfAdditional = (props: any) => {
-  const {
-    nativeID,
-    // disabled,
-    style,
-    label,
-    onKeyChange,
-    // onDropPropertyClick,
-    // readonly,
-    required,
-    schema,
-  } = props
-  const keyLabel = `${label} Key` // i18n ?
-  const additional = schema.hasOwnProperty(ADDITIONAL_PROPERTY_FLAG)
-
-  if (!additional) {
-    return (
-      <View nativeID={nativeID} key={nativeID} style={style}>
-        {props.children}
-      </View>
-    )
-  }
-
-  return (
-    <View style={style} nativeID={nativeID} key={nativeID}>
-      <View>
-        <View>
-          <View>
-            <Label
-              label={keyLabel}
-              required={required}
-              key={`${nativeID}-key`}
-            />
-            <LabelInput
-              label={label}
-              required={required}
-              key={`${nativeID}-key`}
-              onChange={onKeyChange}
-            />
-          </View>
-        </View>
-        <View>{props.children}</View>
-        <View>
-          {/* <IconButton
-            type="danger"
-            icon="remove"
-            className="array-item-remove btn-block"
-            tabIndex="-1"
-            style={{ border: '0' }}
-            disabled={disabled || readonly}
-            onClick={onDropPropertyClick(label)}
-          /> */}
-        </View>
-      </View>
-    </View>
-  )
+  return <div>{help}</div>
 }
 
 const DefaultTemplate = (props: any) => {
-  const {
-    id,
-    label,
-    children,
-    errors = [],
-    help,
-    description,
-    hidden,
-    required,
-    displayLabel,
-  } = props
-  if (hidden) {
-    // return <div className="hidden">{children}</div>
-    return null
+  const { platform, children, description, className, required, hidden, displayLabel, label } = props
+
+  if (platform === 'web') {
+    return (
+      <div>
+        {displayLabel && <Label label={label} required={required} />}
+        {children}
+      </div>
+    )
   }
 
-  return (
-    <WrapIfAdditional {...props}>
-      {displayLabel && (
-        <Label label={label} style={props.style} required={required} key={id} />
-      )}
-      {displayLabel && description ? description : null}
-      {children}
-      {errors}
-      {help}
-    </WrapIfAdditional>
-  )
+  return children
 }
 
-const SchemaField = (props: any) => {
-  const {
-    uiSchema = {},
-    formData,
-    errorSchema = {},
-    idPrefix,
-    name,
-    onChange,
-    onKeyChange,
-    onDropPropertyClick,
-    required,
-    registry = getDefaultRegistry(),
-    wasPropertyKeyModified = false,
-    editable,
-  } = props
+type Props = {
+  name: string
+  schema: any
+  uiSchema?: any
+  platform?: Platform
+  methods: Methods
+  disabled?: boolean
+  readonly?: boolean
+  required?: boolean
+}
 
+const SchemaField = ({ name, uiSchema = {}, platform = 'web', methods, ...rest }: Props) => {
+  const registry = getDefaultRegistry()
   const { rootSchema, fields, formContext } = registry
-  const FieldTemplate =
-    uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
 
-  let idSchema = props.idSchema || {}
-  const schema = retrieveSchema(props.schema, rootSchema, formData)
+  const FieldTemplate = uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
 
-  idSchema = mergeObjects(
-    toIdSchema(schema, null, rootSchema, formData, idPrefix),
-    idSchema
-  )
-
-  const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields)
+  const schema = retrieveSchema(rest.schema, rootSchema, {})
+  const FieldComponent = getFieldComponent(schema, uiSchema, fields)
   const { DescriptionField } = fields
-  const disabled = Boolean(props.disabled || uiSchema['ui:disabled'])
-  const readonly = Boolean(
-    props.readonly ||
-      uiSchema['ui:readonly'] ||
-      props.schema?.readOnly ||
-      schema.readOnly
-  )
+  const disabled = Boolean(rest.disabled || uiSchema['ui:disabled'])
+  const readonly = Boolean(rest.readonly || uiSchema['ui:readonly'] || rest.schema?.readOnly || schema.readOnly)
+  // const autofocus = Boolean(rest.autofocus || uiSchema['ui:autofocus'])
 
-  const autofocus = Boolean(props.autofocus || uiSchema['ui:autofocus'])
   if (Object.keys(schema).length === 0) {
     return null
   }
 
-  const displayLabel = getDisplayLabel(schema, uiSchema, rootSchema)
-
-  const { __errors, ...fieldErrorSchema } = errorSchema
-
   const field = (
     <FieldComponent
-      {...props}
-      idSchema={idSchema}
+      name={name}
       schema={schema}
-      uiSchema={{ ...uiSchema }}
+      uiSchema={uiSchema}
+      methods={methods}
+      formContext={formContext}
+      platform={platform}
       disabled={disabled}
       readonly={readonly}
-      autofocus={autofocus}
-      errorSchema={fieldErrorSchema}
-      formContext={formContext}
-      rawErrors={__errors}
     />
   )
+  if (!field) console.warn('Please update ui:FieldTemplate or regiter new one')
 
-  const id = idSchema.$id
+  const displayLabel = getDisplayLabel(schema, uiSchema, rootSchema)
+  let label = uiSchema['ui:title'] || rest.schema.title || schema.title
 
-  // If this schema has a title defined, but the user has set a new key/label, retain their input.
-  let label
-  if (wasPropertyKeyModified) {
-    label = name
-  } else {
-    label = uiSchema['ui:title'] || props.schema.title || schema.title || name
-  }
-
-  const description =
-    uiSchema['ui:description'] || props.schema.description || schema.description
-  const errors = __errors
+  const description = uiSchema['ui:description'] || rest.schema.description || schema.description
+  // const errors = __errors
   const help = uiSchema['ui:help']
   const hidden = uiSchema['ui:widget'] === 'hidden'
 
-  const style = [
-    uiSchema.style || {},
-    errors && errors.length > 0 ? { color: theme.danger } : {},
-  ]
-
   const fieldProps = {
-    description: (
-      <DescriptionField
-        key={id + '__description'}
-        description={description}
-        formContext={formContext}
-      />
-    ),
+    name,
+    methods,
+    description: <DescriptionField description={description} formContext={formContext} />,
     rawDescription: description,
-    help: <Help key={id + '__help'} help={help} />,
-    rawHelp: typeof help === 'string' ? help : undefined,
-    errors: <ErrorList errors={errors} />,
-    style,
-    rawErrors: errors,
-    nativeID: id,
+    help: <Help help={help} />,
+    // rawHelp: typeof help === 'string' ? help : undefined,
+    // errors: <ErrorList errors={errors} />,
+    // style,
+    // rawErrors: errors,
+    // nativeID: id,
     label,
     hidden,
-    onChange,
-    onKeyChange,
-    onDropPropertyClick,
-    required,
+    // onChange,
+    // onKeyChange,
+    // onDropPropertyClick,
+    required: rest.required,
     disabled,
     readonly,
     displayLabel,
     formContext,
-    formData,
+    // formData,
     fields,
     schema,
     uiSchema,
     registry,
-    editable,
+    platform,
+    // editable,
   }
 
-  const _AnyOfField = registry.fields.AnyOfField
-  const _OneOfField = registry.fields.OneOfField
-
-  return (
-    <FieldTemplate {...fieldProps}>
-      {field}
-
-      {/*
-        If the schema `anyOf` or 'oneOf' can be rendered as a select control, don't
-        render the selection and let `StringField` component handle
-        rendering
-      */}
-      {schema.anyOf && !isSelect(schema) && (
-        <_AnyOfField
-          disabled={disabled}
-          errorSchema={errorSchema}
-          formData={formData}
-          idPrefix={idPrefix}
-          idSchema={idSchema}
-          onBlur={props.onBlur}
-          onChange={props.onChange}
-          onFocus={props.onFocus}
-          options={schema.anyOf.map((item: any) =>
-            retrieveSchema(item, rootSchema, formData)
-          )}
-          baseType={schema.type}
-          registry={registry}
-          schema={schema}
-          uiSchema={uiSchema}
-        />
-      )}
-
-      {schema.oneOf && !isSelect(schema) && (
-        <_OneOfField
-          disabled={disabled}
-          errorSchema={errorSchema}
-          formData={formData}
-          idPrefix={idPrefix}
-          idSchema={idSchema}
-          onBlur={props.onBlur}
-          onChange={props.onChange}
-          onFocus={props.onFocus}
-          options={schema.oneOf.map((item: any) =>
-            retrieveSchema(item, rootSchema, formData)
-          )}
-          baseType={schema.type}
-          registry={registry}
-          schema={schema}
-          uiSchema={uiSchema}
-        />
-      )}
-    </FieldTemplate>
-  )
+  return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>
 }
 
 export default SchemaField

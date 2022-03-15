@@ -1,7 +1,8 @@
 import React from 'react'
 
-function TextWidget(props: any) {
-  const { BaseInput } = props.registry.widgets
+import BaseInput from './BaseInput'
+
+const TextWidget = (props: any) => {
   return <BaseInput {...props} />
 }
 

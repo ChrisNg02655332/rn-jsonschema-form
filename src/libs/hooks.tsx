@@ -38,8 +38,4 @@ const useStateWithCallbackLazy = (initialValue: any) => {
   return [value, setValueWithCallback]
 }
 
-export {
-  useStateWithCallbackInstant,
-  useStateWithCallbackLazy,
-  useStateWithCallback,
-}
+export { useStateWithCallbackInstant, useStateWithCallbackLazy, useStateWithCallback }
