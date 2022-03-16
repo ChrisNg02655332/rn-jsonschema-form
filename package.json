@@ -1,10 +1,10 @@
 {
-  "name": "rn-form-schema",
-  "version": "0.20.0",
+  "name": "rn-jsonschema-form",
+  "version": "0.0.0",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
-  "repository": "https://github.com/ChrisNg02655332/rn-form-builder.git",
+  "repository": "https://github.com/ChrisNg02655332/rn-jsonschema-form",
   "author": "ChrisNg02655332 <chris.dungnguyen@gmail.com>",
   "license": "MIT",
   "scripts": {
