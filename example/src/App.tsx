@@ -1,33 +1,17 @@
-import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Form } from 'rn-form-schema'
 
-const schema: any = {
-  title: 'A registration form',
-  description: 'A simple form example.',
-  type: 'object',
-  required: ['firstName', 'lastName'],
-  properties: {
-    firstName: {
-      type: 'string',
-      title: 'First name',
-      default: 'Chuck',
-    },
-    lastName: {
-      type: 'string',
-      title: 'Last name',
-    },
-    telephone: {
-      type: 'string',
-      title: 'Telephone',
-      minLength: 10,
-    },
-  },
-}
+// import schema from './json/basic.json'
+import schema from './json/nested.json'
 
 const App = () => {
   const methods = useForm()
-  return <Form platform="web" schema={schema} methods={methods} />
+
+  return (
+    <div className="container mt-5">
+      <Form platform="web" schema={schema as any} methods={methods} onSubmit={(data) => console.log(data)} />
+    </div>
+  )
 }
 
 export default App

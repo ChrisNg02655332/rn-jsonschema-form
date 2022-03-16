@@ -12,8 +12,8 @@ export const ADDITIONAL_PROPERTY_FLAG = '__additional_property'
 const widgetMap: any = {
   boolean: {
     checkbox: 'CheckboxWidget',
-    radio: 'RadioWidget',
-    select: 'SelectWidget',
+    // radio: 'RadioWidget',
+    // select: 'SelectWidget',
     // hidden: 'HiddenWidget',
   },
   string: {
@@ -39,23 +39,23 @@ const widgetMap: any = {
   },
   number: {
     text: 'TextWidget',
-    select: 'SelectWidget',
+    // select: 'SelectWidget',
     // updown: 'UpDownWidget',
     // range: 'RangeWidget',
-    radio: 'RadioWidget',
+    // radio: 'RadioWidget',
     // hidden: 'HiddenWidget',
   },
   integer: {
     text: 'TextWidget',
-    select: 'SelectWidget',
+    // select: 'SelectWidget',
     // updown: 'UpDownWidget',
     // range: 'RangeWidget',
-    radio: 'RadioWidget',
+    // radio: 'RadioWidget',
     // hidden: 'HiddenWidget',
   },
   array: {
-    select: 'SelectWidget',
-    checkboxes: 'CheckboxesWidget',
+    // select: 'SelectWidget',
+    // checkboxes: 'CheckboxesWidget',
     // files: 'FileWidget',
     // hidden: 'HiddenWidget',
   },

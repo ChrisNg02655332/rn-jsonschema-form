@@ -14,6 +14,9 @@ type Props = {
   platform: Platform
   onSubmit?: (data: any) => void
   buttons?: React.ReactElement
+  ArrayFieldTemplate?: any
+  ObjectFieldTemplate?: any
+  FieldTemplate?: any
 }
 
 const Form: React.FC<Props> = (props) => {
@@ -30,9 +33,9 @@ const Form: React.FC<Props> = (props) => {
     return {
       fields: { ...fields, ...(props.fields || {}) },
       widgets: { ...widgets, ...(props.widgets || {}) },
-      // ArrayFieldTemplate: props.ArrayFieldTemplate,
-      // ObjectFieldTemplate: props.ObjectFieldTemplate,
-      // FieldTemplate: props.FieldTemplate,
+      ArrayFieldTemplate: props.ArrayFieldTemplate,
+      ObjectFieldTemplate: props.ObjectFieldTemplate,
+      FieldTemplate: props.FieldTemplate,
       // definitions: props.schema.definitions || {},
       rootSchema: props.schema,
       // formContext: props.formContext || {},
@@ -57,7 +60,9 @@ const Form: React.FC<Props> = (props) => {
       />
 
       {props.platform === 'web' ? (
-        <button onClick={props.methods.handleSubmit(onSubmit)}>Submit</button>
+        <button className="btn btn-primary" onClick={props.methods.handleSubmit(onSubmit)}>
+          Submit
+        </button>
       ) : (
         props.children
       )}
