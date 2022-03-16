@@ -1,28 +1,27 @@
 import React from 'react'
-import { Mode, useForm } from 'react-hook-form'
 import { JSONSchema7 } from 'jsonschema7'
 
-// import { useStateWithCallbackLazy } from '../libs/hooks'
+import { useStateWithCallbackLazy } from '../libs/hooks'
 import { getDefaultRegistry } from '../utils'
-import { Platform } from '../types'
+import { Methods, Platform } from '../types'
 
 type Props = {
   schema: JSONSchema7
   uiSchema?: any
   fields?: any
   widgets?: any
-  formData?: FormData
-  mode?: Mode
-  platform?: Platform
-  onSubmit?: (data: FormData) => void
+  methods: Methods
+  platform: Platform
+  onSubmit?: (data: any) => void
   buttons?: React.ReactElement
 }
 
-const Form = React.forwardRef<any, Props>((props, ref) => {
-  // const [state] = useStateWithCallbackLazy({
-  //   schema: props.schema,
-  //   uiSchema: props.uiSchema || {},
-  // })
+const Form: React.FC<Props> = (props) => {
+  const [state, setState] = useStateWithCallbackLazy({})
+
+  React.useEffect(() => {
+    setState({ schema: props.schema, uiSchema: props.uiSchema || {} })
+  }, [])
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to
@@ -35,21 +34,14 @@ const Form = React.forwardRef<any, Props>((props, ref) => {
       // ObjectFieldTemplate: props.ObjectFieldTemplate,
       // FieldTemplate: props.FieldTemplate,
       // definitions: props.schema.definitions || {},
-      // rootSchema: props.schema,
+      rootSchema: props.schema,
       // formContext: props.formContext || {},
     }
   }
 
-  // const onSubmit = (formData: any) => {
-  //   props.onSubmit && props.onSubmit(formData)
-  // }
-
-  const methods = useForm({
-    defaultValues: props.formData,
-    mode: props.mode,
-  })
-
-  React.useImperativeHandle(ref, () => ({ methods }))
+  const onSubmit = (formData: any) => {
+    props.onSubmit && props.onSubmit(formData)
+  }
 
   const registry = getRegistry()
   const SchemaField = registry?.fields?.SchemaField
@@ -57,15 +49,20 @@ const Form = React.forwardRef<any, Props>((props, ref) => {
   return (
     <>
       <SchemaField
-        schema={props.schema}
-        uiSchema={props.uiSchema}
-        methods={methods}
-        platform={props.platform || 'web'}
+        schema={state.schema}
+        uiSchema={state.uiSchema}
+        methods={props.methods}
+        platform={props.platform}
+        registry={registry}
       />
 
-      {/* {props.platform === 'web' ? <button onClick={methods.handleSubmit(onSubmit)}>Submit</button> : props.children} */}
+      {props.platform === 'web' ? (
+        <button onClick={props.methods.handleSubmit(onSubmit)}>Submit</button>
+      ) : (
+        props.children
+      )}
     </>
   )
-})
+}
 
 export default Form

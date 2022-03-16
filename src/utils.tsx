@@ -18,15 +18,15 @@ const widgetMap: any = {
   },
   string: {
     text: 'TextWidget',
-    email: 'EmailWidget',
-    uri: 'URLWidget',
-    radio: 'RadioWidget',
-    password: 'PasswordWidget',
+    // email: 'EmailWidget',
+    // uri: 'URLWidget',
+    // radio: 'RadioWidget',
+    // password: 'PasswordWidget',
     // 'hostname': 'TextWidget',
     // 'ipv4': 'TextWidget',
     // 'ipv6': 'TextWidget',
     // 'data-url': 'FileWidget',
-    select: 'SelectWidget',
+    // select: 'SelectWidget',
     // 'textarea': 'TextareaWidget',
     // 'hidden': 'HiddenWidget',
     // 'date': 'DateWidget',
@@ -456,7 +456,7 @@ export const isFilesArray = (schema: any, uiSchema: any, rootSchema = {}) => {
   return false
 }
 
-export const getDisplayLabel = (schema: any, uiSchema: any, rootSchema: any) => {
+export const getDisplayLabel = (schema: any, uiSchema: any, rootSchema: any): boolean => {
   const uiOptions: any = getUiOptions(uiSchema)
   let { label: displayLabel = true } = uiOptions
   if (schema.type === 'array') {

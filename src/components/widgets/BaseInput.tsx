@@ -1,22 +1,18 @@
-import React from 'react'
+import { Controller } from 'react-hook-form'
+import { CommonProps } from '../types'
 
-import { Methods, Platform } from '../../types'
+const BaseInput = ({ name, label, required, methods, platform, placeholder }: CommonProps) => {
+  const { control } = methods
+  if (platform !== 'web') console.warn('You probably not using web. Please override Widget to display')
 
-type Props = {
-  label?: string
-  name: string
-  options: any
-  platform: Platform
-  required?: boolean
-  schema: any
-  uiSchema: any
-  methods: Methods
-}
-
-const BaseInput = ({ name, required, methods, ...rest }: Props) => {
-  const { register } = methods
-
-  return <input {...register(name, { required })} />
+  return platform === 'web' ? (
+    <Controller
+      name={name}
+      control={control}
+      rules={{ required }}
+      render={({ field }) => <input className="form-control" placeholder={placeholder} {...field} />}
+    />
+  ) : null
 }
 
 export default BaseInput

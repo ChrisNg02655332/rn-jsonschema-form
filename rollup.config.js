@@ -19,6 +19,6 @@ export default {
       sourcemap: true,
     },
   ],
-  external: ['react', 'react-dom'],
-  plugins: [peerDepsExternal(), resolve(), commonjs(), typescript({ useTsconfigDeclarationDir: true })],
+  external: ['react', 'react-dom', 'react-hook-form', 'react-native'],
+  plugins: [peerDepsExternal(), resolve({}), commonjs(), typescript({ useTsconfigDeclarationDir: true })],
 }

@@ -1,8 +1,5 @@
-import React from 'react'
-import { FieldValues, UseFormReturn } from 'react-hook-form'
-
 import { Methods, Platform } from '../../types'
-import { getDefaultRegistry, getDisplayLabel, getSchemaType, retrieveSchema } from '../../utils'
+import { getDisplayLabel, getSchemaType, retrieveSchema } from '../../utils'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
@@ -48,7 +45,7 @@ const Label = ({ label, required }: { label: string; required: boolean }) => {
   return (
     <label>
       {label}
-      {required && <span>{REQUIRED_FIELD_SYMBOL}</span>}
+      {required && REQUIRED_FIELD_SYMBOL}
     </label>
   )
 }
@@ -61,7 +58,7 @@ const Help = ({ help }: { help: string | any }) => {
   if (typeof help === 'string') {
     return <p>{help}</p>
   }
-  return <div>{help}</div>
+  return <span>{help}</span>
 }
 
 const DefaultTemplate = (props: any) => {
@@ -69,7 +66,7 @@ const DefaultTemplate = (props: any) => {
 
   if (platform === 'web') {
     return (
-      <div>
+      <div className="mb-3">
         {displayLabel && <Label label={label} required={required} />}
         {children}
       </div>
@@ -88,10 +85,10 @@ type Props = {
   disabled?: boolean
   readonly?: boolean
   required?: boolean
+  registry?: any
 }
 
-const SchemaField = ({ name, uiSchema = {}, platform = 'web', methods, ...rest }: Props) => {
-  const registry = getDefaultRegistry()
+const SchemaField = ({ name, uiSchema = {}, platform, registry, methods, ...rest }: Props) => {
   const { rootSchema, fields, formContext } = registry
 
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
@@ -117,6 +114,7 @@ const SchemaField = ({ name, uiSchema = {}, platform = 'web', methods, ...rest }
       platform={platform}
       disabled={disabled}
       readonly={readonly}
+      registry={registry}
     />
   )
   if (!field) console.warn('Please update ui:FieldTemplate or regiter new one')
@@ -132,31 +130,20 @@ const SchemaField = ({ name, uiSchema = {}, platform = 'web', methods, ...rest }
   const fieldProps = {
     name,
     methods,
+    registry,
+    schema,
+    uiSchema,
+    platform,
+    fields,
     description: <DescriptionField description={description} formContext={formContext} />,
     rawDescription: description,
-    help: <Help help={help} />,
-    // rawHelp: typeof help === 'string' ? help : undefined,
-    // errors: <ErrorList errors={errors} />,
-    // style,
-    // rawErrors: errors,
-    // nativeID: id,
+    help: platform === 'web' ? <Help help={help} /> : null,
     label,
     hidden,
-    // onChange,
-    // onKeyChange,
-    // onDropPropertyClick,
     required: rest.required,
     disabled,
     readonly,
     displayLabel,
-    formContext,
-    // formData,
-    fields,
-    schema,
-    uiSchema,
-    registry,
-    platform,
-    // editable,
   }
 
   return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>

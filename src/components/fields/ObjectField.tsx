@@ -1,24 +1,26 @@
 import React from 'react'
 
-import { ADDITIONAL_PROPERTY_FLAG, getDefaultRegistry, orderProperties, retrieveSchema } from '../../utils'
+import { CommonProps } from '../types'
+import { ADDITIONAL_PROPERTY_FLAG, orderProperties, retrieveSchema } from '../../utils'
 
 const DefaultObjectFieldTemplate = (props: any) => {
-  console.log(props)
-
   return (
-    <>
+    <div>
+      {props.title && <p className="h5">{props.title}</p>}
+      {props.description && <span className="text-muted">{props.description}</span>}
+      {(!!props.title || !!props.description) && <div className="mb-3" />}
+
       {props.properties.map((prop: any, idx: number) => (
         <React.Fragment key={idx}>{prop.content}</React.Fragment>
       ))}
-    </>
+    </div>
   )
 }
 
-const ObjectField = (props: any) => {
-  const { platform, uiSchema, required, readonly, disabled, ...rest } = props
+const ObjectField = (props: CommonProps) => {
+  const { platform, uiSchema, required, readonly, disabled, methods, registry, ...rest } = props
 
-  const registry = getDefaultRegistry()
-  const { rootSchema, fields, formContext } = registry
+  const { rootSchema, fields } = registry
   const { SchemaField, TitleField, DescriptionField } = fields
   const schema = retrieveSchema(rest.schema, rootSchema, {})
   const title = schema.title === undefined ? props.name : schema.title
@@ -66,12 +68,15 @@ const ObjectField = (props: any) => {
           <SchemaField
             key={name}
             name={name}
-            methods={rest.methods}
+            label={rest.label}
+            methods={methods}
+            registry={registry}
             required={isRequired(name)}
             schema={schema.properties[name]}
             uiSchema={fieldUiSchema}
             disabled={disabled}
             readonly={readonly}
+            platform={platform}
           />
         ),
         name,
@@ -81,22 +86,17 @@ const ObjectField = (props: any) => {
         hidden,
       }
     }),
-    methods: rest.methods,
+    methods,
     readonly,
     disabled,
     required,
     uiSchema,
     schema,
-    formData: props.formData,
-    formContext,
     registry,
+    platform,
   }
 
-  if (platform === 'web') {
-    return <Template {...templateProps} />
-  }
-
-  return null
+  return <Template {...templateProps} />
 }
 
 export default ObjectField
