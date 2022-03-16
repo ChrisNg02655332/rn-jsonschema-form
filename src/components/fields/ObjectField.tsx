@@ -4,16 +4,26 @@ import { CommonProps } from '../types'
 import { ADDITIONAL_PROPERTY_FLAG, orderProperties, retrieveSchema } from '../../utils'
 
 const DefaultObjectFieldTemplate = (props: any) => {
-  return (
-    <div>
-      {props.title && <p className="h5">{props.title}</p>}
-      {props.description && <span className="text-muted">{props.description}</span>}
-      {(!!props.title || !!props.description) && <div className="mb-3" />}
+  if (props.platform === 'web') {
+    return (
+      <>
+        {!!props.title && <p className="h5">{props.title}</p>}
+        {!!props.description && <span className="text-muted">{props.description}</span>}
+        {(!!props.title || !!props.description) && <div className="mb-3" />}
 
+        {props.properties.map((prop: any, idx: number) => (
+          <React.Fragment key={idx}>{prop.content}</React.Fragment>
+        ))}
+      </>
+    )
+  }
+
+  return (
+    <>
       {props.properties.map((prop: any, idx: number) => (
         <React.Fragment key={idx}>{prop.content}</React.Fragment>
       ))}
-    </div>
+    </>
   )
 }
 

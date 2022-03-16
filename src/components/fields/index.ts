@@ -1,3 +1,4 @@
+import ArrayField from './ArrayField'
 import BooleanField from './BooleanField'
 import DescriptionField from './DescriptionField'
 import ObjectField from './ObjectField'
@@ -6,6 +7,7 @@ import StringField from './StringField'
 import TitleField from './TitleField'
 
 export default {
+  ArrayField,
   BooleanField,
   DescriptionField,
   ObjectField,

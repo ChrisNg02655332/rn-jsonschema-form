@@ -13,7 +13,7 @@ const widgetMap: any = {
   boolean: {
     checkbox: 'CheckboxWidget',
     // radio: 'RadioWidget',
-    // select: 'SelectWidget',
+    select: 'SelectWidget',
     // hidden: 'HiddenWidget',
   },
   string: {
@@ -25,8 +25,8 @@ const widgetMap: any = {
     // 'hostname': 'TextWidget',
     // 'ipv4': 'TextWidget',
     // 'ipv6': 'TextWidget',
-    // 'data-url': 'FileWidget',
-    // select: 'SelectWidget',
+    'data-url': 'FileWidget',
+    select: 'SelectWidget',
     // 'textarea': 'TextareaWidget',
     // 'hidden': 'HiddenWidget',
     // 'date': 'DateWidget',
@@ -35,11 +35,11 @@ const widgetMap: any = {
     // 'alt-date': 'AltDateWidget',
     // 'alt-datetime': 'AltDateTimeWidget',
     // 'color': 'ColorWidget',
-    // file: 'FileWidget',
+    file: 'FileWidget',
   },
   number: {
     text: 'TextWidget',
-    // select: 'SelectWidget',
+    select: 'SelectWidget',
     // updown: 'UpDownWidget',
     // range: 'RangeWidget',
     // radio: 'RadioWidget',
@@ -47,16 +47,16 @@ const widgetMap: any = {
   },
   integer: {
     text: 'TextWidget',
-    // select: 'SelectWidget',
+    select: 'SelectWidget',
     // updown: 'UpDownWidget',
     // range: 'RangeWidget',
     // radio: 'RadioWidget',
     // hidden: 'HiddenWidget',
   },
   array: {
-    // select: 'SelectWidget',
+    select: 'SelectWidget',
     // checkboxes: 'CheckboxesWidget',
-    // files: 'FileWidget',
+    files: 'FileWidget',
     // hidden: 'HiddenWidget',
   },
 }
@@ -585,4 +585,42 @@ export const hasWidget = (schema: any, widget: any, registeredWidgets = {}): boo
     }
     throw err
   }
+}
+
+export const toIdSchema = (
+  schema: any,
+  id: string,
+  rootSchema: any,
+  formData = {},
+  idPrefix = 'root',
+  idSeparator = '_'
+): any => {
+  const idSchema: any = {
+    $id: id || idPrefix,
+  }
+  if ('$ref' in schema || 'dependencies' in schema || 'allOf' in schema) {
+    const _schema = retrieveSchema(schema, rootSchema, formData)
+    return toIdSchema(_schema, id, rootSchema, formData, idPrefix, idSeparator)
+  }
+  if ('items' in schema && !schema.items.$ref) {
+    return toIdSchema(schema.items, id, rootSchema, formData, idPrefix, idSeparator)
+  }
+  if (schema.type !== 'object') {
+    return idSchema
+  }
+  for (const name in schema.properties || {}) {
+    const field = schema.properties[name]
+    const fieldId = idSchema.$id + idSeparator + name
+    idSchema[name] = toIdSchema(
+      isObject(field) ? field : {},
+      fieldId,
+      rootSchema,
+      // It's possible that formData is not an object -- this can happen if an
+      // array item has just been added, but not populated with data yet
+      (formData || ({} as any))[name],
+      idPrefix,
+      idSeparator
+    )
+  }
+  return idSchema
 }
