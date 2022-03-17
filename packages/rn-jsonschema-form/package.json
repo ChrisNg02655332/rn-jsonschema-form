@@ -1,0 +1,45 @@
+{
+  "name": "rn-jsonschema-form",
+  "version": "0.23.0",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "types": "lib/index.d.ts",
+  "repository": "https://github.com/ChrisNg02655332/rn-jsonschema-form",
+  "author": "ChrisNg02655332 <chris.dungnguyen@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "release": "git checkout main && git pull && release-it"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^4.2.2",
+    "@rollup/plugin-commonjs": "^21.0.2",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@types/react-native": "^0.67.3",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "release-it": "^14.12.5",
+    "rollup": "^2.70.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "react-native": "^0.67.3"
+  },
+  "files": [
+    "/lib"
+  ],
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  }
+}
