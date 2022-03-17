@@ -62,7 +62,7 @@ const Help = ({ help }: { help: string | any }) => {
 }
 
 const DefaultTemplate = (props: any) => {
-  const { platform, children, description, className, required, hidden, displayLabel, label } = props
+  const { platform, children, required, displayLabel, label } = props
 
   if (platform === 'web') {
     return (

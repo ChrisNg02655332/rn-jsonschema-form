@@ -236,13 +236,12 @@ const withExactlyOneSubschema = (schema: any, rootSchema: any, formData: any, de
     }
     const { [dependencyKey]: conditionPropertySchema } = subschema.properties
     if (conditionPropertySchema) {
-      const conditionSchema = {
-        type: 'object',
-        properties: {
-          [dependencyKey]: conditionPropertySchema,
-        },
-      }
-
+      // const conditionSchema = {
+      //   type: 'object',
+      //   properties: {
+      //     [dependencyKey]: conditionPropertySchema,
+      //   },
+      // }
       // TODO: Check it again
       // const { errors } = validateFormData(formData, conditionSchema)
       // return errors.length === 0

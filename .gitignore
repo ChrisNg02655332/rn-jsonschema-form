@@ -1,6 +1,7 @@
 .DS_Store
-example/node_modules
-example/dist
-
-node_modules
+node_modules/
+lerna-debug.log
+npm-debug.log
+.idea
 lib
+yarn-error.log

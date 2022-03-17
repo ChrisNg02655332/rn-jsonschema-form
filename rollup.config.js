@@ -3,22 +3,36 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from 'rollup-plugin-typescript2'
 
-const packageJson = require('./package.json')
+const packageCoreJson = require('./packages/core/package.json')
 
-export default {
-  input: 'src/index.ts',
-  output: [
-    {
-      file: packageJson.main,
-      format: 'cjs',
-      sourcemap: true,
-    },
-    {
-      file: packageJson.module,
-      format: 'esm',
-      sourcemap: true,
-    },
-  ],
+const shared = {
   external: ['react', 'react-dom', 'react-hook-form', 'react-native'],
   plugins: [peerDepsExternal(), resolve({}), commonjs(), typescript({ useTsconfigDeclarationDir: true })],
 }
+
+export default [
+  {
+    input: './packages/core/src/index.ts',
+    output: [
+      {
+        file: packageCoreJson.main,
+        format: 'cjs',
+        sourcemap: true,
+      },
+      {
+        file: packageCoreJson.module,
+        format: 'esm',
+        sourcemap: true,
+      },
+    ],
+    ...shared,
+  },
+  // {
+  //   input: 'packages/test/index.ts',
+  //   output: {
+  //     file: 'lib/test/index.js',
+  //     format: 'cjs',
+  //     sourcemap: true,
+  //   },
+  // },
+]
