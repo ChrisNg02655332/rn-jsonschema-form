@@ -1,6 +1,7 @@
 import ArrayField from './ArrayField'
 import BooleanField from './BooleanField'
 import DescriptionField from './DescriptionField'
+import NullField from './NullField'
 import ObjectField from './ObjectField'
 import SchemaField from './SchemaField'
 import StringField from './StringField'
@@ -14,4 +15,5 @@ export default {
   SchemaField,
   StringField,
   TitleField,
+  NullField,
 }
