@@ -1,6 +1,6 @@
 {
-  "name": "rn-jsonschema-form",
-  "version": "0.27.0",
+  "name": "react-hook-jsonschema-form",
+  "version": "0.0.0",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -39,8 +39,5 @@
         "preset": "angular"
       }
     }
-  },
-  "dependencies": {
-    "@types/react-native": "^0.67.3"
   }
 }

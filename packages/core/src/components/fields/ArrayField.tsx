@@ -214,10 +214,12 @@ const ArrayField = (props: any) => {
     const {
       fields: { SchemaField },
     } = registry
+
+    const uiOptions = 'ui:options' in uiSchema ? uiSchema['ui:options'] : {}
     const { orderable, removable } = {
       orderable: true,
       removable: true,
-      ...uiSchema['ui:options'],
+      ...uiOptions,
     } as any
     const has: any = {
       moveUp: orderable && canMoveUp,

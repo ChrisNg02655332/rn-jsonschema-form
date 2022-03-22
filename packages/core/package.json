@@ -1,8 +1,10 @@
 {
-  "name": "core",
+  "name": "jsonshema-form-core",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "@types/json-schema-merge-allof": "^0.6.1",
     "@types/lodash": "^4.14.180",

@@ -1,6 +1,5 @@
 import React from 'react'
 import { JSONSchema7 } from 'jsonschema7'
-import { TouchableOpacity, Text } from 'react-native'
 import { Form as FormComponent } from 'jsonshema-form-core/src/index'
 import { Methods } from 'jsonshema-form-core/src/types'
 
@@ -18,16 +17,14 @@ type Props = {
   submitText?: string
 }
 
+const widgets = {
+  TextWidget: () => <p>my widgets</p>,
+}
+
 const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
   return (
-    <FormComponent platform="mobile" {...rest}>
-      {typeof onSubmit === 'function' && !children ? (
-        <TouchableOpacity>
-          <Text>{submitText || 'Submit'}</Text>
-        </TouchableOpacity>
-      ) : (
-        children
-      )}
+    <FormComponent platform="web" widgets={widgets} {...rest}>
+      {typeof onSubmit === 'function' && !children ? <button type="submit">{submitText || 'Submit'}</button> : children}
     </FormComponent>
   )
 }

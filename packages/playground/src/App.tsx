@@ -1,6 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Form } from '../../core/src'
+import { Form } from 'react-jsonschema-form'
 
 const schema: any = {
   title: 'Hmlet Daily Checklist',
@@ -44,9 +44,24 @@ const schema: any = {
 }
 
 const App = () => {
-  const methods = useForm()
+  const methods = useForm({ defaultValues: {} })
 
-  return <Form schema={schema} methods={methods} platform="web" />
+  return (
+    <div className="container mt-5">
+      <Form
+        schema={schema}
+        methods={methods}
+        onSubmit={(data) => {
+          console.log('inside onsubmit')
+
+          console.log(data)
+        }}
+      />
+      <button className="btn btn-danger" onClick={methods.handleSubmit((data) => console.log(data))}>
+        asd
+      </button>
+    </div>
+  )
 }
 
 export default App

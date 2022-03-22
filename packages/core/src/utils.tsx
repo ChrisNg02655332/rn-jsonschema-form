@@ -397,7 +397,7 @@ export const retrieveSchema = (schema: any, rootSchema = {}, formData = {}) => {
   return resolvedSchema
 }
 
-export const getUiOptions = (uiSchema: any) => {
+export const getUiOptions = (uiSchema: any = {}) => {
   // get all passed options from ui:widget, ui:options, and ui:<optionName>
   return Object.keys(uiSchema)
     .filter((key) => key.indexOf('ui:') === 0)
@@ -455,7 +455,7 @@ export const isFilesArray = (schema: any, uiSchema: any, rootSchema = {}) => {
   return false
 }
 
-export const getDisplayLabel = (schema: any, uiSchema: any, rootSchema: any): boolean => {
+export const getDisplayLabel = (schema: any, uiSchema: any = {}, rootSchema: any): boolean => {
   const uiOptions: any = getUiOptions(uiSchema)
   let { label: displayLabel = true } = uiOptions
   if (schema.type === 'array') {
