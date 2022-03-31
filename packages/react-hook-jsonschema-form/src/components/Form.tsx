@@ -15,15 +15,12 @@ type Props = {
   ObjectFieldTemplate?: any
   FieldTemplate?: any
   submitText?: string
-}
-
-const widgets = {
-  TextWidget: () => <p>my widgets</p>,
+  enableReinitialize?: boolean
 }
 
 const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
   return (
-    <FormComponent platform="web" widgets={widgets} {...rest}>
+    <FormComponent platform="web" {...rest}>
       {typeof onSubmit === 'function' && !children ? <button type="submit">{submitText || 'Submit'}</button> : children}
     </FormComponent>
   )

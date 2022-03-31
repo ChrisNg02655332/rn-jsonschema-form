@@ -55,7 +55,7 @@ const widgetMap: any = {
   },
   array: {
     select: 'SelectWidget',
-    // checkboxes: 'CheckboxesWidget',
+    checkboxes: 'CheckboxesWidget',
     files: 'FileWidget',
     // hidden: 'HiddenWidget',
   },
@@ -108,6 +108,8 @@ const resolveReference = (schema: any, rootSchema: any, formData: any) => {
 }
 
 export const getMatchingOption = (options: Array<any>) => {
+  // For performance, skip validating subschemas if formData is undefined. We just
+  // want to get the first option in that case.
   for (let i = 0; i < options.length; i++) {
     const option = options[i]
 

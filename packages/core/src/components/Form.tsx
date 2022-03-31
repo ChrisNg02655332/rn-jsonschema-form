@@ -17,6 +17,7 @@ type Props = {
   ArrayFieldTemplate?: any
   ObjectFieldTemplate?: any
   FieldTemplate?: any
+  enableReinitialize?: boolean
 }
 
 const Form: React.FC<Props> = (props) => {
@@ -25,6 +26,12 @@ const Form: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setState({ schema: props.schema, uiSchema: props.uiSchema || {} })
   }, [])
+
+  React.useEffect(() => {
+    if (props.enableReinitialize) {
+      setState({ schema: props.schema, uiSchema: props.uiSchema || {} })
+    }
+  }, [props.schema, props.uiSchema])
 
   const getRegistry = () => {
     // For BC, accept passed SchemaField and TitleField props and pass them to
