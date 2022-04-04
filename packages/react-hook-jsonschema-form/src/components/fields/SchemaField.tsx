@@ -1,5 +1,5 @@
-import { Methods, Platform } from '../../types'
-import { getDisplayLabel, getSchemaType, retrieveSchema } from '../../utils'
+import { Methods } from 'jsonshema-form-core/src/types'
+import { getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core/src/utils'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
@@ -12,11 +12,12 @@ const COMPONENT_TYPES: any = {
   null: 'NullField',
 }
 
-const getFieldComponent = (schema: any, uiSchema: any, fields: any) => {
+const getFieldComponent = (schema: any, uiSchema: any, idSchema: any, fields: any) => {
   const field = uiSchema['ui:field']
   if (typeof field === 'function') {
     return field
   }
+
   if (typeof field === 'string' && field in fields) {
     return fields[field]
   }
@@ -33,12 +34,10 @@ const getFieldComponent = (schema: any, uiSchema: any, fields: any) => {
     ? fields[componentName]
     : () => {
         const { UnsupportedField } = fields
-
         return <UnsupportedField schema={schema} reason={`Unknown field type ${schema.type}`} />
       }
 }
 
-// NOTE: only use for web
 const Label = ({ label, required }: { label: string; required: boolean }) => {
   if (!label) return null
 
@@ -50,100 +49,96 @@ const Label = ({ label, required }: { label: string; required: boolean }) => {
   )
 }
 
-// NOTE: only use for web
 const Help = ({ help }: { help: string | any }) => {
-  if (!help) {
-    return null
-  }
-  if (typeof help === 'string') {
-    return <p>{help}</p>
-  }
+  if (!help) return null
+  if (typeof help === 'string') return <p>{help}</p>
   return <span>{help}</span>
 }
 
-const DefaultTemplate = (props: any) => {
-  const { platform, children, required, displayLabel, label } = props
-
-  if (platform === 'web') {
-    return (
-      <div className="mb-3">
-        {displayLabel && <Label label={label} required={required} />}
-        {children}
-      </div>
-    )
-  }
-
-  return children
+const DefaultTemplate: React.FC<{ label: string; required: boolean; displayLabel: boolean }> = ({
+  children,
+  required,
+  displayLabel,
+  label,
+}) => {
+  return (
+    <div className="mb-3">
+      {displayLabel && <Label label={label} required={required} />}
+      {children}
+    </div>
+  )
 }
 
 type Props = {
   name: string
   schema: any
   uiSchema?: any
-  platform?: Platform
   methods: Methods
   disabled?: boolean
   readonly?: boolean
   required?: boolean
   registry?: any
+  idSchema?: any
+  idPrefix?: string
+  idSeparator?: any
 }
 
-const SchemaField = ({ name, uiSchema = {}, platform, registry, methods, ...rest }: Props) => {
+const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSeparator, ...rest }: Props) => {
   const { rootSchema, fields, formContext } = registry
 
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
 
-  const schema = retrieveSchema(rest.schema, rootSchema, {})
-  const FieldComponent = getFieldComponent(schema, uiSchema, fields)
+  let idSchema = rest.idSchema || {}
+  const schema = retrieveSchema(rest.schema, rootSchema)
+  idSchema = mergeObjects(toIdSchema(schema, null, rootSchema, idPrefix, idSeparator), idSchema)
+  const FieldComponent = getFieldComponent(schema, uiSchema, idSchema, fields)
   const { DescriptionField } = fields
   const disabled = Boolean(rest.disabled || uiSchema['ui:disabled'])
   const readonly = Boolean(rest.readonly || uiSchema['ui:readonly'] || rest.schema?.readOnly || schema.readOnly)
   // const autofocus = Boolean(rest.autofocus || uiSchema['ui:autofocus'])
 
-  if (Object.keys(schema).length === 0) {
-    return null
-  }
+  if (Object.keys(schema).length === 0) return null
 
   const field = (
     <FieldComponent
       name={name}
+      idSchema={idSchema}
       schema={schema}
       uiSchema={uiSchema}
       methods={methods}
       formContext={formContext}
-      platform={platform}
       disabled={disabled}
       readonly={readonly}
       registry={registry}
     />
   )
-  if (!field) console.warn('Please update ui:FieldTemplate or regiter new one')
+
+  const id = idSchema.$id
 
   const displayLabel = getDisplayLabel(schema, uiSchema, rootSchema)
   let label = uiSchema['ui:title'] || rest.schema.title || schema.title
-
   const description = uiSchema['ui:description'] || rest.schema.description || schema.description
-  // const errors = __errors
   const help = uiSchema['ui:help']
   const hidden = uiSchema['ui:widget'] === 'hidden'
 
   const fieldProps = {
-    name,
-    methods,
-    registry,
-    schema,
-    uiSchema,
-    platform,
-    fields,
     description: <DescriptionField description={description} formContext={formContext} />,
     rawDescription: description,
-    help: platform === 'web' ? <Help help={help} /> : null,
+    help: <Help help={help} />,
+    id,
+    name,
     label,
     hidden,
+    methods,
     required: rest.required,
     disabled,
     readonly,
     displayLabel,
+    formContext,
+    fields,
+    schema,
+    uiSchema,
+    registry,
   }
 
   return <FieldTemplate {...fieldProps}>{field}</FieldTemplate>

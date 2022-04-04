@@ -1,7 +1,7 @@
-import { getUiOptions, getWidget, hasWidget, isSelect, optionsList } from '../../utils'
-import { CommonProps } from '../types'
+import { CommonProps } from 'jsonshema-form-core/src/types'
+import { getUiOptions, getWidget, hasWidget, isSelect, optionsList } from 'jsonshema-form-core/src/utils'
 
-const StringField = ({ name, schema, uiSchema, platform, required, registry, methods }: CommonProps) => {
+const StringField = ({ name, schema, uiSchema, required, registry, methods, ...rest }: CommonProps) => {
   const { title, format } = schema
 
   const { widgets } = registry
@@ -16,8 +16,8 @@ const StringField = ({ name, schema, uiSchema, platform, required, registry, met
 
   return (
     <Widget
+      {...rest}
       name={name}
-      platform={platform}
       schema={schema}
       uiSchema={uiSchema}
       label={title === undefined ? name : title}

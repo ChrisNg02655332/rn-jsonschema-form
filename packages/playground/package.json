@@ -12,6 +12,9 @@
     "vite": "^2.8.0"
   },
   "dependencies": {
-    "react-jsonschema-form": "^0.0.0"
+    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "react-hook-jsonschema-form": "^0.2.0",
+    "vite-plugin-commonjs-externals": "^0.1.1"
   }
 }

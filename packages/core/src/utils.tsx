@@ -4,9 +4,6 @@ import jsonpointer from 'jsonpointer'
 import { union } from 'lodash'
 import * as ReactIs from 'react-is'
 
-import fields from './components/fields'
-import widgets from './components/widgets'
-
 export const ADDITIONAL_PROPERTY_FLAG = '__additional_property'
 
 const widgetMap: any = {
@@ -61,15 +58,15 @@ const widgetMap: any = {
   },
 }
 
-export const getDefaultRegistry = (): any => {
-  return {
-    fields,
-    widgets,
-    definitions: {},
-    rootSchema: {},
-    formContext: {},
-  }
-}
+// export const getDefaultRegistry = (fields, widgets): any => {
+//   return {
+//     fields,
+//     widgets,
+//     definitions: {},
+//     rootSchema: {},
+//     formContext: {},
+//   }
+// }
 
 export const isObject = (thing: any): boolean => {
   //   if (typeof File !== 'undefined' && thing instanceof File) {
@@ -96,7 +93,7 @@ export const findSchemaDefinition = ($ref: string, rootSchema = {}): any => {
   return current
 }
 
-const resolveReference = (schema: any, rootSchema: any, formData: any) => {
+const resolveReference = (schema: any, rootSchema: any) => {
   // Retrieve the referenced schema definition.
   const $refSchema = findSchemaDefinition(schema.$ref, rootSchema)
 
@@ -104,7 +101,7 @@ const resolveReference = (schema: any, rootSchema: any, formData: any) => {
   const { $ref, ...localSchema } = schema
 
   // Update referenced schema definition with local schema properties.
-  return retrieveSchema({ ...$refSchema, ...localSchema }, rootSchema, formData)
+  return retrieveSchema({ ...$refSchema, ...localSchema }, rootSchema)
 }
 
 export const getMatchingOption = (options: Array<any>) => {
@@ -231,7 +228,7 @@ export const mergeSchemas = (obj1: any, obj2: any) => {
   }, _acc)
 }
 
-const withExactlyOneSubschema = (schema: any, rootSchema: any, formData: any, dependencyKey: string, oneOf: any) => {
+const withExactlyOneSubschema = (schema: any, rootSchema: any, dependencyKey: string, oneOf: any) => {
   const validSubschemas = oneOf.filter((subschema: any): any => {
     if (!subschema.properties) {
       return false
@@ -259,11 +256,11 @@ const withExactlyOneSubschema = (schema: any, rootSchema: any, formData: any, de
   const { [dependencyKey]: conditionPropertySchema, ...dependentSubschema } = subschema.properties
   const dependentSchema = { ...subschema, properties: dependentSubschema }
 
-  return mergeSchemas(schema, retrieveSchema(dependentSchema, rootSchema, formData))
+  return mergeSchemas(schema, retrieveSchema(dependentSchema, rootSchema))
 }
 
-const withDependentSchema = (schema: any, rootSchema: any, formData: any, dependencyKey: any, dependencyValue: any) => {
-  let { oneOf, ...dependentSchema } = retrieveSchema(dependencyValue, rootSchema, formData)
+const withDependentSchema = (schema: any, rootSchema: any, dependencyKey: any, dependencyValue: any) => {
+  let { oneOf, ...dependentSchema } = retrieveSchema(dependencyValue, rootSchema)
   schema = mergeSchemas(schema, dependentSchema)
   // Since it does not contain oneOf, we return the original schema.
   if (oneOf === undefined) {
@@ -273,9 +270,9 @@ const withDependentSchema = (schema: any, rootSchema: any, formData: any, depend
   }
   // Resolve $refs inside oneOf.
   const resolvedOneOf = oneOf.map((subschema) =>
-    subschema.hasOwnProperty('$ref') ? resolveReference(subschema, rootSchema, formData) : subschema
+    subschema.hasOwnProperty('$ref') ? resolveReference(subschema, rootSchema) : subschema
   )
-  return withExactlyOneSubschema(schema, rootSchema, formData, dependencyKey, resolvedOneOf)
+  return withExactlyOneSubschema(schema, rootSchema, dependencyKey, resolvedOneOf)
 }
 
 const withDependentProperties = (schema: any, additionallyRequired: any) => {
@@ -288,13 +285,9 @@ const withDependentProperties = (schema: any, additionallyRequired: any) => {
   return { ...schema, required: required }
 }
 
-const processDependencies = (dependencies: any, resolvedSchema: any, rootSchema: any, formData: any): any => {
+const processDependencies = (dependencies: any, resolvedSchema: any, rootSchema: any): any => {
   // Process dependencies updating the local schema properties as appropriate.
   for (const dependencyKey in dependencies) {
-    // Skip this dependency if its trigger property is not present.
-    if (formData[dependencyKey] === undefined) {
-      continue
-    }
     // Skip this dependency if it is not included in the schema (such as when dependencyKey is itself a hidden dependency.)
     if (resolvedSchema.properties && !(dependencyKey in resolvedSchema.properties)) {
       continue
@@ -303,14 +296,14 @@ const processDependencies = (dependencies: any, resolvedSchema: any, rootSchema:
     if (Array.isArray(dependencyValue)) {
       resolvedSchema = withDependentProperties(resolvedSchema, dependencyValue)
     } else if (isObject(dependencyValue)) {
-      resolvedSchema = withDependentSchema(resolvedSchema, rootSchema, formData, dependencyKey, dependencyValue)
+      resolvedSchema = withDependentSchema(resolvedSchema, rootSchema, dependencyKey, dependencyValue)
     }
-    return processDependencies(remainingDependencies, resolvedSchema, rootSchema, formData)
+    return processDependencies(remainingDependencies, resolvedSchema, rootSchema)
   }
   return resolvedSchema
 }
 
-const resolveDependencies = (schema: any, rootSchema: any, formData: any) => {
+const resolveDependencies = (schema: any, rootSchema: any) => {
   // Drop the dependencies from the source schema.
   let { dependencies = {}, ...resolvedSchema } = schema
   if ('oneOf' in resolvedSchema) {
@@ -318,19 +311,19 @@ const resolveDependencies = (schema: any, rootSchema: any, formData: any) => {
   } else if ('anyOf' in resolvedSchema) {
     resolvedSchema = resolvedSchema.anyOf[getMatchingOption(resolvedSchema.anyOf)]
   }
-  return processDependencies(dependencies, resolvedSchema, rootSchema, formData)
+  return processDependencies(dependencies, resolvedSchema, rootSchema)
 }
 
-export const resolveSchema = (schema: any, rootSchema = {}, formData = {}): any => {
+export const resolveSchema = (schema: any, rootSchema = {}): any => {
   if (schema.hasOwnProperty('$ref')) {
-    return resolveReference(schema, rootSchema, formData)
+    return resolveReference(schema, rootSchema)
   } else if (schema.hasOwnProperty('dependencies')) {
-    const resolvedSchema = resolveDependencies(schema, rootSchema, formData)
-    return retrieveSchema(resolvedSchema, rootSchema, formData)
+    const resolvedSchema = resolveDependencies(schema, rootSchema)
+    return retrieveSchema(resolvedSchema, rootSchema)
   } else if (schema.hasOwnProperty('allOf')) {
     return {
       ...schema,
-      allOf: schema.allOf.map((allOfSubschema: any) => retrieveSchema(allOfSubschema, rootSchema, formData)),
+      allOf: schema.allOf.map((allOfSubschema: any) => retrieveSchema(allOfSubschema, rootSchema)),
     }
   } else {
     // No $ref or dependencies attribute found, returning the original schema.
@@ -339,43 +332,44 @@ export const resolveSchema = (schema: any, rootSchema = {}, formData = {}): any 
 }
 
 /** This function will create new "properties" items for each key in our formData */
-export function stubExistingAdditionalProperties(schema: any, rootSchema = {}, formData = {}) {
+// TODO: Check it again
+export function stubExistingAdditionalProperties(schema: any, rootSchema = {}) {
   // Clone the schema so we don't ruin the consumer's original
   schema = {
     ...schema,
     properties: { ...schema.properties },
   }
 
-  Object.keys(formData).forEach((key) => {
-    if (schema.properties.hasOwnProperty(key)) {
-      // No need to stub, our schema already has the property
-      return
-    }
+  // Object.keys(formData).forEach((key) => {
+  //   if (schema.properties.hasOwnProperty(key)) {
+  //     // No need to stub, our schema already has the property
+  //     return
+  //   }
 
-    let additionalProperties
-    if (schema.additionalProperties.hasOwnProperty('$ref')) {
-      additionalProperties = retrieveSchema({ $ref: schema.additionalProperties.$ref }, rootSchema, formData)
-    } else if (schema.additionalProperties.hasOwnProperty('type')) {
-      additionalProperties = { ...schema.additionalProperties }
-    } else {
-      additionalProperties = { type: guessType((formData as any)[key]) }
-    }
+  //   let additionalProperties
+  //   if (schema.additionalProperties.hasOwnProperty('$ref')) {
+  //     additionalProperties = retrieveSchema({ $ref: schema.additionalProperties.$ref }, rootSchema)
+  //   } else if (schema.additionalProperties.hasOwnProperty('type')) {
+  //     additionalProperties = { ...schema.additionalProperties }
+  //   } else {
+  //     additionalProperties = { type: guessType((formData as any)[key]) }
+  //   }
 
-    // The type of our new key should match the additionalProperties value;
-    schema.properties[key] = additionalProperties
-    // Set our additional property flag so we know it was dynamically added
-    schema.properties[key][ADDITIONAL_PROPERTY_FLAG] = true
-  })
+  //   // The type of our new key should match the additionalProperties value;
+  //   schema.properties[key] = additionalProperties
+  //   // Set our additional property flag so we know it was dynamically added
+  //   schema.properties[key][ADDITIONAL_PROPERTY_FLAG] = true
+  // })
 
   return schema
 }
 
-export const retrieveSchema = (schema: any, rootSchema = {}, formData = {}) => {
+export const retrieveSchema = (schema: any, rootSchema = {}) => {
   if (!isObject(schema)) {
     return {}
   }
 
-  let resolvedSchema = resolveSchema(schema, rootSchema, formData)
+  let resolvedSchema = resolveSchema(schema, rootSchema)
   if ('allOf' in schema) {
     try {
       resolvedSchema = mergeAllOf({
@@ -393,7 +387,7 @@ export const retrieveSchema = (schema: any, rootSchema = {}, formData = {}) => {
     resolvedSchema.hasOwnProperty('additionalProperties') && resolvedSchema.additionalProperties !== false
 
   if (hasAdditionalProperties) {
-    return stubExistingAdditionalProperties(resolvedSchema, rootSchema, formData)
+    return stubExistingAdditionalProperties(resolvedSchema, rootSchema)
   }
 
   return resolvedSchema
@@ -590,9 +584,8 @@ export const hasWidget = (schema: any, widget: any, registeredWidgets = {}): boo
 
 export const toIdSchema = (
   schema: any,
-  id: string,
+  id: string | null,
   rootSchema: any,
-  formData = {},
   idPrefix = 'root',
   idSeparator = '_'
 ): any => {
@@ -600,11 +593,11 @@ export const toIdSchema = (
     $id: id || idPrefix,
   }
   if ('$ref' in schema || 'dependencies' in schema || 'allOf' in schema) {
-    const _schema = retrieveSchema(schema, rootSchema, formData)
-    return toIdSchema(_schema, id, rootSchema, formData, idPrefix, idSeparator)
+    const _schema = retrieveSchema(schema, rootSchema)
+    return toIdSchema(_schema, id, rootSchema, idPrefix, idSeparator)
   }
   if ('items' in schema && !schema.items.$ref) {
-    return toIdSchema(schema.items, id, rootSchema, formData, idPrefix, idSeparator)
+    return toIdSchema(schema.items, id, rootSchema, idPrefix, idSeparator)
   }
   if (schema.type !== 'object') {
     return idSchema
@@ -612,16 +605,24 @@ export const toIdSchema = (
   for (const name in schema.properties || {}) {
     const field = schema.properties[name]
     const fieldId = idSchema.$id + idSeparator + name
-    idSchema[name] = toIdSchema(
-      isObject(field) ? field : {},
-      fieldId,
-      rootSchema,
-      // It's possible that formData is not an object -- this can happen if an
-      // array item has just been added, but not populated with data yet
-      (formData || ({} as any))[name],
-      idPrefix,
-      idSeparator
-    )
+    idSchema[name] = toIdSchema(isObject(field) ? field : {}, fieldId, rootSchema, idPrefix, idSeparator)
   }
   return idSchema
+}
+
+export const mergeObjects = (obj1: any, obj2: any, concatArrays = false) => {
+  // Recursively merge deeply nested objects.
+  var acc = Object.assign({}, obj1) // Prevent mutation of source object.
+  return Object.keys(obj2).reduce((acc, key) => {
+    const left = obj1 ? obj1[key] : {},
+      right = obj2[key]
+    if (obj1 && obj1.hasOwnProperty(key) && isObject(right)) {
+      acc[key] = mergeObjects(left, right, concatArrays)
+    } else if (concatArrays && Array.isArray(left) && Array.isArray(right)) {
+      acc[key] = left.concat(right)
+    } else {
+      acc[key] = right
+    }
+    return acc
+  }, acc)
 }

@@ -26,7 +26,8 @@
     "bootstrap": "lerna bootstrap",
     "lint": "eslint packages/**/*.tsx",
     "release": "git checkout main && git pull && release-it",
-    "dev": "cd packages/playground && yarn dev"
+    "playground": "lerna exec 'yarn dev' --scope playground",
+    "build:web": "lerna exec 'yarn build' --scope react-hook-jsonschema-form"
   },
   "commitlint": {
     "extends": [

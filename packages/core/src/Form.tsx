@@ -1,9 +1,8 @@
 import React from 'react'
 import { JSONSchema7 } from 'jsonschema7'
 
-import { useStateWithCallbackLazy } from '../libs/hooks'
-import { getDefaultRegistry } from '../utils'
-import { Methods, Platform } from '../types'
+import { useStateWithCallbackLazy } from './hooks'
+import { Methods, Platform } from './types'
 
 type Props = {
   schema: JSONSchema7
@@ -18,6 +17,15 @@ type Props = {
   ObjectFieldTemplate?: any
   FieldTemplate?: any
   enableReinitialize?: boolean
+  registry: {
+    fields: any
+    widgets: any
+    ArrayFieldTemplate: any
+    ObjectFieldTemplate: any
+    FieldTemplate: any
+    rootSchema: any
+    formContext: any
+  }
 }
 
 const Form: React.FC<Props> = (props) => {
@@ -33,28 +41,11 @@ const Form: React.FC<Props> = (props) => {
     }
   }, [props.schema, props.uiSchema])
 
-  const getRegistry = () => {
-    // For BC, accept passed SchemaField and TitleField props and pass them to
-    // the "fields" registry one.
-    const { fields, widgets } = getDefaultRegistry()
-    return {
-      fields: { ...fields, ...(props.fields || {}) },
-      widgets: { ...widgets, ...(props.widgets || {}) },
-      ArrayFieldTemplate: props.ArrayFieldTemplate,
-      ObjectFieldTemplate: props.ObjectFieldTemplate,
-      FieldTemplate: props.FieldTemplate,
-      // definitions: props.schema.definitions || {},
-      rootSchema: props.schema,
-      // formContext: props.formContext || {},
-    }
-  }
-
   const onSubmit = (formData: any) => {
     props.onSubmit && props.onSubmit(formData)
   }
 
-  const registry = getRegistry()
-  const SchemaField = registry?.fields?.SchemaField
+  const SchemaField = props.registry?.fields?.SchemaField
 
   return (
     <>
@@ -63,7 +54,7 @@ const Form: React.FC<Props> = (props) => {
         uiSchema={state.uiSchema}
         methods={props.methods}
         platform={props.platform}
-        registry={registry}
+        registry={props.registry}
       />
 
       {props.platform === 'web' ? (

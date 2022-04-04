@@ -1,12 +1,11 @@
-import React from 'react'
-import { getUiOptions, getWidget, optionsList } from '../../utils'
-import { CommonProps } from '../types'
+import { CommonProps } from 'jsonshema-form-core/src/types'
+import { getUiOptions, getWidget, optionsList } from 'jsonshema-form-core/src/utils'
 
 const BooleanField = ({
-  platform,
   name,
   schema,
   registry,
+  idSchema,
   uiSchema,
   readonly,
   required,
@@ -37,6 +36,7 @@ const BooleanField = ({
   return (
     <Widget
       methods={methods}
+      id={idSchema && idSchema.$id}
       options={{ ...options, enumOptions }}
       schema={schema}
       name={name}
@@ -47,7 +47,6 @@ const BooleanField = ({
       registry={registry}
       formContext={formContext}
       DescriptionField={fields.DescriptionField}
-      platform={platform}
       uiSchema={uiSchema}
     />
   )

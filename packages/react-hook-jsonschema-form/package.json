@@ -39,5 +39,9 @@
         "preset": "angular"
       }
     }
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "nanoid": "^3.3.2"
   }
 }

@@ -1,7 +1,9 @@
 import React from 'react'
 import { JSONSchema7 } from 'jsonschema7'
-import { Form as FormComponent } from 'jsonshema-form-core/src/index'
+import FormComponent from 'jsonshema-form-core/src/Form'
 import { Methods } from 'jsonshema-form-core/src/types'
+import fields from './fields'
+import widgets from './widgets'
 
 type Props = {
   schema: JSONSchema7
@@ -16,11 +18,22 @@ type Props = {
   FieldTemplate?: any
   submitText?: string
   enableReinitialize?: boolean
+  formContext?: any
 }
 
 const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
+  const registry = {
+    fields: { ...fields, ...(rest.fields || {}) },
+    widgets: { ...widgets, ...(rest.widgets || {}) },
+    ArrayFieldTemplate: rest.ArrayFieldTemplate,
+    ObjectFieldTemplate: rest.ObjectFieldTemplate,
+    FieldTemplate: rest.FieldTemplate,
+    rootSchema: rest.schema,
+    formContext: rest.formContext || {},
+  }
+
   return (
-    <FormComponent platform="web" {...rest}>
+    <FormComponent platform="web" registry={registry} {...rest}>
       {typeof onSubmit === 'function' && !children ? <button type="submit">{submitText || 'Submit'}</button> : children}
     </FormComponent>
   )
