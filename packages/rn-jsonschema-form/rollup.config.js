@@ -4,16 +4,18 @@ import commonjs from '@rollup/plugin-commonjs'
 import jsx from 'acorn-jsx'
 import typescript from 'rollup-plugin-typescript2'
 
+const packageJson = require('./package.json')
+
 export default {
   input: 'lib/index.ts',
   output: [
     {
-      file: 'dist/index.js',
+      file: packageJson.main,
       format: 'cjs',
       sourcemap: true,
     },
     {
-      file: 'dist/index.esm.js',
+      file: packageJson.module,
       format: 'esm',
       sourcemap: true,
     },
