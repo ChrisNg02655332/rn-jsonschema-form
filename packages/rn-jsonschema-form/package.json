@@ -16,12 +16,11 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c",
-    "release": "git checkout main && git pull && release-it"
+    "release": "git checkout main && git pull && release-it --npm.skipChecks"
   },
   "devDependencies": {
     "acorn-jsx": "^5.3.2",
-    "react-native": "^0.70.6",
-    "release-it-yarn-workspaces": "^3.0.0"
+    "react-native": "^0.70.6"
   },
   "dependencies": {
     "jsonshema-form-core": "*"

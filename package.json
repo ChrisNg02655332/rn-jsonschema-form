@@ -63,9 +63,6 @@
     "plugins": {
       "@release-it/conventional-changelog": {
         "preset": "angular"
-      },
-      "release-it-yarn-workspaces": {
-        "skipChecks": true
       }
     }
   },
