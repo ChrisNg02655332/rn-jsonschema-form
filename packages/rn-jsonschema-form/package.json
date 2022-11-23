@@ -1,14 +1,15 @@
 {
   "name": "rn-jsonschema-form",
-  "version": "0.33.0",
+  "version": "0.34.0",
   "description": "> TODO: description",
   "author": "Chris Nguyen <chris.dungnguyen@gmail.com>",
   "homepage": "https://github.com/ChrisNg02655332/rn-jsonschema-form#readme",
   "license": "MIT",
-  "main": "lib/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
