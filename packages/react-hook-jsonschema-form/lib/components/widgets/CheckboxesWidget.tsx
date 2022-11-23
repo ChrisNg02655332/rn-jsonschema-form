@@ -1,4 +1,4 @@
-import { CommonProps } from 'jsonshema-form-core/src/types'
+import { CommonProps } from 'jsonshema-form-core'
 
 const CheckboxesWidget = ({ id, disabled, options, readonly, name, methods, required }: CommonProps) => {
   const { register } = methods

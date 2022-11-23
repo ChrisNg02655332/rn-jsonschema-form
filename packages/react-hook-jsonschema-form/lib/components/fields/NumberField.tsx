@@ -1,4 +1,4 @@
-import { CommonProps } from 'jsonshema-form-core/src/types'
+import { CommonProps } from 'jsonshema-form-core'
 
 const NumberField = (props: CommonProps) => {
   const { StringField } = props.registry.fields

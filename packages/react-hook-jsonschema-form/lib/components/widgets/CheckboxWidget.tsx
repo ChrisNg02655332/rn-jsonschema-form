@@ -1,5 +1,5 @@
-import { CommonProps } from 'jsonshema-form-core/src/types'
 import React from 'react'
+import { CommonProps } from 'jsonshema-form-core'
 
 const CheckboxWidget = ({
   name,

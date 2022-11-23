@@ -1,5 +1,4 @@
-import { CommonProps } from 'jsonshema-form-core/src/types'
-import { getUiOptions, getWidget, hasWidget, isSelect, optionsList } from 'jsonshema-form-core/src/utils'
+import { CommonProps, getUiOptions, getWidget, hasWidget, isSelect, optionsList } from 'jsonshema-form-core'
 
 const StringField = ({ name, schema, uiSchema, required, registry, methods, ...rest }: CommonProps) => {
   const { title, format } = schema

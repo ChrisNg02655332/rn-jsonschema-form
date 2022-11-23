@@ -1,5 +1,4 @@
-import { CommonProps } from 'jsonshema-form-core/src/types'
-import { getUiOptions, getWidget, optionsList } from 'jsonshema-form-core/src/utils'
+import { CommonProps, getUiOptions, getWidget, optionsList } from 'jsonshema-form-core'
 
 const BooleanField = ({
   name,

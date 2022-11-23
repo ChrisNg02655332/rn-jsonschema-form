@@ -1,15 +1,15 @@
 import React from 'react'
 import includes from 'core-js-pure/es/array/includes'
 
-import { CommonProps } from 'jsonshema-form-core/src/types'
 import {
+  CommonProps,
   getUiOptions,
   toIdSchema,
   retrieveSchema,
   isMultiSelect,
   getWidget,
   optionsList,
-} from 'jsonshema-form-core/src/utils'
+} from 'jsonshema-form-core'
 import { useFieldArray } from 'react-hook-form'
 
 const ArrayFieldTitle = ({ TitleField, idSchema, title, required }) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { JSONSchema7 } from 'jsonschema7'
-import FormComponent from 'jsonshema-form-core/src/Form'
-import { Methods } from 'jsonshema-form-core/src/types'
+import { Form as FormComponent } from 'jsonshema-form-core'
+import { Methods } from 'jsonshema-form-core'
 import fields from './fields'
 import widgets from './widgets'
 

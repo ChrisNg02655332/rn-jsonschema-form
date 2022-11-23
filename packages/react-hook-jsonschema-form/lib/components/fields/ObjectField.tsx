@@ -1,6 +1,5 @@
 import React from 'react'
-import { CommonProps } from 'jsonshema-form-core/src/types'
-import { ADDITIONAL_PROPERTY_FLAG, orderProperties, retrieveSchema } from 'jsonshema-form-core/src/utils'
+import { ADDITIONAL_PROPERTY_FLAG, orderProperties, retrieveSchema, CommonProps } from 'jsonshema-form-core'
 
 const DefaultObjectFieldTemplate = ({ TitleField, DescriptionField, ...rest }: any) => {
   return (

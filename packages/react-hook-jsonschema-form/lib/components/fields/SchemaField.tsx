@@ -1,5 +1,4 @@
-import { Methods } from 'jsonshema-form-core/src/types'
-import { getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core/src/utils'
+import { Methods, getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
