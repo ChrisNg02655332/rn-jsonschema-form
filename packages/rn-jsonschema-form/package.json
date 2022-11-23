@@ -20,7 +20,8 @@
   },
   "devDependencies": {
     "acorn-jsx": "^5.3.2",
-    "react-native": "^0.70.6"
+    "react-native": "^0.70.6",
+    "release-it-yarn-workspaces": "^3.0.0"
   },
   "dependencies": {
     "jsonshema-form-core": "*"
