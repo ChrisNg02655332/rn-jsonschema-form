@@ -1,18 +1,22 @@
 {
   "name": "jsonshema-form-core",
   "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Chris Nguyen <chris.dungnguyen@gmail.com>",
+  "homepage": "https://github.com/ChrisNg02655332/rn-jsonschema-form#readme",
   "license": "MIT",
-  "scripts": {
-    "build": "tsc"
+  "main": "lib/index.ts",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisNg02655332/rn-jsonschema-form.git"
   },
-  "devDependencies": {
-    "@types/json-schema-merge-allof": "^0.6.1",
-    "@types/lodash": "^4.14.180",
-    "@types/react-is": "^17.0.3",
-    "json-schema-merge-allof": "^0.8.1",
-    "jsonpointer": "^5.0.0",
-    "jsonschema7": "^0.8.0",
-    "lodash": "^4.17.21",
-    "react-is": "^17.0.2"
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/ChrisNg02655332/rn-jsonschema-form/issues"
   }
 }

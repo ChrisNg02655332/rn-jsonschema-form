@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./packages/react-jsonschema-form/lib",
-    "declarationDir": "lib"
-  },
-  "include": ["src"],
-  "exclude": ["./packages/rn-jsonschema-form/lib"]
-}

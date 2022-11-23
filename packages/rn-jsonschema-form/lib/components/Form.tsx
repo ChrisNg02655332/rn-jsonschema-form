@@ -1,10 +1,11 @@
 import React from 'react'
 import { JSONSchema7 } from 'jsonschema7'
 import { TouchableOpacity, Text } from 'react-native'
-import { Form as FormComponent } from 'jsonshema-form-core/src/index'
-import { Methods } from 'jsonshema-form-core/src/types'
+import { Form as FormComponent, Methods } from 'jsonshema-form-core'
 
-type Props = {
+export { Form }
+
+type FormProps = {
   schema: JSONSchema7
   uiSchema?: any
   fields?: any
@@ -16,11 +17,22 @@ type Props = {
   ObjectFieldTemplate?: any
   FieldTemplate?: any
   submitText?: string
+  formContext?: any
 }
 
-const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
+function Form({ onSubmit, submitText, children, ...rest }: React.PropsWithChildren<FormProps>) {
+  const registry = {
+    fields: { ...(rest.fields || {}) },
+    widgets: { ...(rest.widgets || {}) },
+    ArrayFieldTemplate: rest.ArrayFieldTemplate,
+    ObjectFieldTemplate: rest.ObjectFieldTemplate,
+    FieldTemplate: rest.FieldTemplate,
+    rootSchema: rest.schema,
+    formContext: rest.formContext || {},
+  }
+
   return (
-    <FormComponent platform="mobile" {...rest}>
+    <FormComponent registry={registry} platform="mobile" {...rest}>
       {typeof onSubmit === 'function' && !children ? (
         <TouchableOpacity>
           <Text>{submitText || 'Submit'}</Text>
@@ -31,5 +43,3 @@ const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
     </FormComponent>
   )
 }
-
-export default Form

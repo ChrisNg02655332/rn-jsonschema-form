@@ -4,7 +4,9 @@ import { JSONSchema7 } from 'jsonschema7'
 import { useStateWithCallbackLazy } from './hooks'
 import { Methods, Platform } from './types'
 
-type Props = {
+export { Form }
+
+type FormProps = {
   schema: JSONSchema7
   uiSchema?: any
   fields?: any
@@ -28,7 +30,7 @@ type Props = {
   }
 }
 
-const Form: React.FC<Props> = (props) => {
+function Form(props: React.PropsWithChildren<FormProps>) {
   const [state, setState] = useStateWithCallbackLazy({})
 
   React.useEffect(() => {
@@ -67,5 +69,3 @@ const Form: React.FC<Props> = (props) => {
     </>
   )
 }
-
-export default Form
