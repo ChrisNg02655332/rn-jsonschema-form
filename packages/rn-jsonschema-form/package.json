@@ -1,6 +1,6 @@
 {
   "name": "rn-jsonschema-form",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "description": "> TODO: description",
   "author": "Chris Nguyen <chris.dungnguyen@gmail.com>",
   "homepage": "https://github.com/ChrisNg02655332/rn-jsonschema-form#readme",
@@ -20,11 +20,13 @@
     "release": "git checkout main && git pull && release-it"
   },
   "devDependencies": {
-    "acorn-jsx": "^5.3.2",
-    "jsonshema-form-core": "*",
-    "react-native": "^0.70.6"
+    "@types/react-native": "^0.70.7",
+    "jsonshema-form-core": "*"
   },
   "bugs": {
     "url": "https://github.com/ChrisNg02655332/rn-jsonschema-form/issues"
+  },
+  "dependencies": {
+    "jsonshema-form-core": "^1.0.0"
   }
 }
