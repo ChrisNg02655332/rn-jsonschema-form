@@ -2,6 +2,7 @@ import React from 'react'
 import { JSONSchema7 } from 'jsonschema7'
 import { TouchableOpacity, Text } from 'react-native'
 import { Form as FormComponent, Methods } from 'jsonshema-form-core'
+import fields from './fields'
 
 export { Form }
 
@@ -22,7 +23,7 @@ type FormProps = {
 
 function Form({ onSubmit, submitText, children, ...rest }: React.PropsWithChildren<FormProps>) {
   const registry = {
-    fields: { ...(rest.fields || {}) },
+    fields: { ...fields, ...(rest.fields || {}) },
     widgets: { ...(rest.widgets || {}) },
     ArrayFieldTemplate: rest.ArrayFieldTemplate,
     ObjectFieldTemplate: rest.ObjectFieldTemplate,

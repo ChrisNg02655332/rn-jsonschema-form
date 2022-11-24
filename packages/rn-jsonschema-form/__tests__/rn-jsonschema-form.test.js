@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-const rnJsonschemaForm = require('..');
+const rnJsonschemaForm = require('../lib')
 
 describe('rn-jsonschema-form', () => {
-    it('needs tests');
-});
+  it('needs tests')
+})

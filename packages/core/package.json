@@ -13,9 +13,6 @@
     "type": "git",
     "url": "git+https://github.com/ChrisNg02655332/rn-jsonschema-form.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/ChrisNg02655332/rn-jsonschema-form/issues"
   }

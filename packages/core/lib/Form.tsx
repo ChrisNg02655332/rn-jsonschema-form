@@ -19,7 +19,7 @@ type FormProps = {
   ObjectFieldTemplate?: any
   FieldTemplate?: any
   enableReinitialize?: boolean
-  registry: {
+  registry?: {
     fields: any
     widgets: any
     ArrayFieldTemplate: any
@@ -43,10 +43,6 @@ function Form(props: React.PropsWithChildren<FormProps>) {
     }
   }, [props.schema, props.uiSchema])
 
-  const onSubmit = (formData: any) => {
-    props.onSubmit && props.onSubmit(formData)
-  }
-
   const SchemaField = props.registry?.fields?.SchemaField
 
   return (
@@ -58,14 +54,7 @@ function Form(props: React.PropsWithChildren<FormProps>) {
         platform={props.platform}
         registry={props.registry}
       />
-
-      {props.platform === 'web' ? (
-        <button className="btn btn-primary" onClick={props.methods.handleSubmit(onSubmit)}>
-          Submit
-        </button>
-      ) : (
-        props.children
-      )}
+      {props.children}
     </>
   )
 }

@@ -1,0 +1,20 @@
+// {
+//   "extends": "../../tsconfig.json",
+//   "compilerOptions": {
+//     "outDir": "./packages/rn-jsonschema-form/dist",
+//     "declarationDir": "dist",
+//     "jsx": "react-native"
+//   },
+//   "include": ["lib"]
+//   // "exclude": ["./packages/rn-jsonschema-form/lib"]
+// }
+
+{
+  "extends": "../../tsconfig.json",
+  "exclude": ["__tests__"],
+  "include": ["lib"],
+  "compilerOptions": {
+    "declarationDir": "dist",
+    "jsx": "react-jsx"
+  }
+}
