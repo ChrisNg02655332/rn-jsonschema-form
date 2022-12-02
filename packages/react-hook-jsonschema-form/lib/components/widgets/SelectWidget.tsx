@@ -25,7 +25,7 @@ const SelectWidget = ({
       {...register(name, { required, disabled })}
     >
       {!multiple && schema.default === undefined && <option value="">{placeholder}</option>}
-      {enumOptions.map(({ value, label }, i) => {
+      {enumOptions.map(({ value, label }: any, i: number) => {
         const disabled = enumDisabled && enumDisabled.indexOf(value) !== -1
         return (
           <option key={i} value={value} disabled={disabled}>

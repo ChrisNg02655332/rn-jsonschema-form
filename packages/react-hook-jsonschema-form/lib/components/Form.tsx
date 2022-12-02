@@ -5,6 +5,8 @@ import { Methods } from 'jsonshema-form-core'
 import fields from './fields'
 import widgets from './widgets'
 
+export { Form }
+
 type Props = {
   schema: JSONSchema7
   uiSchema?: any
@@ -21,7 +23,7 @@ type Props = {
   formContext?: any
 }
 
-const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
+function Form({ onSubmit, submitText, children, ...rest }: React.PropsWithChildren<Props>) {
   const registry = {
     fields: { ...fields, ...(rest.fields || {}) },
     widgets: { ...widgets, ...(rest.widgets || {}) },
@@ -38,5 +40,3 @@ const Form: React.FC<Props> = ({ onSubmit, submitText, children, ...rest }) => {
     </FormComponent>
   )
 }
-
-export default Form

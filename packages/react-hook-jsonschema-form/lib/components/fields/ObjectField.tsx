@@ -19,7 +19,7 @@ const DefaultObjectFieldTemplate = ({ TitleField, DescriptionField, ...rest }: a
           formContext={rest.formContext}
         />
       )}
-      {rest.properties.map((prop) => prop.content)}
+      {rest.properties.map((prop: any) => prop.content)}
     </fieldset>
   )
 }

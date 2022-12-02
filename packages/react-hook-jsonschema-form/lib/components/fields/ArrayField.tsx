@@ -1,4 +1,4 @@
-import React from 'react'
+//@ts-ignore
 import includes from 'core-js-pure/es/array/includes'
 
 import {
@@ -12,14 +12,14 @@ import {
 } from 'jsonshema-form-core'
 import { useFieldArray } from 'react-hook-form'
 
-const ArrayFieldTitle = ({ TitleField, idSchema, title, required }) => {
+const ArrayFieldTitle = ({ TitleField, idSchema, title, required }: any) => {
   if (!title) return null
 
   const id = `${idSchema.$id}__title`
   return <TitleField id={id} title={title} required={required} />
 }
 
-const ArrayFieldDescription = ({ DescriptionField, idSchema, description }) => {
+const ArrayFieldDescription = ({ DescriptionField, idSchema, description }: any) => {
   if (!description) return null
 
   const id = `${idSchema.$id}__description`
@@ -43,7 +43,7 @@ const renderArrayFieldItem = ({
   registry,
   methods,
   name,
-}) => {
+}: any) => {
   const {
     fields: { SchemaField },
   } = registry
@@ -53,7 +53,7 @@ const renderArrayFieldItem = ({
     ...uiSchema['ui:options'],
   } as any
 
-  const has = {
+  const has: any = {
     moveUp: orderable && canMoveUp,
     moveDown: orderable && canMoveDown,
     remove: removable && canRemove,
@@ -97,7 +97,7 @@ const renderArrayFieldItem = ({
   }
 }
 
-const DefaultArrayItem = (props) => {
+const DefaultArrayItem = (props: any) => {
   // const btnStyle = {
   //   flex: 1,
   //   paddingLeft: 6,
@@ -161,7 +161,7 @@ const DefaultArrayItem = (props) => {
   )
 }
 
-const DefaultNormalArrayFieldTemplate = (props) => {
+const DefaultNormalArrayFieldTemplate = (props: any) => {
   return (
     <fieldset className={props.className} id={props.idSchema.$id}>
       <ArrayFieldTitle
@@ -182,7 +182,7 @@ const DefaultNormalArrayFieldTemplate = (props) => {
       )}
 
       <div key={`array-item-list-${props.idSchema.$id}`}>
-        {props.items && props.items.map((p) => DefaultArrayItem(p))}
+        {props.items && props.items.map((p: any) => DefaultArrayItem(p))}
       </div>
 
       {/* {props.canAdd && (
@@ -204,7 +204,7 @@ const NormalArray = ({
   idPrefix,
   idSeparator,
   methods,
-}) => {
+}: any) => {
   const { control } = methods
   const { fields: arrayFields } = useFieldArray({
     control,
@@ -286,7 +286,7 @@ const MultiSelect = ({
   methods,
   name,
   placeholder,
-}) => {
+}: any) => {
   const { widgets, rootSchema, formContext } = registry
   const itemsSchema = retrieveSchema(schema.items, rootSchema)
   const title = schema.title || name
@@ -372,7 +372,7 @@ const ArrayField = ({
   )
 }
 
-const isItemRequired = (itemSchema) => {
+const isItemRequired = (itemSchema: any) => {
   if (Array.isArray(itemSchema.type)) {
     // While we don't yet support composite/nullable jsonschema types, it's
     // future-proof to check for requirement against these.

@@ -6,7 +6,7 @@ const CheckboxesWidget = ({ id, disabled, options, readonly, name, methods, requ
 
   return (
     <div className="checkboxes" id={id}>
-      {enumOptions.map((option, index) => {
+      {enumOptions.map((option: any, index: number) => {
         const itemDisabled = enumDisabled && enumDisabled.indexOf(option.value) !== -1
         const disabledCls = disabled || itemDisabled || readonly ? 'disabled' : ''
 
