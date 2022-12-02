@@ -1,6 +1,8 @@
 import { CommonProps } from 'jsonshema-form-core'
 
-const SelectWidget = ({
+export { SelectWidget }
+
+function SelectWidget({
   name,
   schema,
   id,
@@ -11,7 +13,7 @@ const SelectWidget = ({
   readonly,
   multiple,
   placeholder,
-}: CommonProps) => {
+}: CommonProps) {
   const { register } = methods
   const { enumOptions, enumDisabled } = options
 
@@ -36,5 +38,3 @@ const SelectWidget = ({
     </select>
   )
 }
-
-export default SelectWidget

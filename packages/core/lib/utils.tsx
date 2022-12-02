@@ -24,7 +24,7 @@ const widgetMap: any = {
     // 'ipv6': 'TextWidget',
     'data-url': 'FileWidget',
     select: 'SelectWidget',
-    // 'textarea': 'TextareaWidget',
+    textarea: 'TextareaWidget',
     // 'hidden': 'HiddenWidget',
     // 'date': 'DateWidget',
     // 'datetime': 'DateTimeWidget',
@@ -57,16 +57,6 @@ const widgetMap: any = {
     // hidden: 'HiddenWidget',
   },
 }
-
-// export const getDefaultRegistry = (fields, widgets): any => {
-//   return {
-//     fields,
-//     widgets,
-//     definitions: {},
-//     rootSchema: {},
-//     formContext: {},
-//   }
-// }
 
 export const isObject = (thing: any): boolean => {
   //   if (typeof File !== 'undefined' && thing instanceof File) {

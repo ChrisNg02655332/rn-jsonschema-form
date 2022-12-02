@@ -1,16 +1,8 @@
-import React from 'react'
 import { CommonProps } from 'jsonshema-form-core'
 
-const CheckboxWidget = ({
-  name,
-  schema,
-  disabled,
-  readonly,
-  label,
-  required,
-  DescriptionField,
-  methods,
-}: CommonProps) => {
+export { CheckboxWidget }
+
+function CheckboxWidget({ name, schema, disabled, readonly, label, required, DescriptionField, methods }: CommonProps) {
   const { register } = methods
   return (
     <div className="form-check">
@@ -22,5 +14,3 @@ const CheckboxWidget = ({
     </div>
   )
 }
-
-export default CheckboxWidget

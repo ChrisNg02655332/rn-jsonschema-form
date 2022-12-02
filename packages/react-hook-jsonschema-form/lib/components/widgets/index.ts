@@ -1,15 +1,15 @@
-import BaseInput from './BaseInput'
-import CheckboxWidget from './CheckboxWidget'
-import CheckboxesWidget from './CheckboxesWidget'
-// import FileWidget from './FileWidget'
-import SelectWidget from './SelectWidget'
-import TextWidget from './TextWidget'
+import { BaseInput } from './BaseInput'
+import { CheckboxWidget } from './CheckboxWidget'
+import { CheckboxesWidget } from './CheckboxesWidget'
+import { SelectWidget } from './SelectWidget'
+import { TextWidget } from './TextWidget'
+import { TextareaWidget } from './TextareaWidget'
 
 export default {
   BaseInput,
   CheckboxWidget,
   CheckboxesWidget,
-  // FileWidget,
   SelectWidget,
   TextWidget,
+  TextareaWidget,
 }

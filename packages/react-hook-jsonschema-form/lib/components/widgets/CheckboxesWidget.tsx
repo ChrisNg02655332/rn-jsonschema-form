@@ -1,6 +1,8 @@
 import { CommonProps } from 'jsonshema-form-core'
 
-const CheckboxesWidget = ({ id, disabled, options, readonly, name, methods, required }: CommonProps) => {
+export { CheckboxesWidget }
+
+function CheckboxesWidget({ id, disabled, options, readonly, name, methods, required }: CommonProps) {
   const { register } = methods
   const { enumOptions, enumDisabled } = options
 
@@ -32,5 +34,3 @@ const CheckboxesWidget = ({ id, disabled, options, readonly, name, methods, requ
     </div>
   )
 }
-
-export default CheckboxesWidget

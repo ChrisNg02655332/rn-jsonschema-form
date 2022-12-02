@@ -1,8 +1,6 @@
-import React from 'react'
+export { TextWidget }
 
-const TextWidget = (props: any) => {
+function TextWidget(props: any) {
   const { BaseInput } = props.registry.widgets
   return <BaseInput {...props} />
 }
-
-export default TextWidget
