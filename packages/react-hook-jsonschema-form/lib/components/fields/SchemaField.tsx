@@ -54,16 +54,22 @@ const Help = ({ help }: { help: string | any }) => {
   return <span>{help}</span>
 }
 
-const DefaultTemplate: React.FC<{ label: string; required: boolean; displayLabel: boolean }> = ({
-  children,
-  required,
-  displayLabel,
-  label,
-}) => {
+const DefaultTemplate: React.FC<{
+  methods: Methods
+  name: string
+  label: string
+  required: boolean
+  displayLabel: boolean
+}> = ({ children, required, displayLabel, methods, label, name }) => {
   return (
     <div className="mb-3">
       {displayLabel && <Label label={label} required={required} />}
       {children}
+      {methods.formState.errors[name] && (
+        <span style={{ color: 'red', fontSize: 13 }}>
+          {methods.formState.errors[name]?.message || '* This field is required'}
+        </span>
+      )}
     </div>
   )
 }
@@ -82,7 +88,7 @@ type Props = {
   idSeparator?: any
 }
 
-const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSeparator, ...rest }: Props) => {
+const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSeparator, required, ...rest }: Props) => {
   const { rootSchema, fields, formContext } = registry
 
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
@@ -109,6 +115,7 @@ const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSepar
       disabled={disabled}
       readonly={readonly}
       registry={registry}
+      required={required}
     />
   )
 
@@ -129,7 +136,7 @@ const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSepar
     label,
     hidden,
     methods,
-    required: rest.required,
+    required,
     disabled,
     readonly,
     displayLabel,

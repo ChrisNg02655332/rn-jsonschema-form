@@ -35,8 +35,14 @@ function Form({ onSubmit, submitText, children, ...rest }: React.PropsWithChildr
   }
 
   return (
-    <FormComponent platform="web" registry={registry} {...rest}>
-      {typeof onSubmit === 'function' && !children ? <button type="submit">{submitText || 'Submit'}</button> : children}
-    </FormComponent>
+    <form onSubmit={typeof onSubmit === 'function' && !children ? rest.methods.handleSubmit(onSubmit) : undefined}>
+      <FormComponent platform="web" registry={registry} {...rest}>
+        {typeof onSubmit === 'function' && !children ? (
+          <button type="submit">{submitText || 'Submit'}</button>
+        ) : (
+          children
+        )}
+      </FormComponent>
+    </form>
   )
 }
