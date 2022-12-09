@@ -7,9 +7,9 @@ export { SchemaField }
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
   array: 'ArrayField',
-  // boolean: 'BooleanField',
-  // integer: 'NumberField',
-  // number: 'NumberField',
+  boolean: 'BooleanField',
+  integer: 'NumberField',
+  number: 'NumberField',
   object: 'ObjectField',
   string: 'StringField',
   // null: 'NullField',

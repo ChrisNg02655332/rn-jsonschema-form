@@ -4,6 +4,7 @@ import { ObjectField } from './ObjectField'
 import { SchemaField } from './SchemaField'
 import { TitleField } from './TitleField'
 import { StringField } from './StringField'
+import { NumberField } from './NumberField'
 import { UnsupportedField } from './UnsupportedField'
 
 export default {
@@ -13,5 +14,6 @@ export default {
   SchemaField,
   TitleField,
   StringField,
+  NumberField,
   UnsupportedField,
 }
