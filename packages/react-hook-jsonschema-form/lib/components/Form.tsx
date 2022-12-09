@@ -38,7 +38,9 @@ function Form({ onSubmit, submitText, children, ...rest }: React.PropsWithChildr
     <form onSubmit={typeof onSubmit === 'function' && !children ? rest.methods.handleSubmit(onSubmit) : undefined}>
       <FormComponent platform="web" registry={registry} {...rest}>
         {typeof onSubmit === 'function' && !children ? (
-          <button type="submit">{submitText || 'Submit'}</button>
+          <button type="submit" className="btn btn-primary">
+            {submitText || 'Submit'}
+          </button>
         ) : (
           children
         )}

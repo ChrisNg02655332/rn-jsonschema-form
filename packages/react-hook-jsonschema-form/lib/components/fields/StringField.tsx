@@ -6,6 +6,7 @@ const StringField = ({ name, schema, uiSchema, required, registry, methods, ...r
   const { widgets } = registry
 
   const enumOptions = isSelect(schema) && optionsList(schema)
+
   let defaultWidget = enumOptions ? 'select' : 'text'
   if (format && hasWidget(schema, format, widgets)) {
     defaultWidget = format
@@ -23,6 +24,7 @@ const StringField = ({ name, schema, uiSchema, required, registry, methods, ...r
       required={required}
       methods={methods}
       registry={registry}
+      options={{ ...rest.options, enumOptions }}
     />
   )
 }

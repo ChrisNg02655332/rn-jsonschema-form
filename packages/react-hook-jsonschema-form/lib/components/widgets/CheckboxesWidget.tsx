@@ -13,7 +13,7 @@ function CheckboxesWidget({ id, disabled, options, readonly, name, methods, requ
         const disabledCls = disabled || itemDisabled || readonly ? 'disabled' : ''
 
         return (
-          <div className="form-check">
+          <div className="form-check" key={`${id}_${index}`}>
             <input
               type="checkbox"
               className="form-check-input"
