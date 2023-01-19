@@ -20,7 +20,7 @@ function CheckboxesWidget({ id, disabled, options, readonly, name, methods, requ
               id={`${id}_${index}`}
               defaultValue={option.value}
               disabled={!!disabledCls}
-              {...register(`${name}.${index}`, {
+              {...register(`${name}`, {
                 disabled: disabled || itemDisabled || readonly,
                 required,
               })}
