@@ -74,7 +74,7 @@ function ObjectField({
     TitleField,
     DescriptionField,
     properties: orderedProperties.map((name: string) => {
-      const addedByAdditionalProperties = schema.properties[name].hasOwnProperty(ADDITIONAL_PROPERTY_FLAG)
+      const addedByAdditionalProperties = Object.hasOwn(schema.properties[name], ADDITIONAL_PROPERTY_FLAG)
       const fieldUiSchema = addedByAdditionalProperties ? uiSchema.additionalProperties : uiSchema[name]
       const hidden = fieldUiSchema && fieldUiSchema['ui:widget'] === 'hidden'
 

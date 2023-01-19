@@ -1,4 +1,3 @@
-//@ts-ignore
 import includes from 'core-js-pure/es/array/includes'
 
 import {
@@ -334,7 +333,7 @@ function ArrayField({
 }: CommonProps) {
   const { rootSchema } = registry
 
-  if (!schema.hasOwnProperty('items')) {
+  if (!Object.hasOwn(schema, 'items')) {
     const { fields } = registry
     const { UnsupportedField } = fields
 

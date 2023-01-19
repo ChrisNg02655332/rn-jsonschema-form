@@ -11,5 +11,5 @@ type DescriptionFieldProps = {
 function DescriptionField({ id, description }: DescriptionFieldProps) {
   if (!description) return null
   if (typeof description === 'string') return <Text>{description}</Text>
-  return <View>{description as any}</View>
+  return <View nativeID={id}>{description as any}</View>
 }

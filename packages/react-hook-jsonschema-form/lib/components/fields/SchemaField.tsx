@@ -122,7 +122,7 @@ const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSepar
   const id = idSchema.$id
 
   const displayLabel = getDisplayLabel(schema, uiSchema, rootSchema)
-  let label = uiSchema['ui:title'] || rest.schema.title || schema.title
+  const label = uiSchema['ui:title'] || rest.schema.title || schema.title
   const description = uiSchema['ui:description'] || rest.schema.description || schema.description
   const help = uiSchema['ui:help']
   const hidden = uiSchema['ui:widget'] === 'hidden'

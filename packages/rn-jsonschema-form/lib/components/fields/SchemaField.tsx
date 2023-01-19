@@ -1,4 +1,4 @@
-import { Methods, getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core'
+import { Methods, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core'
 import React from 'react'
 import { Text, View } from 'react-native'
 
@@ -122,8 +122,8 @@ function SchemaField({ name, uiSchema = {}, registry, methods, idPrefix, idSepar
 
   const id = idSchema.$id
 
-  const displayLabel = getDisplayLabel(schema, uiSchema, rootSchema)
-  let label = uiSchema['ui:title'] || rest.schema.title || schema.title
+  // const displayLabel = getDisplayLabel(schema, uiSchema, rootSchema)
+  const label = uiSchema['ui:title'] || rest.schema.title || schema.title
   const description = uiSchema['ui:description'] || rest.schema.description || schema.description
   const help = uiSchema['ui:help']
   const hidden = uiSchema['ui:widget'] === 'hidden'
