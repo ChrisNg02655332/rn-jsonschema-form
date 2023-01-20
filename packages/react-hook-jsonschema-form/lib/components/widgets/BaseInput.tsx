@@ -7,6 +7,7 @@ function BaseInput({
   name,
   required,
   readonly,
+  methods,
   placeholder,
   disabled,
   type,
@@ -15,6 +16,7 @@ function BaseInput({
     <Controller
       name={name}
       rules={{ required }}
+      control={methods.control}
       render={({ field }) => (
         <input
           className="form-control"
