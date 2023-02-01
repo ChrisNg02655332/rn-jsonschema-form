@@ -2,9 +2,11 @@ import { CommonProps } from 'jsonshema-form-core'
 
 export { CheckboxesWidget }
 
-function CheckboxesWidget({ id, disabled, options, readonly, name, methods, required }: CommonProps) {
+function CheckboxesWidget({ id, disabled, options, readonly, name, methods, schema, required }: CommonProps) {
   const { register } = methods
   const { enumOptions, enumDisabled } = options
+
+  const fieldName = schema?.parentKey ? `${schema?.parentKey}.${name}` : `${name}`
 
   return (
     <div className="checkboxes" id={id}>
@@ -20,7 +22,7 @@ function CheckboxesWidget({ id, disabled, options, readonly, name, methods, requ
               id={`${id}_${index}`}
               defaultValue={option.value}
               disabled={!!disabledCls}
-              {...register(`${name}`, {
+              {...register(`${fieldName}`, {
                 disabled: disabled || itemDisabled || readonly,
                 required,
               })}
