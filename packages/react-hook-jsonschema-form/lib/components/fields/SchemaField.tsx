@@ -1,4 +1,5 @@
 import { Methods, getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core'
+import { get } from 'lodash'
 
 const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
@@ -61,14 +62,16 @@ const DefaultTemplate: React.FC<{
   required: boolean
   displayLabel: boolean
 }> = ({ children, required, displayLabel, methods, label, name }) => {
+  const error = get(methods.formState.errors, name)
+
   return (
     <div className="mb-3">
       {displayLabel && <Label label={label} required={required} />}
       {children}
-      {methods.formState.errors[name] && (
-        <span style={{ color: 'red', fontSize: 13 }}>
-          {methods.formState.errors[name]?.message || '* This field is required'}
-        </span>
+      {error && (
+        <p className="mt-1" style={{ color: 'red', fontSize: 13 }}>
+          {error?.message || '* This field is required'}
+        </p>
       )}
     </div>
   )
