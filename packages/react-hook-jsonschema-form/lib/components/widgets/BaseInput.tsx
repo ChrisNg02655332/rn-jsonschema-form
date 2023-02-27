@@ -8,7 +8,7 @@ function BaseInput({
   required,
   readonly,
   methods,
-  placeholder,
+  uiSchema,
   disabled,
   type,
 }: CommonProps & { type: 'text' | 'number' | 'date' }) {
@@ -22,7 +22,7 @@ function BaseInput({
           className="form-control"
           disabled={disabled}
           readOnly={readonly}
-          placeholder={placeholder}
+          placeholder={uiSchema?.['ui:placeholder'] || ''}
           type={type}
           {...field}
         />

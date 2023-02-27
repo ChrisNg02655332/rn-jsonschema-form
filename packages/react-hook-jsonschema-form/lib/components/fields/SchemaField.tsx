@@ -1,7 +1,8 @@
+import React from 'react'
 import { Methods, getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core'
+
 import { get } from 'lodash'
 
-const REQUIRED_FIELD_SYMBOL = '*'
 const COMPONENT_TYPES: any = {
   array: 'ArrayField',
   boolean: 'BooleanField',
@@ -38,17 +39,6 @@ const getFieldComponent = (schema: any, uiSchema: any, idSchema: any, fields: an
       }
 }
 
-const Label = ({ label, required }: { label: string; required: boolean }) => {
-  if (!label) return null
-
-  return (
-    <label>
-      {label}
-      {required && REQUIRED_FIELD_SYMBOL}
-    </label>
-  )
-}
-
 const Help = ({ help }: { help: string | any }) => {
   if (!help) return null
   if (typeof help === 'string') return <p>{help}</p>
@@ -61,18 +51,25 @@ const DefaultTemplate: React.FC<{
   label: string
   required: boolean
   displayLabel: boolean
-}> = ({ children, required, displayLabel, methods, label, name }) => {
+  uiSchema: any
+}> = ({ children, required, displayLabel, methods, label, name, uiSchema }) => {
   const error = get(methods.formState.errors, name)
+  const errorMessage = error ? error?.message || `${label || 'This field'} is required` : ''
+  const help = uiSchema['ui:help']
 
   return (
-    <div className="mb-3">
-      {displayLabel && <Label label={label} required={required} />}
-      {children}
-      {error && (
-        <p className="mt-1" style={{ color: 'red', fontSize: 13 }}>
-          {error?.message || '* This field is required'}
-        </p>
+    <div className={`mb-3 ${error ? 'invalid' : 'valid'}`}>
+      {displayLabel && (
+        <label className="form-label mb-1">
+          {label} {required && <span className="text-danger">*</span>}
+        </label>
       )}
+
+      <div>
+        {children}
+
+        {(help || error) && <div className={`feedback ${error ? 'invalid' : ''}`}>{errorMessage || help}</div>}
+      </div>
     </div>
   )
 }
