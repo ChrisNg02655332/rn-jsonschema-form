@@ -68,7 +68,11 @@ const DefaultTemplate: React.FC<{
       <div>
         {children}
 
-        {(help || error) && <div className={`feedback ${error ? 'invalid' : ''}`}>{errorMessage || help}</div>}
+        {(help || error) && (
+          <div className={`help mt-1 d-block ${error ? 'invalid-feedback' : 'text-secondary'}`}>
+            {errorMessage || help}
+          </div>
+        )}
       </div>
     </div>
   )
