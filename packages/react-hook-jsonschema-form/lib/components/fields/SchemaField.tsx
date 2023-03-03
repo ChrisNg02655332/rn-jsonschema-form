@@ -52,10 +52,16 @@ const DefaultTemplate: React.FC<{
   required: boolean
   displayLabel: boolean
   uiSchema: any
-}> = ({ children, required, displayLabel, methods, label, name, uiSchema }) => {
-  const error = get(methods.formState.errors, name)
-  const errorMessage = error ? error?.message || `${label || 'This field'} is required` : ''
+  schema: any
+}> = ({ children, required, displayLabel, methods, label, name, uiSchema, schema }) => {
+  const fieldName = schema?.parentKey ? `${schema?.parentKey}.${name}` : name
   const help = uiSchema['ui:help']
+
+  const error = schema.type !== 'object' ? get(methods.formState.errors, fieldName) : ''
+  /**
+   * Note: when schema type is object, dont need to show error field
+   */
+  const errorMessage = error ? error?.message || `${label || 'This field'} is required` : ''
 
   return (
     <div className={`mb-3 ${error ? 'invalid' : 'valid'}`}>
