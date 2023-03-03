@@ -16,6 +16,7 @@ function SelectWidget({
 }: CommonProps) {
   const { register } = methods
   const { enumOptions, enumDisabled } = options
+  const fieldName = schema?.parentKey ? `${schema?.parentKey}.${name}` : `${name}`
 
   return (
     <select
@@ -24,7 +25,7 @@ function SelectWidget({
       className="form-control"
       required={required}
       disabled={disabled || readonly}
-      {...register(name, { required, disabled })}
+      {...register(fieldName, { required, disabled })}
     >
       {!multiple && schema.default === undefined && <option value="">{placeholder}</option>}
       {enumOptions.map(({ value, label }: any, i: number) => {

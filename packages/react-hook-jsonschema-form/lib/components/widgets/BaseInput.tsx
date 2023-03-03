@@ -13,12 +13,14 @@ function BaseInput({
   uiSchema,
   disabled,
   type,
+  schema,
 }: CommonProps & { type: 'text' | 'number' | 'date' }) {
-  const error = get(methods.formState.errors, name)
+  const fieldName = schema?.parentKey ? `${schema?.parentKey}.${name}` : name
+  const error = get(methods.formState.errors, fieldName)
 
   return (
     <Controller
-      name={name}
+      name={fieldName}
       rules={{ required }}
       control={methods.control}
       render={({ field }) => (
