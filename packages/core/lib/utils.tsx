@@ -11,6 +11,7 @@ const widgetMap: any = {
     checkbox: 'CheckboxWidget',
     // radio: 'RadioWidget',
     select: 'SelectWidget',
+    radio: 'RadioWidget',
     // hidden: 'HiddenWidget',
   },
   string: {
