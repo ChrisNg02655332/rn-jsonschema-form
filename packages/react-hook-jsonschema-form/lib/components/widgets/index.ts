@@ -4,6 +4,7 @@ import { CheckboxesWidget } from './CheckboxesWidget'
 import { SelectWidget } from './SelectWidget'
 import { TextWidget } from './TextWidget'
 import { TextareaWidget } from './TextareaWidget'
+import { RadioWidget } from './RadioWidget'
 
 export default {
   BaseInput,
@@ -12,4 +13,5 @@ export default {
   SelectWidget,
   TextWidget,
   TextareaWidget,
+  RadioWidget,
 }
