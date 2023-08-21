@@ -58,18 +58,30 @@ function Help({ help }: { help: string | any }) {
   return <Text>{help}</Text>
 }
 
+function ImageHelper() {
+  return null
+}
+
 type DefaultTemplateProps = {
   label: string
   required: boolean
   displayLabel: boolean
+  imageHint: any
 }
 
-function DefaultTemplate({ children, required, displayLabel, label }: React.PropsWithChildren<DefaultTemplateProps>) {
+function DefaultTemplate({
+  children,
+  required,
+  displayLabel,
+  label,
+  imageHint,
+}: React.PropsWithChildren<DefaultTemplateProps>) {
   return (
     <View>
       <>
         {displayLabel && <Label label={label} required={required} />}
         {children}
+        {imageHint}
       </>
     </View>
   )
@@ -90,9 +102,11 @@ type SchemaFieldProps = {
 }
 
 function SchemaField({ name, uiSchema = {}, registry, methods, idPrefix, idSeparator, ...rest }: SchemaFieldProps) {
-  const { rootSchema, fields, formContext } = registry
+  const { rootSchema, fields, formContext, widgets } = registry
 
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
+
+  const ImageHint = widgets['ImageHelper'] || ImageHelper
 
   let idSchema = rest.idSchema || {}
   const schema = retrieveSchema(rest.schema, rootSchema)
@@ -132,6 +146,7 @@ function SchemaField({ name, uiSchema = {}, registry, methods, idPrefix, idSepar
     description: <DescriptionField description={description} formContext={formContext} />,
     rawDescription: description,
     help: <Help help={help} />,
+    imageHint: <ImageHint id={id} name={name} schema={schema} uiSchema={uiSchema['ui:imageHelper']} />,
     id,
     name,
     label,
