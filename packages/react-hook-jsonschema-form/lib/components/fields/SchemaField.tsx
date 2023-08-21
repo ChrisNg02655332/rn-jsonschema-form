@@ -2,6 +2,7 @@ import React from 'react'
 import { Methods, getDisplayLabel, getSchemaType, retrieveSchema, mergeObjects, toIdSchema } from 'jsonshema-form-core'
 
 import { get } from 'lodash'
+import ImageHelper from '../common/ImageHelper'
 
 const COMPONENT_TYPES: any = {
   array: 'ArrayField',
@@ -53,7 +54,8 @@ const DefaultTemplate: React.FC<{
   displayLabel: boolean
   uiSchema: any
   schema: any
-}> = ({ children, required, displayLabel, methods, label, name, uiSchema, schema }) => {
+  imageHint: any
+}> = ({ children, required, displayLabel, methods, label, name, uiSchema, schema, imageHint }) => {
   const fieldName = schema?.parentKey ? `${schema?.parentKey}.${name}` : name
   const help = uiSchema['ui:help']
 
@@ -79,6 +81,8 @@ const DefaultTemplate: React.FC<{
             {errorMessage || help}
           </div>
         )}
+
+        {imageHint}
       </div>
     </div>
   )
@@ -99,9 +103,11 @@ type Props = {
 }
 
 const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSeparator, required, ...rest }: Props) => {
-  const { rootSchema, fields, formContext } = registry
+  const { rootSchema, fields, formContext, widgets } = registry
 
   const FieldTemplate = uiSchema['ui:FieldTemplate'] || registry.FieldTemplate || DefaultTemplate
+
+  const ImageHint = widgets['ImageHelper'] || ImageHelper
 
   let idSchema = rest.idSchema || {}
   const schema = retrieveSchema(rest.schema, rootSchema)
@@ -141,6 +147,7 @@ const SchemaField = ({ name, uiSchema = {}, registry, methods, idPrefix, idSepar
     description: <DescriptionField description={description} formContext={formContext} />,
     rawDescription: description,
     help: <Help help={help} />,
+    imageHint: <ImageHint id={id} name={name} schema={schema} uiSchema={uiSchema['ui:imageHelper']} />,
     id,
     name,
     label,
